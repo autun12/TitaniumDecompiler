@@ -1,6 +1,6 @@
 workspace "TitaniumDecompiler"
 	architecture "x86_64"
-	startproject "TitaniumDecompilernut"
+	startproject "TitaniumDecompiler"
 
 	configurations
 	{
