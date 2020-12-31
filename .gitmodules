@@ -1,0 +1,8 @@
+[submodule "TitaniumDecompiler/vendor/GLFW"]
+	path = TitaniumDecompiler/vendor/GLFW
+	url = ../../autun12/glfw.git
+	branch = master
+[submodule "TitaniumDecompiler/vendor/imgui"]
+	path = TitaniumDecompiler/vendor/imgui
+	url = ../../autun12/imgui.git
+	branch = docking
