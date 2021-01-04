@@ -1,4 +1,4 @@
-project "TitaniumDecompiler"
+project "TitaniumRenderer"
 	kind "StaticLib"
 	language "C++"
 	cppdialect "C++17"
@@ -14,6 +14,8 @@ project "TitaniumDecompiler"
 	{
 		"src/**.h",
 		"src/**.cpp",
+		"vendor/glm/glm/**.hpp",
+		"vendor/glm/glm/**.inl"
 	}
 
 	defines
@@ -25,17 +27,34 @@ project "TitaniumDecompiler"
 	includedirs
 	{
 		"src",
-		
+		"vendor/spdlog/include",
+		"%{IncludeDir.GLFW}",
+		"%{IncludeDir.Glad}",
+		"%{IncludeDir.ImGui}",
+		"%{IncludeDir.glm}"
 	}
 
 	links
 	{
-		
+		"GLFW",
+		"Glad",
+		"ImGui"
 	}
 	
 	filter "system:linux"
 		links
 		{
+			"GLFW",
+			"Glad",
+			"ImGui",
+			"Xrandr",
+			"Xi",
+			"GLEW",
+			"GLU",
+			"GL",
+			"X11",
+			"dl",
+			"pthread",
 			"stdc++fs",	--GCC versions 5.3 through 8.x need stdc++fs for std::filesystem
 		}
 
@@ -49,6 +68,7 @@ project "TitaniumDecompiler"
 
 		links
 		{
+			"opengl32.lib"
 		}
 
 		defines

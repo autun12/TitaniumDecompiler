@@ -1,0 +1,26 @@
+Titanium Decompiler TODO List
+===============================================
+
+LEGEND
+===============================================
++ means item is already done
+- means item needs to be done
+? means item is a possibility but does not need to be done 
+
+Orginization
+===============================================
+? Move All GLFW Code to Renderer Project
+
+UI
+===============================================
+- Add hex viewer
+- Add panels
+- Add settings
+- Use different font
+- Add dissassembly viewer
+
+Quality of life
+===============================================
+- Let user change UI look and feel
+- Add Project saving for users to pick up where they left off
+

@@ -1,8 +1,12 @@
-[submodule "TitaniumDecompiler/vendor/GLFW"]
-	path = TitaniumDecompiler/vendor/GLFW
+[submodule "TitaniumRenderer/vendor/GLFW"]
+	path = TitaniumRenderer/vendor/GLFW
 	url = https://github.com/autun12/glfw
-	branch = master
-[submodule "TitaniumDecompiler/vendor/imgui"]
-	path = TitaniumDecompiler/vendor/imgui
+[submodule "TitaniumRenderer/vendor/glm"]
+	path = TitaniumRenderer/vendor/glm
+	url = https://github.com/g-truc/glm
+[submodule "TitaniumRenderer/vendor/imgui"]
+	path = TitaniumRenderer/vendor/imgui
 	url = https://github.com/autun12/imgui
-	branch = docking
+[submodule "TitaniumRenderer/vendor/spdlog"]
+	path = TitaniumRenderer/vendor/spdlog
+	url = https://github.com/gabime/spdlog
