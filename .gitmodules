@@ -10,3 +10,6 @@
 [submodule "TitaniumRenderer/vendor/spdlog"]
 	path = TitaniumRenderer/vendor/spdlog
 	url = https://github.com/gabime/spdlog
+[submodule "TitaniumDecompiler/vendor/capstone"]
+	path = TitaniumDecompiler/vendor/capstone
+	url = https://github.com/autun12/capstone
