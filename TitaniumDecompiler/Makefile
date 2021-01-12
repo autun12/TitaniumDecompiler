@@ -22,12 +22,10 @@ RESCOMP = windres
 PCH = src/tdpch.h
 PCH_PLACEHOLDER = $(OBJDIR)/$(notdir $(PCH))
 GCH = $(PCH_PLACEHOLDER).gch
-INCLUDES += -Isrc
+INCLUDES += -Isrc -I${IncludeDir.Capstone}
 FORCE_INCLUDE +=
 ALL_CPPFLAGS += $(CPPFLAGS) -MMD -MP $(DEFINES) $(INCLUDES)
 ALL_RESFLAGS += $(RESFLAGS) $(DEFINES) $(INCLUDES)
-LIBS += -lstdc++fs
-LDDEPS +=
 LINKCMD = $(AR) -rcs "$@" $(OBJECTS)
 define PREBUILDCMDS
 endef
@@ -40,27 +38,33 @@ ifeq ($(config),debug)
 TARGETDIR = ../bin/Debug-linux-x86_64/TitaniumDecompiler
 TARGET = $(TARGETDIR)/libTitaniumDecompiler.a
 OBJDIR = ../bin-int/Debug-linux-x86_64/TitaniumDecompiler
-DEFINES += -D_CRT_SECURE_NO_WARNINGS -DGLFW_INCLUDE_NONE -DTD_PLATFORM_LINUX -DTD_DEBUG
+DEFINES += -D_CRT_SECURE_NO_WARNINGS -DTD_PLATFORM_LINUX -DTD_DEBUG
 ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -m64 -g
 ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -m64 -g -std=c++17
+LIBS += vendor/capstone/bin/Debug-linux-x86_64/Capstone/libCapstone.a -lstdc++fs
+LDDEPS += vendor/capstone/bin/Debug-linux-x86_64/Capstone/libCapstone.a
 ALL_LDFLAGS += $(LDFLAGS) -L/usr/lib64 -m64
 
 else ifeq ($(config),release)
 TARGETDIR = ../bin/Release-linux-x86_64/TitaniumDecompiler
 TARGET = $(TARGETDIR)/libTitaniumDecompiler.a
 OBJDIR = ../bin-int/Release-linux-x86_64/TitaniumDecompiler
-DEFINES += -D_CRT_SECURE_NO_WARNINGS -DGLFW_INCLUDE_NONE -DTD_PLATFORM_LINUX -DTD_RELEASE
+DEFINES += -D_CRT_SECURE_NO_WARNINGS -DTD_PLATFORM_LINUX -DTD_RELEASE
 ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -m64 -O2
 ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -m64 -O2 -std=c++17
+LIBS += vendor/capstone/bin/Release-linux-x86_64/Capstone/libCapstone.a -lstdc++fs
+LDDEPS += vendor/capstone/bin/Release-linux-x86_64/Capstone/libCapstone.a
 ALL_LDFLAGS += $(LDFLAGS) -L/usr/lib64 -m64 -s
 
 else ifeq ($(config),dist)
 TARGETDIR = ../bin/Dist-linux-x86_64/TitaniumDecompiler
 TARGET = $(TARGETDIR)/libTitaniumDecompiler.a
 OBJDIR = ../bin-int/Dist-linux-x86_64/TitaniumDecompiler
-DEFINES += -D_CRT_SECURE_NO_WARNINGS -DGLFW_INCLUDE_NONE -DTD_PLATFORM_LINUX -DTD_DIST
+DEFINES += -D_CRT_SECURE_NO_WARNINGS -DTD_PLATFORM_LINUX -DTD_DIST
 ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -m64 -O2
 ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -m64 -O2 -std=c++17
+LIBS += vendor/capstone/bin/Dist-linux-x86_64/Capstone/libCapstone.a -lstdc++fs
+LDDEPS += vendor/capstone/bin/Dist-linux-x86_64/Capstone/libCapstone.a
 ALL_LDFLAGS += $(LDFLAGS) -L/usr/lib64 -m64 -s
 
 endif
@@ -75,7 +79,9 @@ endif
 GENERATED :=
 OBJECTS :=
 
+GENERATED += $(OBJDIR)/ELF.o
 GENERATED += $(OBJDIR)/tdpch.o
+OBJECTS += $(OBJDIR)/ELF.o
 OBJECTS += $(OBJDIR)/tdpch.o
 
 # Rules
@@ -140,6 +146,9 @@ endif
 # File Rules
 # #############################################
 
+$(OBJDIR)/ELF.o: src/Platform/Linux/ELF.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) -include $(PCH_PLACEHOLDER) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 $(OBJDIR)/tdpch.o: src/tdpch.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) -include $(PCH_PLACEHOLDER) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"

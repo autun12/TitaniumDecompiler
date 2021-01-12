@@ -13,30 +13,30 @@ project "TitaniumDecompiler"
 	files
 	{
 		"src/**.h",
-		"src/**.cpp",
+		"src/**.cpp"
 	}
 
 	defines
 	{
-		"_CRT_SECURE_NO_WARNINGS",
-		"GLFW_INCLUDE_NONE"
+		"_CRT_SECURE_NO_WARNINGS"
 	}
 
 	includedirs
 	{
 		"src",
-		
+		"${IncludeDir.Capstone}"
 	}
 
 	links
 	{
-		
+		"Capstone"
 	}
 	
 	filter "system:linux"
 		links
 		{
-			"stdc++fs",	--GCC versions 5.3 through 8.x need stdc++fs for std::filesystem
+			"Capstone",
+			"stdc++fs"	--GCC versions 5.3 through 8.x need stdc++fs for std::filesystem
 		}
 
 		defines

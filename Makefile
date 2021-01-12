@@ -13,6 +13,7 @@ ifeq ($(config),debug)
   GLFW_config = debug
   Glad_config = debug
   ImGui_config = debug
+  Capstone_config = debug
   TitaniumRenderer_config = debug
   TitaniumDecompiler_config = debug
   TitaniumApplication_config = debug
@@ -22,6 +23,7 @@ else ifeq ($(config),release)
   GLFW_config = release
   Glad_config = release
   ImGui_config = release
+  Capstone_config = release
   TitaniumRenderer_config = release
   TitaniumDecompiler_config = release
   TitaniumApplication_config = release
@@ -31,6 +33,7 @@ else ifeq ($(config),dist)
   GLFW_config = dist
   Glad_config = dist
   ImGui_config = dist
+  Capstone_config = dist
   TitaniumRenderer_config = dist
   TitaniumDecompiler_config = dist
   TitaniumApplication_config = dist
@@ -39,13 +42,13 @@ else
   $(error "invalid configuration $(config)")
 endif
 
-PROJECTS := Premake GLFW Glad ImGui TitaniumRenderer TitaniumDecompiler TitaniumApplication
+PROJECTS := Premake GLFW Glad ImGui Capstone TitaniumRenderer TitaniumDecompiler TitaniumApplication
 
 .PHONY: all clean help $(PROJECTS) Dependencies
 
 all: $(PROJECTS)
 
-Dependencies: GLFW Glad ImGui Premake
+Dependencies: Capstone GLFW Glad ImGui Premake
 
 Premake:
 ifneq (,$(Premake_config))
@@ -71,19 +74,25 @@ ifneq (,$(ImGui_config))
 	@${MAKE} --no-print-directory -C TitaniumRenderer/vendor/imgui -f Makefile config=$(ImGui_config)
 endif
 
+Capstone:
+ifneq (,$(Capstone_config))
+	@echo "==== Building Capstone ($(Capstone_config)) ===="
+	@${MAKE} --no-print-directory -C TitaniumDecompiler/vendor/capstone -f Makefile config=$(Capstone_config)
+endif
+
 TitaniumRenderer: GLFW Glad ImGui
 ifneq (,$(TitaniumRenderer_config))
 	@echo "==== Building TitaniumRenderer ($(TitaniumRenderer_config)) ===="
 	@${MAKE} --no-print-directory -C TitaniumRenderer -f Makefile config=$(TitaniumRenderer_config)
 endif
 
-TitaniumDecompiler:
+TitaniumDecompiler: Capstone
 ifneq (,$(TitaniumDecompiler_config))
 	@echo "==== Building TitaniumDecompiler ($(TitaniumDecompiler_config)) ===="
 	@${MAKE} --no-print-directory -C TitaniumDecompiler -f Makefile config=$(TitaniumDecompiler_config)
 endif
 
-TitaniumApplication: TitaniumRenderer GLFW Glad ImGui
+TitaniumApplication: TitaniumRenderer TitaniumDecompiler GLFW Glad ImGui
 ifneq (,$(TitaniumApplication_config))
 	@echo "==== Building TitaniumApplication ($(TitaniumApplication_config)) ===="
 	@${MAKE} --no-print-directory -C TitaniumApplication -f Makefile config=$(TitaniumApplication_config)
@@ -94,6 +103,7 @@ clean:
 	@${MAKE} --no-print-directory -C TitaniumRenderer/vendor/GLFW -f Makefile clean
 	@${MAKE} --no-print-directory -C TitaniumRenderer/vendor/Glad -f Makefile clean
 	@${MAKE} --no-print-directory -C TitaniumRenderer/vendor/imgui -f Makefile clean
+	@${MAKE} --no-print-directory -C TitaniumDecompiler/vendor/capstone -f Makefile clean
 	@${MAKE} --no-print-directory -C TitaniumRenderer -f Makefile clean
 	@${MAKE} --no-print-directory -C TitaniumDecompiler -f Makefile clean
 	@${MAKE} --no-print-directory -C TitaniumApplication -f Makefile clean
@@ -113,6 +123,7 @@ help:
 	@echo "   GLFW"
 	@echo "   Glad"
 	@echo "   ImGui"
+	@echo "   Capstone"
 	@echo "   TitaniumRenderer"
 	@echo "   TitaniumDecompiler"
 	@echo "   TitaniumApplication"

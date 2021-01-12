@@ -1,0 +1,8 @@
+{
+    "files.associations": {
+        "*.mojom": "mojom",
+        "*.txt": "plaintext",
+        "iostream": "cpp",
+        "*.def": "cpp"
+    }
+}

@@ -8,5 +8,4 @@ public:
     HexViewerPanel() = default;
     void OnImGuiRender();
 };
-
 }

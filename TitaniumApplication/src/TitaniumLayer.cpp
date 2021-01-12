@@ -1,5 +1,8 @@
 #include "TitaniumLayer.h"
 #include <imgui/imgui.h>
+#include <TitaniumRenderer/PlatformUtils.h>
+#include <stdio.h>
+#include <stdlib.h>
 
 namespace TitaniumRenderer {
 TitaniumLayer::TitaniumLayer() : Layer("TitaniumLayer") {}
@@ -72,9 +75,10 @@ void TitaniumLayer::OnImGuiRender() {
             if(ImGui::MenuItem("New", "Ctrl+N")) { }
                 // NewScene();
 
-            if(ImGui::MenuItem("Open...", "Ctrl+O")) { }
-                // OpenScene();
-
+            if(ImGui::MenuItem("Open...", "Ctrl+O")) {
+                OpenAnalyzeFile();
+            }
+              
             if(ImGui::MenuItem("Save As...", "Ctrl+Shift+S")) { }
                 // SaveSceneAs();
 
@@ -87,9 +91,17 @@ void TitaniumLayer::OnImGuiRender() {
 
         ImGui::EndMenuBar();
     }
+    
     m_HexViewerPanel.OnImGuiRender();
+    m_SectionsPanel.OnImGuiRender();
 
     ImGui::End();
+
+    // if(m_FileBrowser.showFileDialog("Open File", imgui_addons::ImGuiFileBrowser::DialogMode::OPEN)) {
+    //     m_SectionsPanel.DisplayElfFileSections(m_FileBrowser.selected_path.c_str());
+    //     elfFile.GetElfFile(m_FileBrowser.selected_path.c_str());
+    // }
+
 }
 
 void TitaniumLayer::OnEvent(Event& e) {
@@ -115,7 +127,7 @@ bool TitaniumLayer::OnKeyPressed(KeyPressedEvent& e) {
         case Key::O: {
             if(control)
                 TD_CORE_INFO("Open File hasn't been Implemented Yet");
-                // OpenScene();
+                // OpenFile();
             break;
         }
         case Key::S: {
@@ -125,5 +137,13 @@ bool TitaniumLayer::OnKeyPressed(KeyPressedEvent& e) {
             break;
         }
 	}
+}
+
+void TitaniumLayer::OpenAnalyzeFile() {
+    std::optional<std::string> filepath = FileDialogs::OpenFile("");
+    
+    if(filepath) {
+        m_elfFile.GetElfFile(*filepath);
+    }
 }
 }

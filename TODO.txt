@@ -9,11 +9,12 @@ LEGEND
 
 Orginization
 ===============================================
-? Move All GLFW Code to Renderer Project
++ Move All GLFW Code to Renderer Project
 
 UI
 ===============================================
-- Add hex viewer
++ Add hex viewer
+- Make hex viewer actually work
 - Add panels
 - Add settings
 - Use different font

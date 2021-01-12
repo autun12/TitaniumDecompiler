@@ -18,12 +18,15 @@ project "TitaniumApplication"
 		"%{wks.location}/TitaniumRenderer/vendor/spdlog/include",
 		"%{wks.location}/TitaniumRenderer/src",
 		"%{wks.location}/TitaniumRenderer/vendor",
+		"%{wks.location}/TitaniumDecompiler/vendor/capstone/include",
+		"%{wks.location}/TitaniumDecompiler/src",
 		"{IncludeDir.glm}"
 	}
 
 	links
 	{
-		"TitaniumRenderer"
+		"TitaniumRenderer",
+		"TitaniumDecompiler"
 	}
 
 	filter "system:linux"

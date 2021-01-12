@@ -19,7 +19,7 @@ endif
 # #############################################
 
 RESCOMP = windres
-INCLUDES += -I../TitaniumRenderer/vendor/spdlog/include -I../TitaniumRenderer/src -I../TitaniumRenderer/vendor -I{IncludeDir.glm}
+INCLUDES += -I../TitaniumRenderer/vendor/spdlog/include -I../TitaniumRenderer/src -I../TitaniumRenderer/vendor -I../TitaniumDecompiler/vendor/capstone/include -I../TitaniumDecompiler/src -I{IncludeDir.glm}
 FORCE_INCLUDE +=
 ALL_CPPFLAGS += $(CPPFLAGS) -MMD -MP $(DEFINES) $(INCLUDES)
 ALL_RESFLAGS += $(RESFLAGS) $(DEFINES) $(INCLUDES)
@@ -38,8 +38,8 @@ OBJDIR = ../bin-int/Debug-linux-x86_64/TitaniumApplication
 DEFINES += -DTD_DEBUG
 ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -m64 -g
 ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -m64 -g -std=c++17
-LIBS += ../bin/Debug-linux-x86_64/TitaniumRenderer/libTitaniumRenderer.a ../TitaniumRenderer/vendor/GLFW/bin/Debug-linux-x86_64/GLFW/libGLFW.a ../TitaniumRenderer/vendor/Glad/bin/Debug-linux-x86_64/Glad/libGlad.a ../TitaniumRenderer/vendor/imgui/bin/Debug-linux-x86_64/ImGui/libImGui.a -lXrandr -lXi -lGLU -lGL -lX11 -ldl -lpthread -lstdc++fs
-LDDEPS += ../bin/Debug-linux-x86_64/TitaniumRenderer/libTitaniumRenderer.a ../TitaniumRenderer/vendor/GLFW/bin/Debug-linux-x86_64/GLFW/libGLFW.a ../TitaniumRenderer/vendor/Glad/bin/Debug-linux-x86_64/Glad/libGlad.a ../TitaniumRenderer/vendor/imgui/bin/Debug-linux-x86_64/ImGui/libImGui.a
+LIBS += ../bin/Debug-linux-x86_64/TitaniumRenderer/libTitaniumRenderer.a ../bin/Debug-linux-x86_64/TitaniumDecompiler/libTitaniumDecompiler.a ../TitaniumRenderer/vendor/GLFW/bin/Debug-linux-x86_64/GLFW/libGLFW.a ../TitaniumRenderer/vendor/Glad/bin/Debug-linux-x86_64/Glad/libGlad.a ../TitaniumRenderer/vendor/imgui/bin/Debug-linux-x86_64/ImGui/libImGui.a -lXrandr -lXi -lGLU -lGL -lX11 -ldl -lpthread -lstdc++fs
+LDDEPS += ../bin/Debug-linux-x86_64/TitaniumRenderer/libTitaniumRenderer.a ../bin/Debug-linux-x86_64/TitaniumDecompiler/libTitaniumDecompiler.a ../TitaniumRenderer/vendor/GLFW/bin/Debug-linux-x86_64/GLFW/libGLFW.a ../TitaniumRenderer/vendor/Glad/bin/Debug-linux-x86_64/Glad/libGlad.a ../TitaniumRenderer/vendor/imgui/bin/Debug-linux-x86_64/ImGui/libImGui.a
 ALL_LDFLAGS += $(LDFLAGS) -L/usr/lib64 -m64
 
 else ifeq ($(config),release)
@@ -49,8 +49,8 @@ OBJDIR = ../bin-int/Release-linux-x86_64/TitaniumApplication
 DEFINES += -DTD_RELEASE
 ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -m64 -O2
 ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -m64 -O2 -std=c++17
-LIBS += ../bin/Release-linux-x86_64/TitaniumRenderer/libTitaniumRenderer.a ../TitaniumRenderer/vendor/GLFW/bin/Release-linux-x86_64/GLFW/libGLFW.a ../TitaniumRenderer/vendor/Glad/bin/Release-linux-x86_64/Glad/libGlad.a ../TitaniumRenderer/vendor/imgui/bin/Release-linux-x86_64/ImGui/libImGui.a -lXrandr -lXi -lGLU -lGL -lX11 -ldl -lpthread -lstdc++fs
-LDDEPS += ../bin/Release-linux-x86_64/TitaniumRenderer/libTitaniumRenderer.a ../TitaniumRenderer/vendor/GLFW/bin/Release-linux-x86_64/GLFW/libGLFW.a ../TitaniumRenderer/vendor/Glad/bin/Release-linux-x86_64/Glad/libGlad.a ../TitaniumRenderer/vendor/imgui/bin/Release-linux-x86_64/ImGui/libImGui.a
+LIBS += ../bin/Release-linux-x86_64/TitaniumRenderer/libTitaniumRenderer.a ../bin/Release-linux-x86_64/TitaniumDecompiler/libTitaniumDecompiler.a ../TitaniumRenderer/vendor/GLFW/bin/Release-linux-x86_64/GLFW/libGLFW.a ../TitaniumRenderer/vendor/Glad/bin/Release-linux-x86_64/Glad/libGlad.a ../TitaniumRenderer/vendor/imgui/bin/Release-linux-x86_64/ImGui/libImGui.a -lXrandr -lXi -lGLU -lGL -lX11 -ldl -lpthread -lstdc++fs
+LDDEPS += ../bin/Release-linux-x86_64/TitaniumRenderer/libTitaniumRenderer.a ../bin/Release-linux-x86_64/TitaniumDecompiler/libTitaniumDecompiler.a ../TitaniumRenderer/vendor/GLFW/bin/Release-linux-x86_64/GLFW/libGLFW.a ../TitaniumRenderer/vendor/Glad/bin/Release-linux-x86_64/Glad/libGlad.a ../TitaniumRenderer/vendor/imgui/bin/Release-linux-x86_64/ImGui/libImGui.a
 ALL_LDFLAGS += $(LDFLAGS) -L/usr/lib64 -m64 -s
 
 else ifeq ($(config),dist)
@@ -60,8 +60,8 @@ OBJDIR = ../bin-int/Dist-linux-x86_64/TitaniumApplication
 DEFINES += -DTD_DIST
 ALL_CFLAGS += $(CFLAGS) $(ALL_CPPFLAGS) -m64 -O2
 ALL_CXXFLAGS += $(CXXFLAGS) $(ALL_CPPFLAGS) -m64 -O2 -std=c++17
-LIBS += ../bin/Dist-linux-x86_64/TitaniumRenderer/libTitaniumRenderer.a ../TitaniumRenderer/vendor/GLFW/bin/Dist-linux-x86_64/GLFW/libGLFW.a ../TitaniumRenderer/vendor/Glad/bin/Dist-linux-x86_64/Glad/libGlad.a ../TitaniumRenderer/vendor/imgui/bin/Dist-linux-x86_64/ImGui/libImGui.a -lXrandr -lXi -lGLU -lGL -lX11 -ldl -lpthread -lstdc++fs
-LDDEPS += ../bin/Dist-linux-x86_64/TitaniumRenderer/libTitaniumRenderer.a ../TitaniumRenderer/vendor/GLFW/bin/Dist-linux-x86_64/GLFW/libGLFW.a ../TitaniumRenderer/vendor/Glad/bin/Dist-linux-x86_64/Glad/libGlad.a ../TitaniumRenderer/vendor/imgui/bin/Dist-linux-x86_64/ImGui/libImGui.a
+LIBS += ../bin/Dist-linux-x86_64/TitaniumRenderer/libTitaniumRenderer.a ../bin/Dist-linux-x86_64/TitaniumDecompiler/libTitaniumDecompiler.a ../TitaniumRenderer/vendor/GLFW/bin/Dist-linux-x86_64/GLFW/libGLFW.a ../TitaniumRenderer/vendor/Glad/bin/Dist-linux-x86_64/Glad/libGlad.a ../TitaniumRenderer/vendor/imgui/bin/Dist-linux-x86_64/ImGui/libImGui.a -lXrandr -lXi -lGLU -lGL -lX11 -ldl -lpthread -lstdc++fs
+LDDEPS += ../bin/Dist-linux-x86_64/TitaniumRenderer/libTitaniumRenderer.a ../bin/Dist-linux-x86_64/TitaniumDecompiler/libTitaniumDecompiler.a ../TitaniumRenderer/vendor/GLFW/bin/Dist-linux-x86_64/GLFW/libGLFW.a ../TitaniumRenderer/vendor/Glad/bin/Dist-linux-x86_64/Glad/libGlad.a ../TitaniumRenderer/vendor/imgui/bin/Dist-linux-x86_64/ImGui/libImGui.a
 ALL_LDFLAGS += $(LDFLAGS) -L/usr/lib64 -m64 -s
 
 endif
@@ -77,9 +77,11 @@ GENERATED :=
 OBJECTS :=
 
 GENERATED += $(OBJDIR)/HexViewerPanel.o
+GENERATED += $(OBJDIR)/SectionsPanel.o
 GENERATED += $(OBJDIR)/TitaniumApp.o
 GENERATED += $(OBJDIR)/TitaniumLayer.o
 OBJECTS += $(OBJDIR)/HexViewerPanel.o
+OBJECTS += $(OBJDIR)/SectionsPanel.o
 OBJECTS += $(OBJDIR)/TitaniumApp.o
 OBJECTS += $(OBJDIR)/TitaniumLayer.o
 
@@ -146,6 +148,9 @@ endif
 # #############################################
 
 $(OBJDIR)/HexViewerPanel.o: src/Panels/HexViewerPanel.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
+$(OBJDIR)/SectionsPanel.o: src/Panels/SectionsPanel.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 $(OBJDIR)/TitaniumApp.o: src/TitaniumApp.cpp

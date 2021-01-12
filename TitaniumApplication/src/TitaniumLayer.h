@@ -1,7 +1,11 @@
 #pragma once
 
+// #include <imgui/imgui_texteditor.h>
 #include <TitaniumRenderer.h>
+#include <TitaniumDecompiler.h>
 #include "Panels/HexViewerPanel.h"
+#include "Panels/SectionsPanel.h"
+
 
 namespace TitaniumRenderer {
 class TitaniumLayer : public Layer {
@@ -16,6 +20,7 @@ public:
     void OnEvent(Event& e) override;
 private:
     bool OnKeyPressed(KeyPressedEvent& e);
+    void OpenAnalyzeFile();
 private:
     
     bool m_ViewportFocused = false;
@@ -24,5 +29,9 @@ private:
 
     // Panels
     HexViewerPanel m_HexViewerPanel;
+    SectionsPanel m_SectionsPanel;
+    
+    // TextEditor m_TextEditor;    
+    TitaniumDecompiler::ELF m_elfFile;
 };
 }
