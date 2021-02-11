@@ -1,20 +1,31 @@
 #include "tdpch.h"
-#include "Platform/Linux/ELF.h"
+#include "Platform/Linux/FileFormats/ELFFile/ELF.h"
 #include <stdio.h>
+#include <assert.h>
+#include <fcntl.h>
+#include <unistd.h>
 
 namespace TitaniumDecompiler {
-// void ELF::ReadElfHeader(const char* elfFile, Elf64Hdr* header64) {
-//     FILE* file = fopen(elfFile, "rb");
-    
-//     if(file == NULL) {
-//         perror("[E] Error opening file:");
-//     }
+void ELF::ReadElfHeader(int fileDescriptor, Elf64Hdr* header64) {
+    assert(header64 != NULL);
+    assert(lseek(fileDescriptor, (off_t)0, SEEK_SET) == (off_t)0);
+    assert(read(fileDescriptor, (void*)header64, sizeof(Elf64Hdr)) == sizeof(Elf64Hdr));
+}
 
-//     fseek(file, 0, SEEK_SET);
-//     fread(&header64, sizeof(char), sizeof(Elf64Hdr), file);
+bool ELF::IsElfFile(Elf64Hdr header64) {
+    header64.e_ident[EI_MAG0] = ELFMAG0;
+    header64.e_ident[EI_MAG1] = ELFMAG1;
+    header64.e_ident[EI_MAG2] = ELFMAG2;
+    header64.e_ident[EI_MAG3] = ELFMAG3;
 
-//     fclose(file);
-// }
+    if(strncmp((char*)header64.e_ident, "\x7f" "ELF", 4) != 0) {
+        printf("This is not a ELF binary\n");
+        return false;
+    } else {
+        printf("ELFMAGIC \t= ELF\n");
+        return true;
+    }
+}
 
 void ELF::GetElfHeader(Elf64Hdr header64) {
     printf("Storage class\t= ");
@@ -131,35 +142,37 @@ void ELF::GetElfHeader(Elf64Hdr header64) {
     }
 
     printf("Entry point\t= 0x%08x\n", header64.e_entry);
-    printf("\n");
 }
 
-void ELF::GetSectionHeaderTable(FILE* elfFile, Elf64Hdr header64, Elf64SHdr sh_table[]) {
+void ELF::GetSectionHeaderTable(int fileDescriptor, Elf64Hdr header64, Elf64SHdr sh_table[]) {
     uint32_t i;
-    fseek(elfFile, header64.e_shoff, SEEK_SET);
+
+    assert(lseek(fileDescriptor, header64.e_shoff, SEEK_SET) == (off_t)header64.e_shoff);
     for(i = 0; i < header64.e_shnum; i++) {
-        fread((void*)&sh_table[i], 1, header64.e_shentsize, elfFile);
+        assert(read(fileDescriptor, (void*)&sh_table[i], header64.e_shentsize) == header64.e_shentsize);
     }
 }
 
-char* ELF::GetSections(FILE* elfFile, Elf64SHdr sectionHeader64) {
+char* ELF::GetSections(int fileDescriptor, Elf64SHdr sectionHeader64) {
     char* buffer = (char*)malloc(sectionHeader64.sh_size);
     
     if(!buffer) {
         printf("%s: Failed to allocate %ld bytes\n", __func__, sectionHeader64.sh_size);
     }
 
-    fseek(elfFile, sectionHeader64.sh_offset, SEEK_SET);
-    fread(buffer, 1, sectionHeader64.sh_size, elfFile);
+    assert(buffer != NULL);
+
+    assert(lseek(fileDescriptor, (off_t)sectionHeader64.sh_offset, SEEK_SET) == (off_t)sectionHeader64.sh_offset);
+    assert(read(fileDescriptor, (void*)buffer, sectionHeader64.sh_size) == sectionHeader64.sh_size);
 
     return buffer;
 }
 
-void ELF::GetSectionHeader(FILE* elfFile, Elf64Hdr header64, Elf64SHdr sh_table[]) {
+void ELF::GetSectionHeader(int fileDescriptor, Elf64Hdr header64, Elf64SHdr sh_table[]) {
     uint32_t i;
     char* sectionHeaderString;
 
-    sectionHeaderString = GetSections(elfFile, sh_table[header64.e_shstrndx]);
+    sectionHeaderString = GetSections(fileDescriptor, sh_table[header64.e_shstrndx]);
     
     for(i = 0; i < header64.e_shnum; i++) {
 		printf("%s\t", (sectionHeaderString + sh_table[i].sh_name));
@@ -167,11 +180,10 @@ void ELF::GetSectionHeader(FILE* elfFile, Elf64Hdr header64, Elf64SHdr sh_table[
 	}
 }
 
-char* ELF::GetSectionHeaderForImGui(FILE* elfFile, Elf64Hdr header64, Elf64SHdr sh_table[]) {
+char* ELF::GetSectionHeaderForImGui(int fileDescriptor, Elf64Hdr header64, Elf64SHdr sh_table[]) {
     uint32_t i;
     char* sectionHeaderString;
-
-    sectionHeaderString = GetSections(elfFile, sh_table[header64.e_shstrndx]);
+    sectionHeaderString = GetSections(fileDescriptor, sh_table[header64.e_shstrndx]);
     char* sectionHeaderResult;
     for(i = 0; i < header64.e_shnum; i++) {
 		sectionHeaderResult = sectionHeaderString + sh_table[i].sh_name;
@@ -180,16 +192,16 @@ char* ELF::GetSectionHeaderForImGui(FILE* elfFile, Elf64Hdr header64, Elf64SHdr 
     return sectionHeaderResult;
 }
 
-void ELF::GetSymbolTable(FILE* elfFile, Elf64Hdr header64, Elf64SHdr sh_table[], uint32_t symbol_table) {
+void ELF::GetSymbolTable(int fileDescriptor, Elf64Hdr header64, Elf64SHdr sh_table[], uint32_t symbol_table) {
     char* string_table;
     Elf64Sym* sym_tbl;
     uint32_t i, symbol_count;
     
-    sym_tbl = (Elf64Sym*)GetSections(elfFile, sh_table[symbol_table]);
+    sym_tbl = (Elf64Sym*)GetSections(fileDescriptor, sh_table[symbol_table]);
 
     uint32_t string_table_index = sh_table[symbol_table].sh_link;
     printf("string_table_index = 0x%x\n", string_table_index);
-    string_table = GetSections(elfFile, sh_table[string_table_index]);
+    string_table = GetSections(fileDescriptor, sh_table[string_table_index]);
 
     symbol_count = (sh_table[symbol_table].sh_size/sizeof(Elf64Sym));
     printf("%d symbols\n", symbol_count);
@@ -202,13 +214,13 @@ void ELF::GetSymbolTable(FILE* elfFile, Elf64Hdr header64, Elf64SHdr sh_table[],
     }
 }
 
-void ELF::GetSymbols(FILE* elfFile, Elf64Hdr header64, Elf64SHdr sh_table[]) {
+void ELF::GetSymbols(int fileDescriptor, Elf64Hdr header64, Elf64SHdr sh_table[]) {
     uint32_t i;
 
     for(i = 0; i < header64.e_shnum; i++) {
         if((sh_table[i].sh_type == SHT_SYMTAB) || (sh_table[i].sh_type == SHT_DYNSYM)) {
-            printf("\n[Section %03d]", i);
-            GetSymbolTable(elfFile, header64, sh_table, i);
+            printf("\n[Section %03d]\n", i);
+            GetSymbolTable(fileDescriptor, header64, sh_table, i);
         }
     }
 }
@@ -216,50 +228,51 @@ void ELF::GetSymbols(FILE* elfFile, Elf64Hdr header64, Elf64SHdr sh_table[]) {
 void ELF::GetElfFile(const std::string& elfFile) {
     Elf64Hdr header64;
     Elf64SHdr* sectionHeaderTable64;
+    int fileDescriptor;
 
-    FILE* file = fopen(elfFile.c_str(), "rb");
-    
-    if(file == NULL) {
-        perror("[E] Error opening file:");
+    fileDescriptor = open(elfFile.c_str(), O_RDONLY | O_SYNC);
+
+    ReadElfHeader(fileDescriptor, &header64);
+    if(!IsElfFile(header64)) {
+        printf("is not elf file");
+        return;
     }
-    
-    fseek(file, 0, SEEK_SET);
-    fread(&header64, 1, sizeof(Elf64Hdr), file);
     GetElfHeader(header64);
+
     sectionHeaderTable64 = (Elf64SHdr*)malloc(header64.e_shentsize * header64.e_shnum);
-    if(!sectionHeaderTable64) {
-        printf("Failed to allocate % bytes\n", (header64.e_shentsize * header64.e_shnum));
-    }
-    GetSectionHeaderTable(file, header64, sectionHeaderTable64);
-    GetSectionHeader(file, header64, sectionHeaderTable64);
-    // GetSymbols(file, header64, sectionHeaderTable64);
-
-    fclose(file);
-}
-
-void ELF::GetElfFileSections(const std::string& elfFile) {
-    TitaniumDecompiler::Elf64Hdr header64;
-    TitaniumDecompiler::Elf64SHdr* sectionHeaderTable64;
-
-    FILE* file = fopen(elfFile.c_str(), "rb");
     
-    char* sections;
-
-    if(file == NULL) {
-        perror("[E] Error opening file:");
+    if(!sectionHeaderTable64) {
+        printf("Failed to allocate %d bytes\n", (header64.e_shentsize * header64.e_shnum));
     }
     
-    fseek(file, 0, SEEK_SET);
-    fread(&header64, 1, sizeof(TitaniumDecompiler::Elf64Hdr), file);
-    sectionHeaderTable64 = (TitaniumDecompiler::Elf64SHdr*)malloc(header64.e_shentsize * header64.e_shnum);
-    if(!sectionHeaderTable64) {
-        printf("Failed to allocate % bytes\n", (header64.e_shentsize * header64.e_shnum));
-    }
+    GetSectionHeaderTable(fileDescriptor, header64, sectionHeaderTable64);
+    GetSectionHeader(fileDescriptor, header64, sectionHeaderTable64);
+    // GetSymbols(fileDescriptor, header64, sectionHeaderTable64);
+}    
 
-    GetSectionHeaderTable(file, header64, sectionHeaderTable64);
-    sections = GetSectionHeaderForImGui(file, header64, sectionHeaderTable64);
-    // GetSymbols(file, header64, sectionHeaderTable64);
-    printf("%s", sections);
-}
+// void ELF::GetElfFileSections(const std::string& elfFile) {
+//     Elf64Hdr header64;
+//     Elf64SHdr* sectionHeaderTable64;
+
+//     FILE* file = fopen(elfFile.c_str(), "rb");
+    
+//     char* sections;
+
+//     if(file == NULL) {
+//         perror("[E] Error opening file:");
+//     }
+    
+//     fseek(file, 0, SEEK_SET);
+//     fread(&header64, 1, sizeof(Elf64Hdr), file);
+//     sectionHeaderTable64 = (Elf64SHdr*)malloc(header64.e_shentsize * header64.e_shnum);
+//     if(!sectionHeaderTable64) {
+//         printf("Failed to allocate % bytes\n", (header64.e_shentsize * header64.e_shnum));
+//     }
+
+//     GetSectionHeaderTable(file, header64, sectionHeaderTable64);
+//     sections = GetSectionHeaderForImGui(file, header64, sectionHeaderTable64);
+//     // GetSymbols(file, header64, sectionHeaderTable64);
+//     printf("%s\n", sections);
+// }
 
 }

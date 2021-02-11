@@ -1,14 +1,13 @@
+
+#include "tdpch.h"
 #include "Platform/OpenGL/OpenGLContext.h"
 
 #include <GLFW/glfw3.h>
 #include <glad/glad.h>
 
-#include "tdpch.h"
-
 namespace TitaniumRenderer {
 
-OpenGLContext::OpenGLContext(GLFWwindow* windowHandle)
-    : m_WindowHandle(windowHandle) {
+OpenGLContext::OpenGLContext(GLFWwindow* windowHandle) : m_WindowHandle(windowHandle) {
     TD_CORE_ASSERT(windowHandle, "Window handle is null!")
 }
 
@@ -21,8 +20,12 @@ void OpenGLContext::Init() {
     TD_CORE_INFO("  Vendor: {0}", glGetString(GL_VENDOR));
     TD_CORE_INFO("  Renderer: {0}", glGetString(GL_RENDERER));
     TD_CORE_INFO("  Version: {0}", glGetString(GL_VERSION));
+
+    TD_CORE_ASSERT(GLVersion.major > 4 || (GLVersion.major == 4 && GLVersion.minor >= 5), "Titanium Decompiler requires at least OpenGL version 4.5!");
 }
 
-void OpenGLContext::SwapBuffers() { glfwSwapBuffers(m_WindowHandle); }
+void OpenGLContext::SwapBuffers() { 
+    glfwSwapBuffers(m_WindowHandle); 
+}
 
 }  // namespace TitaniumRenderer

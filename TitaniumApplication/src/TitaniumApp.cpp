@@ -1,5 +1,5 @@
 #include <TitaniumRenderer.h>
-#include <TitaniumRenderer/EntryPoint.h>
+#include <TitaniumRenderer/Core/EntryPoint.h>
 
 #include "TitaniumLayer.h"
 

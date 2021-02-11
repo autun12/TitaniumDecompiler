@@ -24,4 +24,11 @@ Quality of life
 ===============================================
 - Let user change UI look and feel
 - Add Project saving for users to pick up where they left off
+- Use clang compilation database
+? Use clang tools
 
+Binary Format Parsing
+===============================================
+? Use Protobuf for binary file format structures
+- Rewrite ELF parser for linux
+- Rewrite PE parser for linux

@@ -1,7 +1,7 @@
 #pragma once
 
-#include "TitaniumRenderer/Base.h"
-#include "TitaniumRenderer/Timestep.h"
+#include "TitaniumRenderer/Core/Base.h"
+#include "TitaniumRenderer/Core/Timestep.h"
 #include "TitaniumRenderer/Events/Event.h"
 
 namespace TitaniumRenderer {
@@ -9,7 +9,7 @@ namespace TitaniumRenderer {
 class Layer {
 public:
     Layer(const std::string& name = "Layer");
-    virtual ~Layer();
+    virtual ~Layer() = default;
 
     virtual void OnAttach() {}
     virtual void OnDetach() {}

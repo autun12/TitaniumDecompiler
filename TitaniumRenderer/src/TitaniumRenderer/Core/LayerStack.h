@@ -2,14 +2,14 @@
 
 #include <vector>
 
-#include "Layer.h"
-#include "TitaniumRenderer/Base.h"
+#include "TitaniumRenderer/Core/Layer.h"
+#include "TitaniumRenderer/Core/Base.h"
 
 namespace TitaniumRenderer {
 
 class LayerStack {
 public:
-    LayerStack();
+    LayerStack() = default;
     ~LayerStack();
 
     void PushLayer(Layer* layer);

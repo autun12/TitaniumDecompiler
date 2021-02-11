@@ -3,7 +3,7 @@
 #include <GLFW/glfw3.h>
 
 #include "TitaniumRenderer/Renderer/GraphicsContext.h"
-#include "TitaniumRenderer/Window.h"
+#include "TitaniumRenderer/Core/Window.h"
 
 namespace TitaniumRenderer {
 
@@ -14,11 +14,11 @@ public:
 
     void OnUpdate() override;
 
-    inline unsigned int GetWidth() const override { return m_Data.Width; }
-    inline unsigned int GetHeight() const override { return m_Data.Height; }
+    unsigned int GetWidth() const override { return m_Data.Width; }
+    unsigned int GetHeight() const override { return m_Data.Height; }
 
     // Window attributes
-    inline void SetEventCallback(const EventCallbackFn& callback) override {
+    void SetEventCallback(const EventCallbackFn& callback) override {
         m_Data.EventCallback = callback;
     }
     void SetVSync(bool enabled) override;
@@ -32,7 +32,7 @@ private:
 
 private:
     GLFWwindow* m_Window;
-    GraphicsContext* m_Context;
+    Scope<GraphicsContext> m_Context;
 
     struct WindowData {
         std::string Title;

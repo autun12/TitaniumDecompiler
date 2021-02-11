@@ -1,7 +1,7 @@
 #pragma once
 
-#include "TitaniumRenderer/Base.h"
-#include "TitaniumRenderer/Log.h"
+#include "TitaniumRenderer/Core/Base.h"
+#include "TitaniumRenderer/Core/Log.h"
 #include <filesystem>
 
 #ifdef TD_ENABLE_ASSERTS

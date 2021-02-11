@@ -1,10 +1,6 @@
 #pragma once
 
-#include <stdint.h>
-#include <stdlib.h>
-#include <cstring>
-#include <string>
-
+#include <string_view>
 // ELF File Format Structures 
 
 // Data Types
@@ -601,13 +597,11 @@
 #define DF_BIND_NOW   0x8
 #define DF_STATIC_TLS 0x10
 
-namespace TitaniumDecompiler {
-
 //32 BIT
 
 // File Header
 typedef struct {
-    uint8_t e_ident[EI_NIDENT]; // Magic number and other info
+    unsigned char e_ident[EI_NIDENT]; // Magic number and other info
     uint16_t e_type; // Object file type
     uint16_t e_machine; // Architecture
     uint32_t e_version; // Version info
@@ -773,18 +767,11 @@ typedef struct {
     } d_un;
 } Elf64Dyn;
 
-class ELF {
-public:
-    void ReadElfHeader(const char* elfFile, Elf64Hdr* header64);
-    void GetElfHeader(Elf64Hdr header64);
-    void GetSectionHeaderTable(FILE* elfFile, Elf64Hdr header64, Elf64SHdr sh_table[]);
-    char* GetSections(FILE* elfFile, Elf64SHdr sectionHeader64);
-    void GetSectionHeader(FILE* elfFile, Elf64Hdr header64, Elf64SHdr sh_table[]);
-    char* GetSectionHeaderForImGui(FILE* elfFile, Elf64Hdr header64, Elf64SHdr sh_table[]);
-    void GetSymbolTable(FILE* elfFile, Elf64Hdr header64, Elf64SHdr sh_table[], uint32_t symbol_table);
-    void GetSymbols(FILE* elfFile, Elf64Hdr header64, Elf64SHdr sh_table[]);
-    void GetElfFileSections(const std::string& elfFile);
-    void GetElfFile(const std::string& elfFile);
-    // bool IsElfFile(const char* elfFile);
-};
+
+// FUNCTIONS
+static std::string_view StrictSubstr(std::string_view data, size_t offset) {
+    if(offset > data.size()) {
+        printf("ELF region out-of-bounds");
+    }
+    return data.substr(offset);
 }

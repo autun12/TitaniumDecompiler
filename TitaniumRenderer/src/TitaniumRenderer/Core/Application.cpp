@@ -1,8 +1,8 @@
 #include "tdpch.h"
-#include "TitaniumRenderer/Application.h"
+#include "TitaniumRenderer/Core/Application.h"
 
-#include "TitaniumRenderer/Input.h"
-#include "TitaniumRenderer/Log.h"
+#include "TitaniumRenderer/Core/Input.h"
+#include "TitaniumRenderer/Core/Log.h"
 #include "TitaniumRenderer/Renderer/Renderer.h"
 
 #include <GLFW/glfw3.h>

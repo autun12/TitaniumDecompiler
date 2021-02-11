@@ -76,10 +76,14 @@ endif
 GENERATED :=
 OBJECTS :=
 
+GENERATED += $(OBJDIR)/ConsolePanel.o
+GENERATED += $(OBJDIR)/DisassemblyViewerPanel.o
 GENERATED += $(OBJDIR)/HexViewerPanel.o
 GENERATED += $(OBJDIR)/SectionsPanel.o
 GENERATED += $(OBJDIR)/TitaniumApp.o
 GENERATED += $(OBJDIR)/TitaniumLayer.o
+OBJECTS += $(OBJDIR)/ConsolePanel.o
+OBJECTS += $(OBJDIR)/DisassemblyViewerPanel.o
 OBJECTS += $(OBJDIR)/HexViewerPanel.o
 OBJECTS += $(OBJDIR)/SectionsPanel.o
 OBJECTS += $(OBJDIR)/TitaniumApp.o
@@ -147,6 +151,12 @@ endif
 # File Rules
 # #############################################
 
+$(OBJDIR)/ConsolePanel.o: src/Panels/ConsolePanel.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
+$(OBJDIR)/DisassemblyViewerPanel.o: src/Panels/DisassemblyViewerPanel.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 $(OBJDIR)/HexViewerPanel.o: src/Panels/HexViewerPanel.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"

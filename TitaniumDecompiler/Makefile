@@ -80,8 +80,10 @@ GENERATED :=
 OBJECTS :=
 
 GENERATED += $(OBJDIR)/ELF.o
+GENERATED += $(OBJDIR)/PE.o
 GENERATED += $(OBJDIR)/tdpch.o
 OBJECTS += $(OBJDIR)/ELF.o
+OBJECTS += $(OBJDIR)/PE.o
 OBJECTS += $(OBJDIR)/tdpch.o
 
 # Rules
@@ -146,7 +148,10 @@ endif
 # File Rules
 # #############################################
 
-$(OBJDIR)/ELF.o: src/Platform/Linux/ELF.cpp
+$(OBJDIR)/ELF.o: src/Platform/Linux/FileFormats/ELFFile/ELF.cpp
+	@echo $(notdir $<)
+	$(SILENT) $(CXX) -include $(PCH_PLACEHOLDER) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
+$(OBJDIR)/PE.o: src/Platform/Linux/FileFormats/PE.cpp
 	@echo $(notdir $<)
 	$(SILENT) $(CXX) -include $(PCH_PLACEHOLDER) $(ALL_CXXFLAGS) $(FORCE_INCLUDE) -o "$@" -MF "$(@:%.o=%.d)" -c "$<"
 $(OBJDIR)/tdpch.o: src/tdpch.cpp

@@ -1,0 +1,1817 @@
+[
+    {
+        "arguments": [
+            "cc", 
+            "-c", 
+            "-Iinclude", 
+            "-m64", 
+            "-fPIC", 
+            "-g", 
+            "-o", 
+            "bin-int/Debug-linux-x86_64/Capstone/AArch64BaseInfo.o", 
+            "arch/AArch64/AArch64BaseInfo.c"
+        ], 
+        "directory": "/home/austin/Documents/Github/TitaniumDecompiler/TitaniumDecompiler/vendor/capstone", 
+        "file": "arch/AArch64/AArch64BaseInfo.c"
+    }, 
+    {
+        "arguments": [
+            "cc", 
+            "-c", 
+            "-D_GLFW_X11", 
+            "-m64", 
+            "-fPIC", 
+            "-g", 
+            "-o", 
+            "bin-int/Debug-linux-x86_64/GLFW/window.o", 
+            "src/window.c"
+        ], 
+        "directory": "/home/austin/Documents/Github/TitaniumDecompiler/TitaniumRenderer/vendor/GLFW", 
+        "file": "src/window.c"
+    }, 
+    {
+        "arguments": [
+            "cc", 
+            "-c", 
+            "-Iinclude", 
+            "-m64", 
+            "-fPIC", 
+            "-g", 
+            "-o", 
+            "bin-int/Debug-linux-x86_64/Capstone/SStream.o", 
+            "SStream.c"
+        ], 
+        "directory": "/home/austin/Documents/Github/TitaniumDecompiler/TitaniumDecompiler/vendor/capstone", 
+        "file": "SStream.c"
+    }, 
+    {
+        "arguments": [
+            "c++", 
+            "-c", 
+            "-include", 
+            "../bin-int/Debug-linux-x86_64/TitaniumRenderer/tdpch.h", 
+            "-D_CRT_SECURE_NO_WARNINGS", 
+            "-DGLFW_INCLUDE_NONE", 
+            "-DTD_PLATFORM_LINUX", 
+            "-DTD_DEBUG", 
+            "-Isrc", 
+            "-Ivendor/spdlog/include", 
+            "-Ivendor/GLFW/include", 
+            "-Ivendor/Glad/include", 
+            "-Ivendor/imgui", 
+            "-Ivendor/glm", 
+            "-m64", 
+            "-g", 
+            "-std=c++17", 
+            "-o", 
+            "../bin-int/Debug-linux-x86_64/TitaniumRenderer/Renderer.o", 
+            "src/TitaniumRenderer/Renderer/Renderer.cpp"
+        ], 
+        "directory": "/home/austin/Documents/Github/TitaniumDecompiler/TitaniumRenderer", 
+        "file": "src/TitaniumRenderer/Renderer/Renderer.cpp"
+    }, 
+    {
+        "arguments": [
+            "cc", 
+            "-c", 
+            "-Iinclude", 
+            "-m64", 
+            "-fPIC", 
+            "-g", 
+            "-o", 
+            "bin-int/Debug-linux-x86_64/Capstone/TMS320C64xDisassembler.o", 
+            "arch/TMS320C64x/TMS320C64xDisassembler.c"
+        ], 
+        "directory": "/home/austin/Documents/Github/TitaniumDecompiler/TitaniumDecompiler/vendor/capstone", 
+        "file": "arch/TMS320C64x/TMS320C64xDisassembler.c"
+    }, 
+    {
+        "arguments": [
+            "cc", 
+            "-c", 
+            "-Iinclude", 
+            "-m64", 
+            "-fPIC", 
+            "-g", 
+            "-o", 
+            "bin-int/Debug-linux-x86_64/Capstone/ARMDisassembler.o", 
+            "arch/ARM/ARMDisassembler.c"
+        ], 
+        "directory": "/home/austin/Documents/Github/TitaniumDecompiler/TitaniumDecompiler/vendor/capstone", 
+        "file": "arch/ARM/ARMDisassembler.c"
+    }, 
+    {
+        "arguments": [
+            "cc", 
+            "-c", 
+            "-Iinclude", 
+            "-m64", 
+            "-fPIC", 
+            "-g", 
+            "-o", 
+            "bin-int/Debug-linux-x86_64/Capstone/X86Disassembler.o", 
+            "arch/X86/X86Disassembler.c"
+        ], 
+        "directory": "/home/austin/Documents/Github/TitaniumDecompiler/TitaniumDecompiler/vendor/capstone", 
+        "file": "arch/X86/X86Disassembler.c"
+    }, 
+    {
+        "arguments": [
+            "cc", 
+            "-c", 
+            "-D_GLFW_X11", 
+            "-m64", 
+            "-fPIC", 
+            "-g", 
+            "-o", 
+            "bin-int/Debug-linux-x86_64/GLFW/osmesa_context.o", 
+            "src/osmesa_context.c"
+        ], 
+        "directory": "/home/austin/Documents/Github/TitaniumDecompiler/TitaniumRenderer/vendor/GLFW", 
+        "file": "src/osmesa_context.c"
+    }, 
+    {
+        "arguments": [
+            "c++", 
+            "-c", 
+            "-include", 
+            "../bin-int/Debug-linux-x86_64/TitaniumRenderer/tdpch.h", 
+            "-D_CRT_SECURE_NO_WARNINGS", 
+            "-DGLFW_INCLUDE_NONE", 
+            "-DTD_PLATFORM_LINUX", 
+            "-DTD_DEBUG", 
+            "-Isrc", 
+            "-Ivendor/spdlog/include", 
+            "-Ivendor/GLFW/include", 
+            "-Ivendor/Glad/include", 
+            "-Ivendor/imgui", 
+            "-Ivendor/glm", 
+            "-m64", 
+            "-g", 
+            "-std=c++17", 
+            "-o", 
+            "../bin-int/Debug-linux-x86_64/TitaniumRenderer/Layer.o", 
+            "src/TitaniumRenderer/Core/Layer.cpp"
+        ], 
+        "directory": "/home/austin/Documents/Github/TitaniumDecompiler/TitaniumRenderer", 
+        "file": "src/TitaniumRenderer/Core/Layer.cpp"
+    }, 
+    {
+        "arguments": [
+            "cc", 
+            "-c", 
+            "-Iinclude", 
+            "-m64", 
+            "-fPIC", 
+            "-g", 
+            "-o", 
+            "bin-int/Debug-linux-x86_64/Capstone/SystemZInstPrinter.o", 
+            "arch/SystemZ/SystemZInstPrinter.c"
+        ], 
+        "directory": "/home/austin/Documents/Github/TitaniumDecompiler/TitaniumDecompiler/vendor/capstone", 
+        "file": "arch/SystemZ/SystemZInstPrinter.c"
+    }, 
+    {
+        "arguments": [
+            "c++", 
+            "-c", 
+            "-include", 
+            "../bin-int/Debug-linux-x86_64/TitaniumRenderer/tdpch.h", 
+            "-D_CRT_SECURE_NO_WARNINGS", 
+            "-DGLFW_INCLUDE_NONE", 
+            "-DTD_PLATFORM_LINUX", 
+            "-DTD_DEBUG", 
+            "-Isrc", 
+            "-Ivendor/spdlog/include", 
+            "-Ivendor/GLFW/include", 
+            "-Ivendor/Glad/include", 
+            "-Ivendor/imgui", 
+            "-Ivendor/glm", 
+            "-m64", 
+            "-g", 
+            "-std=c++17", 
+            "-o", 
+            "../bin-int/Debug-linux-x86_64/TitaniumRenderer/Window.o", 
+            "src/TitaniumRenderer/Core/Window.cpp"
+        ], 
+        "directory": "/home/austin/Documents/Github/TitaniumDecompiler/TitaniumRenderer", 
+        "file": "src/TitaniumRenderer/Core/Window.cpp"
+    }, 
+    {
+        "arguments": [
+            "cc", 
+            "-c", 
+            "-Iinclude", 
+            "-m64", 
+            "-fPIC", 
+            "-g", 
+            "-o", 
+            "bin-int/Debug-linux-x86_64/Capstone/SparcMapping.o", 
+            "arch/Sparc/SparcMapping.c"
+        ], 
+        "directory": "/home/austin/Documents/Github/TitaniumDecompiler/TitaniumDecompiler/vendor/capstone", 
+        "file": "arch/Sparc/SparcMapping.c"
+    }, 
+    {
+        "arguments": [
+            "cc", 
+            "-c", 
+            "-Iinclude", 
+            "-m64", 
+            "-fPIC", 
+            "-g", 
+            "-o", 
+            "bin-int/Debug-linux-x86_64/Capstone/EVMDisassembler.o", 
+            "arch/EVM/EVMDisassembler.c"
+        ], 
+        "directory": "/home/austin/Documents/Github/TitaniumDecompiler/TitaniumDecompiler/vendor/capstone", 
+        "file": "arch/EVM/EVMDisassembler.c"
+    }, 
+    {
+        "arguments": [
+            "c++", 
+            "-c", 
+            "-include", 
+            "../bin-int/Debug-linux-x86_64/TitaniumRenderer/tdpch.h", 
+            "-D_CRT_SECURE_NO_WARNINGS", 
+            "-DGLFW_INCLUDE_NONE", 
+            "-DTD_PLATFORM_LINUX", 
+            "-DTD_DEBUG", 
+            "-Isrc", 
+            "-Ivendor/spdlog/include", 
+            "-Ivendor/GLFW/include", 
+            "-Ivendor/Glad/include", 
+            "-Ivendor/imgui", 
+            "-Ivendor/glm", 
+            "-m64", 
+            "-g", 
+            "-std=c++17", 
+            "-o", 
+            "../bin-int/Debug-linux-x86_64/TitaniumRenderer/ImGuiBuild.o", 
+            "src/TitaniumRenderer/ImGui/ImGuiBuild.cpp"
+        ], 
+        "directory": "/home/austin/Documents/Github/TitaniumDecompiler/TitaniumRenderer", 
+        "file": "src/TitaniumRenderer/ImGui/ImGuiBuild.cpp"
+    }, 
+    {
+        "arguments": [
+            "c++", 
+            "-c", 
+            "-m64", 
+            "-fPIC", 
+            "-g", 
+            "-std=c++17", 
+            "-o", 
+            "bin-int/Debug-linux-x86_64/ImGui/imgui_demo.o", 
+            "imgui_demo.cpp"
+        ], 
+        "directory": "/home/austin/Documents/Github/TitaniumDecompiler/TitaniumRenderer/vendor/imgui", 
+        "file": "imgui_demo.cpp"
+    }, 
+    {
+        "arguments": [
+            "cc", 
+            "-c", 
+            "-Iinclude", 
+            "-m64", 
+            "-fPIC", 
+            "-g", 
+            "-o", 
+            "bin-int/Debug-linux-x86_64/Capstone/EVMInstPrinter.o", 
+            "arch/EVM/EVMInstPrinter.c"
+        ], 
+        "directory": "/home/austin/Documents/Github/TitaniumDecompiler/TitaniumDecompiler/vendor/capstone", 
+        "file": "arch/EVM/EVMInstPrinter.c"
+    }, 
+    {
+        "arguments": [
+            "c++", 
+            "-c", 
+            "-DTD_DEBUG", 
+            "-I../TitaniumRenderer/vendor/spdlog/include", 
+            "-I../TitaniumRenderer/src", 
+            "-I../TitaniumRenderer/vendor", 
+            "-I../TitaniumDecompiler/vendor/capstone/include", 
+            "-I../TitaniumDecompiler/src", 
+            "-I{IncludeDir.glm}", 
+            "-m64", 
+            "-g", 
+            "-std=c++17", 
+            "-o", 
+            "../bin-int/Debug-linux-x86_64/TitaniumApplication/HexViewerPanel.o", 
+            "src/Panels/HexViewerPanel.cpp"
+        ], 
+        "directory": "/home/austin/Documents/Github/TitaniumDecompiler/TitaniumApplication", 
+        "file": "src/Panels/HexViewerPanel.cpp"
+    }, 
+    {
+        "arguments": [
+            "cc", 
+            "-c", 
+            "-Iinclude", 
+            "-m64", 
+            "-fPIC", 
+            "-g", 
+            "-o", 
+            "bin-int/Debug-linux-x86_64/Capstone/SparcDisassembler.o", 
+            "arch/Sparc/SparcDisassembler.c"
+        ], 
+        "directory": "/home/austin/Documents/Github/TitaniumDecompiler/TitaniumDecompiler/vendor/capstone", 
+        "file": "arch/Sparc/SparcDisassembler.c"
+    }, 
+    {
+        "arguments": [
+            "c++", 
+            "-c", 
+            "-m64", 
+            "-fPIC", 
+            "-g", 
+            "-std=c++17", 
+            "-o", 
+            "bin-int/Debug-linux-x86_64/ImGui/imgui_widgets.o", 
+            "imgui_widgets.cpp"
+        ], 
+        "directory": "/home/austin/Documents/Github/TitaniumDecompiler/TitaniumRenderer/vendor/imgui", 
+        "file": "imgui_widgets.cpp"
+    }, 
+    {
+        "arguments": [
+            "cc", 
+            "-c", 
+            "-Iinclude", 
+            "-m64", 
+            "-fPIC", 
+            "-g", 
+            "-o", 
+            "bin-int/Debug-linux-x86_64/Capstone/PPCDisassembler.o", 
+            "arch/PowerPC/PPCDisassembler.c"
+        ], 
+        "directory": "/home/austin/Documents/Github/TitaniumDecompiler/TitaniumDecompiler/vendor/capstone", 
+        "file": "arch/PowerPC/PPCDisassembler.c"
+    }, 
+    {
+        "arguments": [
+            "c++", 
+            "-c", 
+            "-include", 
+            "../bin-int/Debug-linux-x86_64/TitaniumDecompiler/tdpch.h", 
+            "-D_CRT_SECURE_NO_WARNINGS", 
+            "-DTD_PLATFORM_LINUX", 
+            "-DTD_DEBUG", 
+            "-Isrc", 
+            "-I", 
+            "-m64", 
+            "-g", 
+            "-std=c++17", 
+            "-o", 
+            "../bin-int/Debug-linux-x86_64/TitaniumDecompiler/tdpch.o", 
+            "src/tdpch.cpp"
+        ], 
+        "directory": "/home/austin/Documents/Github/TitaniumDecompiler/TitaniumDecompiler", 
+        "file": "src/tdpch.cpp"
+    }, 
+    {
+        "arguments": [
+            "cc", 
+            "-c", 
+            "-D_GLFW_X11", 
+            "-m64", 
+            "-fPIC", 
+            "-g", 
+            "-o", 
+            "bin-int/Debug-linux-x86_64/GLFW/xkb_unicode.o", 
+            "src/xkb_unicode.c"
+        ], 
+        "directory": "/home/austin/Documents/Github/TitaniumDecompiler/TitaniumRenderer/vendor/GLFW", 
+        "file": "src/xkb_unicode.c"
+    }, 
+    {
+        "arguments": [
+            "cc", 
+            "-c", 
+            "-D_GLFW_X11", 
+            "-m64", 
+            "-fPIC", 
+            "-g", 
+            "-o", 
+            "bin-int/Debug-linux-x86_64/GLFW/vulkan.o", 
+            "src/vulkan.c"
+        ], 
+        "directory": "/home/austin/Documents/Github/TitaniumDecompiler/TitaniumRenderer/vendor/GLFW", 
+        "file": "src/vulkan.c"
+    }, 
+    {
+        "arguments": [
+            "cc", 
+            "-c", 
+            "-Iinclude", 
+            "-m64", 
+            "-fPIC", 
+            "-g", 
+            "-o", 
+            "bin-int/Debug-linux-x86_64/Capstone/AArch64Module.o", 
+            "arch/AArch64/AArch64Module.c"
+        ], 
+        "directory": "/home/austin/Documents/Github/TitaniumDecompiler/TitaniumDecompiler/vendor/capstone", 
+        "file": "arch/AArch64/AArch64Module.c"
+    }, 
+    {
+        "arguments": [
+            "cc", 
+            "-c", 
+            "-Iinclude", 
+            "-m64", 
+            "-fPIC", 
+            "-g", 
+            "-o", 
+            "bin-int/Debug-linux-x86_64/Capstone/M680XModule.o", 
+            "arch/M680X/M680XModule.c"
+        ], 
+        "directory": "/home/austin/Documents/Github/TitaniumDecompiler/TitaniumDecompiler/vendor/capstone", 
+        "file": "arch/M680X/M680XModule.c"
+    }, 
+    {
+        "arguments": [
+            "cc", 
+            "-c", 
+            "-Iinclude", 
+            "-m64", 
+            "-fPIC", 
+            "-g", 
+            "-o", 
+            "bin-int/Debug-linux-x86_64/Capstone/cs.o", 
+            "cs.c"
+        ], 
+        "directory": "/home/austin/Documents/Github/TitaniumDecompiler/TitaniumDecompiler/vendor/capstone", 
+        "file": "cs.c"
+    }, 
+    {
+        "arguments": [
+            "c++", 
+            "-c", 
+            "-m64", 
+            "-fPIC", 
+            "-g", 
+            "-std=c++17", 
+            "-o", 
+            "bin-int/Debug-linux-x86_64/ImGui/imgui_draw.o", 
+            "imgui_draw.cpp"
+        ], 
+        "directory": "/home/austin/Documents/Github/TitaniumDecompiler/TitaniumRenderer/vendor/imgui", 
+        "file": "imgui_draw.cpp"
+    }, 
+    {
+        "arguments": [
+            "cc", 
+            "-c", 
+            "-Iinclude", 
+            "-m64", 
+            "-fPIC", 
+            "-g", 
+            "-o", 
+            "bin-int/Debug-linux-x86_64/Capstone/M68KDisassembler.o", 
+            "arch/M68K/M68KDisassembler.c"
+        ], 
+        "directory": "/home/austin/Documents/Github/TitaniumDecompiler/TitaniumDecompiler/vendor/capstone", 
+        "file": "arch/M68K/M68KDisassembler.c"
+    }, 
+    {
+        "arguments": [
+            "c++", 
+            "-c", 
+            "-include", 
+            "../bin-int/Debug-linux-x86_64/TitaniumRenderer/tdpch.h", 
+            "-D_CRT_SECURE_NO_WARNINGS", 
+            "-DGLFW_INCLUDE_NONE", 
+            "-DTD_PLATFORM_LINUX", 
+            "-DTD_DEBUG", 
+            "-Isrc", 
+            "-Ivendor/spdlog/include", 
+            "-Ivendor/GLFW/include", 
+            "-Ivendor/Glad/include", 
+            "-Ivendor/imgui", 
+            "-Ivendor/glm", 
+            "-m64", 
+            "-g", 
+            "-std=c++17", 
+            "-o", 
+            "../bin-int/Debug-linux-x86_64/TitaniumRenderer/LinuxPlatformUtils.o", 
+            "src/Platform/Linux/LinuxPlatformUtils.cpp"
+        ], 
+        "directory": "/home/austin/Documents/Github/TitaniumDecompiler/TitaniumRenderer", 
+        "file": "src/Platform/Linux/LinuxPlatformUtils.cpp"
+    }, 
+    {
+        "arguments": [
+            "cc", 
+            "-c", 
+            "-Iinclude", 
+            "-m64", 
+            "-fPIC", 
+            "-g", 
+            "-o", 
+            "bin-int/Debug-linux-x86_64/Capstone/XCoreInstPrinter.o", 
+            "arch/XCore/XCoreInstPrinter.c"
+        ], 
+        "directory": "/home/austin/Documents/Github/TitaniumDecompiler/TitaniumDecompiler/vendor/capstone", 
+        "file": "arch/XCore/XCoreInstPrinter.c"
+    }, 
+    {
+        "arguments": [
+            "cc", 
+            "-c", 
+            "-Iinclude", 
+            "-m64", 
+            "-fPIC", 
+            "-g", 
+            "-o", 
+            "bin-int/Debug-linux-x86_64/Capstone/MOS65XXModule.o", 
+            "arch/MOS65XX/MOS65XXModule.c"
+        ], 
+        "directory": "/home/austin/Documents/Github/TitaniumDecompiler/TitaniumDecompiler/vendor/capstone", 
+        "file": "arch/MOS65XX/MOS65XXModule.c"
+    }, 
+    {
+        "arguments": [
+            "cc", 
+            "-c", 
+            "-Iinclude", 
+            "-m64", 
+            "-fPIC", 
+            "-g", 
+            "-o", 
+            "bin-int/Debug-linux-x86_64/Capstone/M680XInstPrinter.o", 
+            "arch/M680X/M680XInstPrinter.c"
+        ], 
+        "directory": "/home/austin/Documents/Github/TitaniumDecompiler/TitaniumDecompiler/vendor/capstone", 
+        "file": "arch/M680X/M680XInstPrinter.c"
+    }, 
+    {
+        "arguments": [
+            "cc", 
+            "-c", 
+            "-Iinclude", 
+            "-m64", 
+            "-fPIC", 
+            "-g", 
+            "-o", 
+            "bin-int/Debug-linux-x86_64/Capstone/utils.o", 
+            "utils.c"
+        ], 
+        "directory": "/home/austin/Documents/Github/TitaniumDecompiler/TitaniumDecompiler/vendor/capstone", 
+        "file": "utils.c"
+    }, 
+    {
+        "arguments": [
+            "cc", 
+            "-c", 
+            "-Iinclude", 
+            "-m64", 
+            "-fPIC", 
+            "-g", 
+            "-o", 
+            "bin-int/Debug-linux-x86_64/Capstone/TMS320C64xInstPrinter.o", 
+            "arch/TMS320C64x/TMS320C64xInstPrinter.c"
+        ], 
+        "directory": "/home/austin/Documents/Github/TitaniumDecompiler/TitaniumDecompiler/vendor/capstone", 
+        "file": "arch/TMS320C64x/TMS320C64xInstPrinter.c"
+    }, 
+    {
+        "arguments": [
+            "cc", 
+            "-c", 
+            "-Iinclude", 
+            "-m64", 
+            "-fPIC", 
+            "-g", 
+            "-o", 
+            "bin-int/Debug-linux-x86_64/Capstone/SystemZDisassembler.o", 
+            "arch/SystemZ/SystemZDisassembler.c"
+        ], 
+        "directory": "/home/austin/Documents/Github/TitaniumDecompiler/TitaniumDecompiler/vendor/capstone", 
+        "file": "arch/SystemZ/SystemZDisassembler.c"
+    }, 
+    {
+        "arguments": [
+            "cc", 
+            "-c", 
+            "-Iinclude", 
+            "-m64", 
+            "-fPIC", 
+            "-g", 
+            "-o", 
+            "bin-int/Debug-linux-x86_64/Capstone/X86Module.o", 
+            "arch/X86/X86Module.c"
+        ], 
+        "directory": "/home/austin/Documents/Github/TitaniumDecompiler/TitaniumDecompiler/vendor/capstone", 
+        "file": "arch/X86/X86Module.c"
+    }, 
+    {
+        "arguments": [
+            "cc", 
+            "-c", 
+            "-Iinclude", 
+            "-m64", 
+            "-fPIC", 
+            "-g", 
+            "-o", 
+            "bin-int/Debug-linux-x86_64/Capstone/MipsModule.o", 
+            "arch/Mips/MipsModule.c"
+        ], 
+        "directory": "/home/austin/Documents/Github/TitaniumDecompiler/TitaniumDecompiler/vendor/capstone", 
+        "file": "arch/Mips/MipsModule.c"
+    }, 
+    {
+        "arguments": [
+            "cc", 
+            "-c", 
+            "-Iinclude", 
+            "-m64", 
+            "-fPIC", 
+            "-g", 
+            "-o", 
+            "bin-int/Debug-linux-x86_64/Capstone/MCInstrDesc.o", 
+            "MCInstrDesc.c"
+        ], 
+        "directory": "/home/austin/Documents/Github/TitaniumDecompiler/TitaniumDecompiler/vendor/capstone", 
+        "file": "MCInstrDesc.c"
+    }, 
+    {
+        "arguments": [
+            "cc", 
+            "-c", 
+            "-Iinclude", 
+            "-m64", 
+            "-fPIC", 
+            "-g", 
+            "-o", 
+            "bin-int/Debug-linux-x86_64/Capstone/AArch64InstPrinter.o", 
+            "arch/AArch64/AArch64InstPrinter.c"
+        ], 
+        "directory": "/home/austin/Documents/Github/TitaniumDecompiler/TitaniumDecompiler/vendor/capstone", 
+        "file": "arch/AArch64/AArch64InstPrinter.c"
+    }, 
+    {
+        "arguments": [
+            "cc", 
+            "-c", 
+            "-Iinclude", 
+            "-m64", 
+            "-fPIC", 
+            "-g", 
+            "-o", 
+            "bin-int/Debug-linux-x86_64/Capstone/SystemZModule.o", 
+            "arch/SystemZ/SystemZModule.c"
+        ], 
+        "directory": "/home/austin/Documents/Github/TitaniumDecompiler/TitaniumDecompiler/vendor/capstone", 
+        "file": "arch/SystemZ/SystemZModule.c"
+    }, 
+    {
+        "arguments": [
+            "cc", 
+            "-c", 
+            "-D_GLFW_X11", 
+            "-m64", 
+            "-fPIC", 
+            "-g", 
+            "-o", 
+            "bin-int/Debug-linux-x86_64/GLFW/context.o", 
+            "src/context.c"
+        ], 
+        "directory": "/home/austin/Documents/Github/TitaniumDecompiler/TitaniumRenderer/vendor/GLFW", 
+        "file": "src/context.c"
+    }, 
+    {
+        "arguments": [
+            "cc", 
+            "-c", 
+            "-Iinclude", 
+            "-m64", 
+            "-fPIC", 
+            "-g", 
+            "-o", 
+            "bin-int/Debug-linux-x86_64/Capstone/EVMMapping.o", 
+            "arch/EVM/EVMMapping.c"
+        ], 
+        "directory": "/home/austin/Documents/Github/TitaniumDecompiler/TitaniumDecompiler/vendor/capstone", 
+        "file": "arch/EVM/EVMMapping.c"
+    }, 
+    {
+        "arguments": [
+            "cc", 
+            "-c", 
+            "-Iinclude", 
+            "-m64", 
+            "-fPIC", 
+            "-g", 
+            "-o", 
+            "bin-int/Debug-linux-x86_64/Capstone/ARMModule.o", 
+            "arch/ARM/ARMModule.c"
+        ], 
+        "directory": "/home/austin/Documents/Github/TitaniumDecompiler/TitaniumDecompiler/vendor/capstone", 
+        "file": "arch/ARM/ARMModule.c"
+    }, 
+    {
+        "arguments": [
+            "c++", 
+            "-c", 
+            "-include", 
+            "../bin-int/Debug-linux-x86_64/TitaniumRenderer/tdpch.h", 
+            "-D_CRT_SECURE_NO_WARNINGS", 
+            "-DGLFW_INCLUDE_NONE", 
+            "-DTD_PLATFORM_LINUX", 
+            "-DTD_DEBUG", 
+            "-Isrc", 
+            "-Ivendor/spdlog/include", 
+            "-Ivendor/GLFW/include", 
+            "-Ivendor/Glad/include", 
+            "-Ivendor/imgui", 
+            "-Ivendor/glm", 
+            "-m64", 
+            "-g", 
+            "-std=c++17", 
+            "-o", 
+            "../bin-int/Debug-linux-x86_64/TitaniumRenderer/Log.o", 
+            "src/TitaniumRenderer/Core/Log.cpp"
+        ], 
+        "directory": "/home/austin/Documents/Github/TitaniumDecompiler/TitaniumRenderer", 
+        "file": "src/TitaniumRenderer/Core/Log.cpp"
+    }, 
+    {
+        "arguments": [
+            "cc", 
+            "-c", 
+            "-Iinclude", 
+            "-m64", 
+            "-fPIC", 
+            "-g", 
+            "-o", 
+            "bin-int/Debug-linux-x86_64/Capstone/MipsDisassembler.o", 
+            "arch/Mips/MipsDisassembler.c"
+        ], 
+        "directory": "/home/austin/Documents/Github/TitaniumDecompiler/TitaniumDecompiler/vendor/capstone", 
+        "file": "arch/Mips/MipsDisassembler.c"
+    }, 
+    {
+        "arguments": [
+            "cc", 
+            "-c", 
+            "-Iinclude", 
+            "-m64", 
+            "-fPIC", 
+            "-g", 
+            "-o", 
+            "bin-int/Debug-linux-x86_64/Capstone/M68KInstPrinter.o", 
+            "arch/M68K/M68KInstPrinter.c"
+        ], 
+        "directory": "/home/austin/Documents/Github/TitaniumDecompiler/TitaniumDecompiler/vendor/capstone", 
+        "file": "arch/M68K/M68KInstPrinter.c"
+    }, 
+    {
+        "arguments": [
+            "cc", 
+            "-c", 
+            "-D_GLFW_X11", 
+            "-m64", 
+            "-fPIC", 
+            "-g", 
+            "-o", 
+            "bin-int/Debug-linux-x86_64/GLFW/x11_window.o", 
+            "src/x11_window.c"
+        ], 
+        "directory": "/home/austin/Documents/Github/TitaniumDecompiler/TitaniumRenderer/vendor/GLFW", 
+        "file": "src/x11_window.c"
+    }, 
+    {
+        "arguments": [
+            "c++", 
+            "-c", 
+            "-include", 
+            "../bin-int/Debug-linux-x86_64/TitaniumRenderer/tdpch.h", 
+            "-D_CRT_SECURE_NO_WARNINGS", 
+            "-DGLFW_INCLUDE_NONE", 
+            "-DTD_PLATFORM_LINUX", 
+            "-DTD_DEBUG", 
+            "-Isrc", 
+            "-Ivendor/spdlog/include", 
+            "-Ivendor/GLFW/include", 
+            "-Ivendor/Glad/include", 
+            "-Ivendor/imgui", 
+            "-Ivendor/glm", 
+            "-m64", 
+            "-g", 
+            "-std=c++17", 
+            "-o", 
+            "../bin-int/Debug-linux-x86_64/TitaniumRenderer/WindowsWindow.o", 
+            "src/Platform/Windows/WindowsWindow.cpp"
+        ], 
+        "directory": "/home/austin/Documents/Github/TitaniumDecompiler/TitaniumRenderer", 
+        "file": "src/Platform/Windows/WindowsWindow.cpp"
+    }, 
+    {
+        "arguments": [
+            "cc", 
+            "-c", 
+            "-Iinclude", 
+            "-m64", 
+            "-fPIC", 
+            "-g", 
+            "-o", 
+            "bin-int/Debug-linux-x86_64/Capstone/MipsInstPrinter.o", 
+            "arch/Mips/MipsInstPrinter.c"
+        ], 
+        "directory": "/home/austin/Documents/Github/TitaniumDecompiler/TitaniumDecompiler/vendor/capstone", 
+        "file": "arch/Mips/MipsInstPrinter.c"
+    }, 
+    {
+        "arguments": [
+            "cc", 
+            "-c", 
+            "-D_GLFW_X11", 
+            "-m64", 
+            "-fPIC", 
+            "-g", 
+            "-o", 
+            "bin-int/Debug-linux-x86_64/GLFW/x11_monitor.o", 
+            "src/x11_monitor.c"
+        ], 
+        "directory": "/home/austin/Documents/Github/TitaniumDecompiler/TitaniumRenderer/vendor/GLFW", 
+        "file": "src/x11_monitor.c"
+    }, 
+    {
+        "arguments": [
+            "cc", 
+            "-c", 
+            "-Iinclude", 
+            "-m64", 
+            "-fPIC", 
+            "-g", 
+            "-o", 
+            "bin-int/Debug-linux-x86_64/Capstone/AArch64Disassembler.o", 
+            "arch/AArch64/AArch64Disassembler.c"
+        ], 
+        "directory": "/home/austin/Documents/Github/TitaniumDecompiler/TitaniumDecompiler/vendor/capstone", 
+        "file": "arch/AArch64/AArch64Disassembler.c"
+    }, 
+    {
+        "arguments": [
+            "cc", 
+            "-c", 
+            "-D_GLFW_X11", 
+            "-m64", 
+            "-fPIC", 
+            "-g", 
+            "-o", 
+            "bin-int/Debug-linux-x86_64/GLFW/x11_init.o", 
+            "src/x11_init.c"
+        ], 
+        "directory": "/home/austin/Documents/Github/TitaniumDecompiler/TitaniumRenderer/vendor/GLFW", 
+        "file": "src/x11_init.c"
+    }, 
+    {
+        "arguments": [
+            "cc", 
+            "-c", 
+            "-Iinclude", 
+            "-m64", 
+            "-g", 
+            "-o", 
+            "bin-int/Debug-linux-x86_64/Glad/glad.o", 
+            "src/glad.c"
+        ], 
+        "directory": "/home/austin/Documents/Github/TitaniumDecompiler/TitaniumRenderer/vendor/Glad", 
+        "file": "src/glad.c"
+    }, 
+    {
+        "arguments": [
+            "c++", 
+            "-c", 
+            "-DTD_DEBUG", 
+            "-I../TitaniumRenderer/vendor/spdlog/include", 
+            "-I../TitaniumRenderer/src", 
+            "-I../TitaniumRenderer/vendor", 
+            "-I../TitaniumDecompiler/vendor/capstone/include", 
+            "-I../TitaniumDecompiler/src", 
+            "-I{IncludeDir.glm}", 
+            "-m64", 
+            "-g", 
+            "-std=c++17", 
+            "-o", 
+            "../bin-int/Debug-linux-x86_64/TitaniumApplication/TitaniumApp.o", 
+            "src/TitaniumApp.cpp"
+        ], 
+        "directory": "/home/austin/Documents/Github/TitaniumDecompiler/TitaniumApplication", 
+        "file": "src/TitaniumApp.cpp"
+    }, 
+    {
+        "arguments": [
+            "cc", 
+            "-c", 
+            "-Iinclude", 
+            "-m64", 
+            "-fPIC", 
+            "-g", 
+            "-o", 
+            "bin-int/Debug-linux-x86_64/Capstone/AArch64Mapping.o", 
+            "arch/AArch64/AArch64Mapping.c"
+        ], 
+        "directory": "/home/austin/Documents/Github/TitaniumDecompiler/TitaniumDecompiler/vendor/capstone", 
+        "file": "arch/AArch64/AArch64Mapping.c"
+    }, 
+    {
+        "arguments": [
+            "cc", 
+            "-c", 
+            "-Iinclude", 
+            "-m64", 
+            "-fPIC", 
+            "-g", 
+            "-o", 
+            "bin-int/Debug-linux-x86_64/Capstone/MCRegisterInfo.o", 
+            "MCRegisterInfo.c"
+        ], 
+        "directory": "/home/austin/Documents/Github/TitaniumDecompiler/TitaniumDecompiler/vendor/capstone", 
+        "file": "MCRegisterInfo.c"
+    }, 
+    {
+        "arguments": [
+            "cc", 
+            "-c", 
+            "-D_GLFW_X11", 
+            "-m64", 
+            "-fPIC", 
+            "-g", 
+            "-o", 
+            "bin-int/Debug-linux-x86_64/GLFW/egl_context.o", 
+            "src/egl_context.c"
+        ], 
+        "directory": "/home/austin/Documents/Github/TitaniumDecompiler/TitaniumRenderer/vendor/GLFW", 
+        "file": "src/egl_context.c"
+    }, 
+    {
+        "arguments": [
+            "cc", 
+            "-c", 
+            "-D_GLFW_X11", 
+            "-m64", 
+            "-fPIC", 
+            "-g", 
+            "-o", 
+            "bin-int/Debug-linux-x86_64/GLFW/monitor.o", 
+            "src/monitor.c"
+        ], 
+        "directory": "/home/austin/Documents/Github/TitaniumDecompiler/TitaniumRenderer/vendor/GLFW", 
+        "file": "src/monitor.c"
+    }, 
+    {
+        "arguments": [
+            "c++", 
+            "-c", 
+            "-DTD_DEBUG", 
+            "-I../TitaniumRenderer/vendor/spdlog/include", 
+            "-I../TitaniumRenderer/src", 
+            "-I../TitaniumRenderer/vendor", 
+            "-I../TitaniumDecompiler/vendor/capstone/include", 
+            "-I../TitaniumDecompiler/src", 
+            "-I{IncludeDir.glm}", 
+            "-m64", 
+            "-g", 
+            "-std=c++17", 
+            "-o", 
+            "../bin-int/Debug-linux-x86_64/TitaniumApplication/TitaniumLayer.o", 
+            "src/TitaniumLayer.cpp"
+        ], 
+        "directory": "/home/austin/Documents/Github/TitaniumDecompiler/TitaniumApplication", 
+        "file": "src/TitaniumLayer.cpp"
+    }, 
+    {
+        "arguments": [
+            "cc", 
+            "-c", 
+            "-Iinclude", 
+            "-m64", 
+            "-fPIC", 
+            "-g", 
+            "-o", 
+            "bin-int/Debug-linux-x86_64/Capstone/PPCModule.o", 
+            "arch/PowerPC/PPCModule.c"
+        ], 
+        "directory": "/home/austin/Documents/Github/TitaniumDecompiler/TitaniumDecompiler/vendor/capstone", 
+        "file": "arch/PowerPC/PPCModule.c"
+    }, 
+    {
+        "arguments": [
+            "cc", 
+            "-c", 
+            "-Iinclude", 
+            "-m64", 
+            "-fPIC", 
+            "-g", 
+            "-o", 
+            "bin-int/Debug-linux-x86_64/Capstone/EVMModule.o", 
+            "arch/EVM/EVMModule.c"
+        ], 
+        "directory": "/home/austin/Documents/Github/TitaniumDecompiler/TitaniumDecompiler/vendor/capstone", 
+        "file": "arch/EVM/EVMModule.c"
+    }, 
+    {
+        "arguments": [
+            "cc", 
+            "-c", 
+            "-Iinclude", 
+            "-m64", 
+            "-fPIC", 
+            "-g", 
+            "-o", 
+            "bin-int/Debug-linux-x86_64/Capstone/TMS320C64xMapping.o", 
+            "arch/TMS320C64x/TMS320C64xMapping.c"
+        ], 
+        "directory": "/home/austin/Documents/Github/TitaniumDecompiler/TitaniumDecompiler/vendor/capstone", 
+        "file": "arch/TMS320C64x/TMS320C64xMapping.c"
+    }, 
+    {
+        "arguments": [
+            "cc", 
+            "-c", 
+            "-Iinclude", 
+            "-m64", 
+            "-fPIC", 
+            "-g", 
+            "-o", 
+            "bin-int/Debug-linux-x86_64/Capstone/X86DisassemblerDecoder.o", 
+            "arch/X86/X86DisassemblerDecoder.c"
+        ], 
+        "directory": "/home/austin/Documents/Github/TitaniumDecompiler/TitaniumDecompiler/vendor/capstone", 
+        "file": "arch/X86/X86DisassemblerDecoder.c"
+    }, 
+    {
+        "arguments": [
+            "cc", 
+            "-c", 
+            "-Iinclude", 
+            "-m64", 
+            "-fPIC", 
+            "-g", 
+            "-o", 
+            "bin-int/Debug-linux-x86_64/Capstone/TMS320C64xModule.o", 
+            "arch/TMS320C64x/TMS320C64xModule.c"
+        ], 
+        "directory": "/home/austin/Documents/Github/TitaniumDecompiler/TitaniumDecompiler/vendor/capstone", 
+        "file": "arch/TMS320C64x/TMS320C64xModule.c"
+    }, 
+    {
+        "arguments": [
+            "c++", 
+            "-c", 
+            "-DTD_DEBUG", 
+            "-I../TitaniumRenderer/vendor/spdlog/include", 
+            "-I../TitaniumRenderer/src", 
+            "-I../TitaniumRenderer/vendor", 
+            "-I../TitaniumDecompiler/vendor/capstone/include", 
+            "-I../TitaniumDecompiler/src", 
+            "-I{IncludeDir.glm}", 
+            "-m64", 
+            "-g", 
+            "-std=c++17", 
+            "-o", 
+            "../bin-int/Debug-linux-x86_64/TitaniumApplication/DisassemblyViewerPanel.o", 
+            "src/Panels/DisassemblyViewerPanel.cpp"
+        ], 
+        "directory": "/home/austin/Documents/Github/TitaniumDecompiler/TitaniumApplication", 
+        "file": "src/Panels/DisassemblyViewerPanel.cpp"
+    }, 
+    {
+        "arguments": [
+            "cc", 
+            "-c", 
+            "-Iinclude", 
+            "-m64", 
+            "-fPIC", 
+            "-g", 
+            "-o", 
+            "bin-int/Debug-linux-x86_64/Capstone/M68KModule.o", 
+            "arch/M68K/M68KModule.c"
+        ], 
+        "directory": "/home/austin/Documents/Github/TitaniumDecompiler/TitaniumDecompiler/vendor/capstone", 
+        "file": "arch/M68K/M68KModule.c"
+    }, 
+    {
+        "arguments": [
+            "c++", 
+            "-c", 
+            "-include", 
+            "../bin-int/Debug-linux-x86_64/TitaniumRenderer/tdpch.h", 
+            "-D_CRT_SECURE_NO_WARNINGS", 
+            "-DGLFW_INCLUDE_NONE", 
+            "-DTD_PLATFORM_LINUX", 
+            "-DTD_DEBUG", 
+            "-Isrc", 
+            "-Ivendor/spdlog/include", 
+            "-Ivendor/GLFW/include", 
+            "-Ivendor/Glad/include", 
+            "-Ivendor/imgui", 
+            "-Ivendor/glm", 
+            "-m64", 
+            "-g", 
+            "-std=c++17", 
+            "-o", 
+            "../bin-int/Debug-linux-x86_64/TitaniumRenderer/RendererAPI.o", 
+            "src/TitaniumRenderer/Renderer/RendererAPI.cpp"
+        ], 
+        "directory": "/home/austin/Documents/Github/TitaniumDecompiler/TitaniumRenderer", 
+        "file": "src/TitaniumRenderer/Renderer/RendererAPI.cpp"
+    }, 
+    {
+        "arguments": [
+            "cc", 
+            "-c", 
+            "-Iinclude", 
+            "-m64", 
+            "-fPIC", 
+            "-g", 
+            "-o", 
+            "bin-int/Debug-linux-x86_64/Capstone/SystemZMapping.o", 
+            "arch/SystemZ/SystemZMapping.c"
+        ], 
+        "directory": "/home/austin/Documents/Github/TitaniumDecompiler/TitaniumDecompiler/vendor/capstone", 
+        "file": "arch/SystemZ/SystemZMapping.c"
+    }, 
+    {
+        "arguments": [
+            "cc", 
+            "-c", 
+            "-D_GLFW_X11", 
+            "-m64", 
+            "-fPIC", 
+            "-g", 
+            "-o", 
+            "bin-int/Debug-linux-x86_64/GLFW/linux_joystick.o", 
+            "src/linux_joystick.c"
+        ], 
+        "directory": "/home/austin/Documents/Github/TitaniumDecompiler/TitaniumRenderer/vendor/GLFW", 
+        "file": "src/linux_joystick.c"
+    }, 
+    {
+        "arguments": [
+            "cc", 
+            "-c", 
+            "-Iinclude", 
+            "-m64", 
+            "-fPIC", 
+            "-g", 
+            "-o", 
+            "bin-int/Debug-linux-x86_64/Capstone/XCoreDisassembler.o", 
+            "arch/XCore/XCoreDisassembler.c"
+        ], 
+        "directory": "/home/austin/Documents/Github/TitaniumDecompiler/TitaniumDecompiler/vendor/capstone", 
+        "file": "arch/XCore/XCoreDisassembler.c"
+    }, 
+    {
+        "arguments": [
+            "c++", 
+            "-c", 
+            "-include", 
+            "../bin-int/Debug-linux-x86_64/TitaniumRenderer/tdpch.h", 
+            "-D_CRT_SECURE_NO_WARNINGS", 
+            "-DGLFW_INCLUDE_NONE", 
+            "-DTD_PLATFORM_LINUX", 
+            "-DTD_DEBUG", 
+            "-Isrc", 
+            "-Ivendor/spdlog/include", 
+            "-Ivendor/GLFW/include", 
+            "-Ivendor/Glad/include", 
+            "-Ivendor/imgui", 
+            "-Ivendor/glm", 
+            "-m64", 
+            "-g", 
+            "-std=c++17", 
+            "-o", 
+            "../bin-int/Debug-linux-x86_64/TitaniumRenderer/WindowsInput.o", 
+            "src/Platform/Windows/WindowsInput.cpp"
+        ], 
+        "directory": "/home/austin/Documents/Github/TitaniumDecompiler/TitaniumRenderer", 
+        "file": "src/Platform/Windows/WindowsInput.cpp"
+    }, 
+    {
+        "arguments": [
+            "cc", 
+            "-c", 
+            "-Iinclude", 
+            "-m64", 
+            "-fPIC", 
+            "-g", 
+            "-o", 
+            "bin-int/Debug-linux-x86_64/Capstone/SparcModule.o", 
+            "arch/Sparc/SparcModule.c"
+        ], 
+        "directory": "/home/austin/Documents/Github/TitaniumDecompiler/TitaniumDecompiler/vendor/capstone", 
+        "file": "arch/Sparc/SparcModule.c"
+    }, 
+    {
+        "arguments": [
+            "cc", 
+            "-c", 
+            "-Iinclude", 
+            "-m64", 
+            "-fPIC", 
+            "-g", 
+            "-o", 
+            "bin-int/Debug-linux-x86_64/Capstone/ARMInstPrinter.o", 
+            "arch/ARM/ARMInstPrinter.c"
+        ], 
+        "directory": "/home/austin/Documents/Github/TitaniumDecompiler/TitaniumDecompiler/vendor/capstone", 
+        "file": "arch/ARM/ARMInstPrinter.c"
+    }, 
+    {
+        "arguments": [
+            "cc", 
+            "-c", 
+            "-D_GLFW_X11", 
+            "-m64", 
+            "-fPIC", 
+            "-g", 
+            "-o", 
+            "bin-int/Debug-linux-x86_64/GLFW/glx_context.o", 
+            "src/glx_context.c"
+        ], 
+        "directory": "/home/austin/Documents/Github/TitaniumDecompiler/TitaniumRenderer/vendor/GLFW", 
+        "file": "src/glx_context.c"
+    }, 
+    {
+        "arguments": [
+            "cc", 
+            "-c", 
+            "-Iinclude", 
+            "-m64", 
+            "-fPIC", 
+            "-g", 
+            "-o", 
+            "bin-int/Debug-linux-x86_64/Capstone/M680XDisassembler.o", 
+            "arch/M680X/M680XDisassembler.c"
+        ], 
+        "directory": "/home/austin/Documents/Github/TitaniumDecompiler/TitaniumDecompiler/vendor/capstone", 
+        "file": "arch/M680X/M680XDisassembler.c"
+    }, 
+    {
+        "arguments": [
+            "cc", 
+            "-c", 
+            "-Iinclude", 
+            "-m64", 
+            "-fPIC", 
+            "-g", 
+            "-o", 
+            "bin-int/Debug-linux-x86_64/Capstone/PPCInstPrinter.o", 
+            "arch/PowerPC/PPCInstPrinter.c"
+        ], 
+        "directory": "/home/austin/Documents/Github/TitaniumDecompiler/TitaniumDecompiler/vendor/capstone", 
+        "file": "arch/PowerPC/PPCInstPrinter.c"
+    }, 
+    {
+        "arguments": [
+            "cc", 
+            "-c", 
+            "-Iinclude", 
+            "-m64", 
+            "-fPIC", 
+            "-g", 
+            "-o", 
+            "bin-int/Debug-linux-x86_64/Capstone/SparcInstPrinter.o", 
+            "arch/Sparc/SparcInstPrinter.c"
+        ], 
+        "directory": "/home/austin/Documents/Github/TitaniumDecompiler/TitaniumDecompiler/vendor/capstone", 
+        "file": "arch/Sparc/SparcInstPrinter.c"
+    }, 
+    {
+        "arguments": [
+            "cc", 
+            "-c", 
+            "-Iinclude", 
+            "-m64", 
+            "-fPIC", 
+            "-g", 
+            "-o", 
+            "bin-int/Debug-linux-x86_64/Capstone/PPCMapping.o", 
+            "arch/PowerPC/PPCMapping.c"
+        ], 
+        "directory": "/home/austin/Documents/Github/TitaniumDecompiler/TitaniumDecompiler/vendor/capstone", 
+        "file": "arch/PowerPC/PPCMapping.c"
+    }, 
+    {
+        "arguments": [
+            "cc", 
+            "-c", 
+            "-Iinclude", 
+            "-m64", 
+            "-fPIC", 
+            "-g", 
+            "-o", 
+            "bin-int/Debug-linux-x86_64/Capstone/X86ATTInstPrinter.o", 
+            "arch/X86/X86ATTInstPrinter.c"
+        ], 
+        "directory": "/home/austin/Documents/Github/TitaniumDecompiler/TitaniumDecompiler/vendor/capstone", 
+        "file": "arch/X86/X86ATTInstPrinter.c"
+    }, 
+    {
+        "arguments": [
+            "cc", 
+            "-c", 
+            "-Iinclude", 
+            "-m64", 
+            "-fPIC", 
+            "-g", 
+            "-o", 
+            "bin-int/Debug-linux-x86_64/Capstone/MOS65XXDisassembler.o", 
+            "arch/MOS65XX/MOS65XXDisassembler.c"
+        ], 
+        "directory": "/home/austin/Documents/Github/TitaniumDecompiler/TitaniumDecompiler/vendor/capstone", 
+        "file": "arch/MOS65XX/MOS65XXDisassembler.c"
+    }, 
+    {
+        "arguments": [
+            "c++", 
+            "-c", 
+            "-include", 
+            "../bin-int/Debug-linux-x86_64/TitaniumRenderer/tdpch.h", 
+            "-D_CRT_SECURE_NO_WARNINGS", 
+            "-DGLFW_INCLUDE_NONE", 
+            "-DTD_PLATFORM_LINUX", 
+            "-DTD_DEBUG", 
+            "-Isrc", 
+            "-Ivendor/spdlog/include", 
+            "-Ivendor/GLFW/include", 
+            "-Ivendor/Glad/include", 
+            "-Ivendor/imgui", 
+            "-Ivendor/glm", 
+            "-m64", 
+            "-g", 
+            "-std=c++17", 
+            "-o", 
+            "../bin-int/Debug-linux-x86_64/TitaniumRenderer/LayerStack.o", 
+            "src/TitaniumRenderer/Core/LayerStack.cpp"
+        ], 
+        "directory": "/home/austin/Documents/Github/TitaniumDecompiler/TitaniumRenderer", 
+        "file": "src/TitaniumRenderer/Core/LayerStack.cpp"
+    }, 
+    {
+        "arguments": [
+            "cc", 
+            "-c", 
+            "-Iinclude", 
+            "-m64", 
+            "-fPIC", 
+            "-g", 
+            "-o", 
+            "bin-int/Debug-linux-x86_64/Capstone/XCoreModule.o", 
+            "arch/XCore/XCoreModule.c"
+        ], 
+        "directory": "/home/austin/Documents/Github/TitaniumDecompiler/TitaniumDecompiler/vendor/capstone", 
+        "file": "arch/XCore/XCoreModule.c"
+    }, 
+    {
+        "arguments": [
+            "c++", 
+            "-c", 
+            "-include", 
+            "../bin-int/Debug-linux-x86_64/TitaniumRenderer/tdpch.h", 
+            "-D_CRT_SECURE_NO_WARNINGS", 
+            "-DGLFW_INCLUDE_NONE", 
+            "-DTD_PLATFORM_LINUX", 
+            "-DTD_DEBUG", 
+            "-Isrc", 
+            "-Ivendor/spdlog/include", 
+            "-Ivendor/GLFW/include", 
+            "-Ivendor/Glad/include", 
+            "-Ivendor/imgui", 
+            "-Ivendor/glm", 
+            "-m64", 
+            "-g", 
+            "-std=c++17", 
+            "-o", 
+            "../bin-int/Debug-linux-x86_64/TitaniumRenderer/Application.o", 
+            "src/TitaniumRenderer/Core/Application.cpp"
+        ], 
+        "directory": "/home/austin/Documents/Github/TitaniumDecompiler/TitaniumRenderer", 
+        "file": "src/TitaniumRenderer/Core/Application.cpp"
+    }, 
+    {
+        "arguments": [
+            "cc", 
+            "-c", 
+            "-Iinclude", 
+            "-m64", 
+            "-fPIC", 
+            "-g", 
+            "-o", 
+            "bin-int/Debug-linux-x86_64/Capstone/X86Mapping.o", 
+            "arch/X86/X86Mapping.c"
+        ], 
+        "directory": "/home/austin/Documents/Github/TitaniumDecompiler/TitaniumDecompiler/vendor/capstone", 
+        "file": "arch/X86/X86Mapping.c"
+    }, 
+    {
+        "arguments": [
+            "cc", 
+            "-c", 
+            "-D_GLFW_X11", 
+            "-m64", 
+            "-fPIC", 
+            "-g", 
+            "-o", 
+            "bin-int/Debug-linux-x86_64/GLFW/init.o", 
+            "src/init.c"
+        ], 
+        "directory": "/home/austin/Documents/Github/TitaniumDecompiler/TitaniumRenderer/vendor/GLFW", 
+        "file": "src/init.c"
+    }, 
+    {
+        "arguments": [
+            "c++", 
+            "-c", 
+            "-include", 
+            "../bin-int/Debug-linux-x86_64/TitaniumRenderer/tdpch.h", 
+            "-D_CRT_SECURE_NO_WARNINGS", 
+            "-DGLFW_INCLUDE_NONE", 
+            "-DTD_PLATFORM_LINUX", 
+            "-DTD_DEBUG", 
+            "-Isrc", 
+            "-Ivendor/spdlog/include", 
+            "-Ivendor/GLFW/include", 
+            "-Ivendor/Glad/include", 
+            "-Ivendor/imgui", 
+            "-Ivendor/glm", 
+            "-m64", 
+            "-g", 
+            "-std=c++17", 
+            "-o", 
+            "../bin-int/Debug-linux-x86_64/TitaniumRenderer/OpenGLContext.o", 
+            "src/Platform/OpenGL/OpenGLContext.cpp"
+        ], 
+        "directory": "/home/austin/Documents/Github/TitaniumDecompiler/TitaniumRenderer", 
+        "file": "src/Platform/OpenGL/OpenGLContext.cpp"
+    }, 
+    {
+        "arguments": [
+            "cc", 
+            "-c", 
+            "-Iinclude", 
+            "-m64", 
+            "-fPIC", 
+            "-g", 
+            "-o", 
+            "bin-int/Debug-linux-x86_64/Capstone/SystemZMCTargetDesc.o", 
+            "arch/SystemZ/SystemZMCTargetDesc.c"
+        ], 
+        "directory": "/home/austin/Documents/Github/TitaniumDecompiler/TitaniumDecompiler/vendor/capstone", 
+        "file": "arch/SystemZ/SystemZMCTargetDesc.c"
+    }, 
+    {
+        "arguments": [
+            "cc", 
+            "-c", 
+            "-D_GLFW_X11", 
+            "-m64", 
+            "-fPIC", 
+            "-g", 
+            "-o", 
+            "bin-int/Debug-linux-x86_64/GLFW/posix_thread.o", 
+            "src/posix_thread.c"
+        ], 
+        "directory": "/home/austin/Documents/Github/TitaniumDecompiler/TitaniumRenderer/vendor/GLFW", 
+        "file": "src/posix_thread.c"
+    }, 
+    {
+        "arguments": [
+            "c++", 
+            "-c", 
+            "-DTD_DEBUG", 
+            "-I../TitaniumRenderer/vendor/spdlog/include", 
+            "-I../TitaniumRenderer/src", 
+            "-I../TitaniumRenderer/vendor", 
+            "-I../TitaniumDecompiler/vendor/capstone/include", 
+            "-I../TitaniumDecompiler/src", 
+            "-I{IncludeDir.glm}", 
+            "-m64", 
+            "-g", 
+            "-std=c++17", 
+            "-o", 
+            "../bin-int/Debug-linux-x86_64/TitaniumApplication/ConsolePanel.o", 
+            "src/Panels/ConsolePanel.cpp"
+        ], 
+        "directory": "/home/austin/Documents/Github/TitaniumDecompiler/TitaniumApplication", 
+        "file": "src/Panels/ConsolePanel.cpp"
+    }, 
+    {
+        "arguments": [
+            "c++", 
+            "-c", 
+            "-include", 
+            "../bin-int/Debug-linux-x86_64/TitaniumDecompiler/tdpch.h", 
+            "-D_CRT_SECURE_NO_WARNINGS", 
+            "-DTD_PLATFORM_LINUX", 
+            "-DTD_DEBUG", 
+            "-Isrc", 
+            "-I", 
+            "-m64", 
+            "-g", 
+            "-std=c++17", 
+            "-o", 
+            "../bin-int/Debug-linux-x86_64/TitaniumDecompiler/ELF.o", 
+            "src/Platform/Linux/FileFormats/ELFFile/ELF.cpp"
+        ], 
+        "directory": "/home/austin/Documents/Github/TitaniumDecompiler/TitaniumDecompiler", 
+        "file": "src/Platform/Linux/FileFormats/ELFFile/ELF.cpp"
+    }, 
+    {
+        "arguments": [
+            "c++", 
+            "-c", 
+            "-DTD_DEBUG", 
+            "-I../TitaniumRenderer/vendor/spdlog/include", 
+            "-I../TitaniumRenderer/src", 
+            "-I../TitaniumRenderer/vendor", 
+            "-I../TitaniumDecompiler/vendor/capstone/include", 
+            "-I../TitaniumDecompiler/src", 
+            "-I{IncludeDir.glm}", 
+            "-m64", 
+            "-g", 
+            "-std=c++17", 
+            "-o", 
+            "../bin-int/Debug-linux-x86_64/TitaniumApplication/SectionsPanel.o", 
+            "src/Panels/SectionsPanel.cpp"
+        ], 
+        "directory": "/home/austin/Documents/Github/TitaniumDecompiler/TitaniumApplication", 
+        "file": "src/Panels/SectionsPanel.cpp"
+    }, 
+    {
+        "arguments": [
+            "cc", 
+            "-c", 
+            "-D_GLFW_X11", 
+            "-m64", 
+            "-fPIC", 
+            "-g", 
+            "-o", 
+            "bin-int/Debug-linux-x86_64/GLFW/input.o", 
+            "src/input.c"
+        ], 
+        "directory": "/home/austin/Documents/Github/TitaniumDecompiler/TitaniumRenderer/vendor/GLFW", 
+        "file": "src/input.c"
+    }, 
+    {
+        "arguments": [
+            "cc", 
+            "-c", 
+            "-Iinclude", 
+            "-m64", 
+            "-fPIC", 
+            "-g", 
+            "-o", 
+            "bin-int/Debug-linux-x86_64/Capstone/XCoreMapping.o", 
+            "arch/XCore/XCoreMapping.c"
+        ], 
+        "directory": "/home/austin/Documents/Github/TitaniumDecompiler/TitaniumDecompiler/vendor/capstone", 
+        "file": "arch/XCore/XCoreMapping.c"
+    }, 
+    {
+        "arguments": [
+            "c++", 
+            "-c", 
+            "-include", 
+            "../bin-int/Debug-linux-x86_64/TitaniumDecompiler/tdpch.h", 
+            "-D_CRT_SECURE_NO_WARNINGS", 
+            "-DTD_PLATFORM_LINUX", 
+            "-DTD_DEBUG", 
+            "-Isrc", 
+            "-I", 
+            "-m64", 
+            "-g", 
+            "-std=c++17", 
+            "-o", 
+            "../bin-int/Debug-linux-x86_64/TitaniumDecompiler/PE.o", 
+            "src/Platform/Linux/FileFormats/PE.cpp"
+        ], 
+        "directory": "/home/austin/Documents/Github/TitaniumDecompiler/TitaniumDecompiler", 
+        "file": "src/Platform/Linux/FileFormats/PE.cpp"
+    }, 
+    {
+        "arguments": [
+            "cc", 
+            "-c", 
+            "-Iinclude", 
+            "-m64", 
+            "-fPIC", 
+            "-g", 
+            "-o", 
+            "bin-int/Debug-linux-x86_64/Capstone/ARMMapping.o", 
+            "arch/ARM/ARMMapping.c"
+        ], 
+        "directory": "/home/austin/Documents/Github/TitaniumDecompiler/TitaniumDecompiler/vendor/capstone", 
+        "file": "arch/ARM/ARMMapping.c"
+    }, 
+    {
+        "arguments": [
+            "c++", 
+            "-c", 
+            "-include", 
+            "../bin-int/Debug-linux-x86_64/TitaniumRenderer/tdpch.h", 
+            "-D_CRT_SECURE_NO_WARNINGS", 
+            "-DGLFW_INCLUDE_NONE", 
+            "-DTD_PLATFORM_LINUX", 
+            "-DTD_DEBUG", 
+            "-Isrc", 
+            "-Ivendor/spdlog/include", 
+            "-Ivendor/GLFW/include", 
+            "-Ivendor/Glad/include", 
+            "-Ivendor/imgui", 
+            "-Ivendor/glm", 
+            "-m64", 
+            "-g", 
+            "-std=c++17", 
+            "-o", 
+            "../bin-int/Debug-linux-x86_64/TitaniumRenderer/RenderCommand.o", 
+            "src/TitaniumRenderer/Renderer/RenderCommand.cpp"
+        ], 
+        "directory": "/home/austin/Documents/Github/TitaniumDecompiler/TitaniumRenderer", 
+        "file": "src/TitaniumRenderer/Renderer/RenderCommand.cpp"
+    }, 
+    {
+        "arguments": [
+            "cc", 
+            "-c", 
+            "-Iinclude", 
+            "-m64", 
+            "-fPIC", 
+            "-g", 
+            "-o", 
+            "bin-int/Debug-linux-x86_64/Capstone/X86IntelInstPrinter.o", 
+            "arch/X86/X86IntelInstPrinter.c"
+        ], 
+        "directory": "/home/austin/Documents/Github/TitaniumDecompiler/TitaniumDecompiler/vendor/capstone", 
+        "file": "arch/X86/X86IntelInstPrinter.c"
+    }, 
+    {
+        "arguments": [
+            "c++", 
+            "-c", 
+            "-m64", 
+            "-fPIC", 
+            "-g", 
+            "-std=c++17", 
+            "-o", 
+            "bin-int/Debug-linux-x86_64/ImGui/imgui.o", 
+            "imgui.cpp"
+        ], 
+        "directory": "/home/austin/Documents/Github/TitaniumDecompiler/TitaniumRenderer/vendor/imgui", 
+        "file": "imgui.cpp"
+    }, 
+    {
+        "arguments": [
+            "c++", 
+            "-c", 
+            "-include", 
+            "../bin-int/Debug-linux-x86_64/TitaniumRenderer/tdpch.h", 
+            "-D_CRT_SECURE_NO_WARNINGS", 
+            "-DGLFW_INCLUDE_NONE", 
+            "-DTD_PLATFORM_LINUX", 
+            "-DTD_DEBUG", 
+            "-Isrc", 
+            "-Ivendor/spdlog/include", 
+            "-Ivendor/GLFW/include", 
+            "-Ivendor/Glad/include", 
+            "-Ivendor/imgui", 
+            "-Ivendor/glm", 
+            "-m64", 
+            "-g", 
+            "-std=c++17", 
+            "-o", 
+            "../bin-int/Debug-linux-x86_64/TitaniumRenderer/tdpch.o", 
+            "src/tdpch.cpp"
+        ], 
+        "directory": "/home/austin/Documents/Github/TitaniumDecompiler/TitaniumRenderer", 
+        "file": "src/tdpch.cpp"
+    }, 
+    {
+        "arguments": [
+            "c++", 
+            "-c", 
+            "-include", 
+            "../bin-int/Debug-linux-x86_64/TitaniumRenderer/tdpch.h", 
+            "-D_CRT_SECURE_NO_WARNINGS", 
+            "-DGLFW_INCLUDE_NONE", 
+            "-DTD_PLATFORM_LINUX", 
+            "-DTD_DEBUG", 
+            "-Isrc", 
+            "-Ivendor/spdlog/include", 
+            "-Ivendor/GLFW/include", 
+            "-Ivendor/Glad/include", 
+            "-Ivendor/imgui", 
+            "-Ivendor/glm", 
+            "-m64", 
+            "-g", 
+            "-std=c++17", 
+            "-o", 
+            "../bin-int/Debug-linux-x86_64/TitaniumRenderer/OpenGLRendererAPI.o", 
+            "src/Platform/OpenGL/OpenGLRendererAPI.cpp"
+        ], 
+        "directory": "/home/austin/Documents/Github/TitaniumDecompiler/TitaniumRenderer", 
+        "file": "src/Platform/OpenGL/OpenGLRendererAPI.cpp"
+    }, 
+    {
+        "arguments": [
+            "c++", 
+            "-c", 
+            "-include", 
+            "../bin-int/Debug-linux-x86_64/TitaniumRenderer/tdpch.h", 
+            "-D_CRT_SECURE_NO_WARNINGS", 
+            "-DGLFW_INCLUDE_NONE", 
+            "-DTD_PLATFORM_LINUX", 
+            "-DTD_DEBUG", 
+            "-Isrc", 
+            "-Ivendor/spdlog/include", 
+            "-Ivendor/GLFW/include", 
+            "-Ivendor/Glad/include", 
+            "-Ivendor/imgui", 
+            "-Ivendor/glm", 
+            "-m64", 
+            "-g", 
+            "-std=c++17", 
+            "-o", 
+            "../bin-int/Debug-linux-x86_64/TitaniumRenderer/GraphicsContext.o", 
+            "src/TitaniumRenderer/Renderer/GraphicsContext.cpp"
+        ], 
+        "directory": "/home/austin/Documents/Github/TitaniumDecompiler/TitaniumRenderer", 
+        "file": "src/TitaniumRenderer/Renderer/GraphicsContext.cpp"
+    }, 
+    {
+        "arguments": [
+            "c++", 
+            "-c", 
+            "-include", 
+            "../bin-int/Debug-linux-x86_64/TitaniumRenderer/tdpch.h", 
+            "-D_CRT_SECURE_NO_WARNINGS", 
+            "-DGLFW_INCLUDE_NONE", 
+            "-DTD_PLATFORM_LINUX", 
+            "-DTD_DEBUG", 
+            "-Isrc", 
+            "-Ivendor/spdlog/include", 
+            "-Ivendor/GLFW/include", 
+            "-Ivendor/Glad/include", 
+            "-Ivendor/imgui", 
+            "-Ivendor/glm", 
+            "-m64", 
+            "-g", 
+            "-std=c++17", 
+            "-o", 
+            "../bin-int/Debug-linux-x86_64/TitaniumRenderer/ImGuiLayer.o", 
+            "src/TitaniumRenderer/ImGui/ImGuiLayer.cpp"
+        ], 
+        "directory": "/home/austin/Documents/Github/TitaniumDecompiler/TitaniumRenderer", 
+        "file": "src/TitaniumRenderer/ImGui/ImGuiLayer.cpp"
+    }, 
+    {
+        "arguments": [
+            "cc", 
+            "-c", 
+            "-D_GLFW_X11", 
+            "-m64", 
+            "-fPIC", 
+            "-g", 
+            "-o", 
+            "bin-int/Debug-linux-x86_64/GLFW/posix_time.o", 
+            "src/posix_time.c"
+        ], 
+        "directory": "/home/austin/Documents/Github/TitaniumDecompiler/TitaniumRenderer/vendor/GLFW", 
+        "file": "src/posix_time.c"
+    }, 
+    {
+        "arguments": [
+            "cc", 
+            "-c", 
+            "-Iinclude", 
+            "-m64", 
+            "-fPIC", 
+            "-g", 
+            "-o", 
+            "bin-int/Debug-linux-x86_64/Capstone/MipsMapping.o", 
+            "arch/Mips/MipsMapping.c"
+        ], 
+        "directory": "/home/austin/Documents/Github/TitaniumDecompiler/TitaniumDecompiler/vendor/capstone", 
+        "file": "arch/Mips/MipsMapping.c"
+    }, 
+    {
+        "arguments": [
+            "cc", 
+            "-c", 
+            "-Iinclude", 
+            "-m64", 
+            "-fPIC", 
+            "-g", 
+            "-o", 
+            "bin-int/Debug-linux-x86_64/Capstone/MCInst.o", 
+            "MCInst.c"
+        ], 
+        "directory": "/home/austin/Documents/Github/TitaniumDecompiler/TitaniumDecompiler/vendor/capstone", 
+        "file": "MCInst.c"
+    }
+]

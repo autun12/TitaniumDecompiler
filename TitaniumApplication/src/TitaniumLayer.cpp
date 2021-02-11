@@ -1,13 +1,24 @@
 #include "TitaniumLayer.h"
-#include <imgui/imgui.h>
-#include <TitaniumRenderer/PlatformUtils.h>
+#include <TitaniumRenderer/Utils/PlatformUtils.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <filesystem>
+#include <iostream>
+#include <memory>
+#include "Panels/ConsoleSink.h"
 
 namespace TitaniumRenderer {
-TitaniumLayer::TitaniumLayer() : Layer("TitaniumLayer") {}
 
-void TitaniumLayer::OnAttach() {}
+TitaniumLayer::TitaniumLayer() : Layer("TitaniumLayer") {
+    Application::Get().GetImGuiLayer()->BlockEvents(false);
+}
+
+void TitaniumLayer::OnAttach() {
+    auto consoleSink = std::make_shared<ConsoleSink_mt>(&m_ConsolePanel);
+    consoleSink->set_pattern("%v");
+    Log::GetCoreLogger()->sinks().push_back(consoleSink);
+    Log::GetClientLogger()->sinks().push_back(consoleSink);
+}
 
 void TitaniumLayer::OnDetach() {}
 
@@ -17,6 +28,12 @@ void TitaniumLayer::OnUpdate(Timestep ts) {
 }
 
 void TitaniumLayer::OnImGuiRender() {
+    // Panel open / close variables
+    static bool hexViewerOpen = true;
+    static bool sectionPanelOpen = true;
+    static bool disassemblyViewOpen = true;
+    static bool consolePanelOpen = true;
+
     // Note: Switch this to true to enable dockspace
     static bool dockspaceOpen = true;
     static bool opt_fullscreen_persistant = true;
@@ -66,6 +83,7 @@ void TitaniumLayer::OnImGuiRender() {
     }
 
     style.WindowMinSize.x = minWinSizeX;
+    m_FileBrowser.SetTitle("Browse Files");
 
     if(ImGui::BeginMenuBar()) {
         if(ImGui::BeginMenu("File")) {
@@ -76,7 +94,8 @@ void TitaniumLayer::OnImGuiRender() {
                 // NewScene();
 
             if(ImGui::MenuItem("Open...", "Ctrl+O")) {
-                OpenAnalyzeFile();
+                // OpenAnalyzeFile();
+                m_FileBrowser.Open();
             }
               
             if(ImGui::MenuItem("Save As...", "Ctrl+Shift+S")) { }
@@ -89,19 +108,67 @@ void TitaniumLayer::OnImGuiRender() {
             ImGui::EndMenu();
         }
 
+        if(ImGui::BeginMenu("Panels")) {
+            if(ImGui::MenuItem("Console View Panel")) {
+                if(consolePanelOpen) {
+                    consolePanelOpen = false;
+                } else if(!consolePanelOpen) {
+                    consolePanelOpen = true;
+                }
+            }
+    
+            if(ImGui::MenuItem("Disassembly View Panel")) {
+                if(disassemblyViewOpen) {
+                    disassemblyViewOpen = false;
+                } else if(!disassemblyViewOpen) {
+                    disassemblyViewOpen = true;
+                }
+            }
+            
+            if(ImGui::MenuItem("Hex View Panel")) {
+                if(hexViewerOpen) {
+                    hexViewerOpen = false;
+                } else if(!hexViewerOpen) {
+                    hexViewerOpen = true;
+                }
+            }
+
+            if(ImGui::MenuItem("Sections View Panel")) {
+                if(sectionPanelOpen) {
+                    sectionPanelOpen = false;
+                } else if(!sectionPanelOpen) {
+                    sectionPanelOpen = true;
+                }
+            }
+            ImGui::EndMenu();
+        }
+
         ImGui::EndMenuBar();
     }
+
+    if(consolePanelOpen) {
+        m_ConsolePanel.OnImGuiRender(&consolePanelOpen);
+    }
+
+    if(disassemblyViewOpen) {
+        m_DisassemblyViewerPanel.OnImGuiRender(&disassemblyViewOpen);
+    }
     
-    m_HexViewerPanel.OnImGuiRender();
-    m_SectionsPanel.OnImGuiRender();
+    if(hexViewerOpen) {
+        m_HexViewerPanel.OnImGuiRender(&hexViewerOpen);
+    }
 
+    if(sectionPanelOpen) {
+        m_SectionsPanel.OnImGuiRender(&sectionPanelOpen);
+    }
+    
     ImGui::End();
-
-    // if(m_FileBrowser.showFileDialog("Open File", imgui_addons::ImGuiFileBrowser::DialogMode::OPEN)) {
-    //     m_SectionsPanel.DisplayElfFileSections(m_FileBrowser.selected_path.c_str());
-    //     elfFile.GetElfFile(m_FileBrowser.selected_path.c_str());
-    // }
-
+    m_FileBrowser.Display();
+    if(m_FileBrowser.HasSelected()) {
+        // TD_INFO(m_FileBrowser.GetSelected().string());
+        m_elfFile.GetElfFile(m_FileBrowser.GetSelected().c_str());
+        m_FileBrowser.ClearSelected();
+    }
 }
 
 void TitaniumLayer::OnEvent(Event& e) {
@@ -120,19 +187,18 @@ bool TitaniumLayer::OnKeyPressed(KeyPressedEvent& e) {
     switch (e.GetKeyCode()) {
         case Key::N: {
             if(control)
-                TD_CORE_INFO("New File hasn't been Implemented Yet");
+                TD_WARN("New File hasn't been Implemented Yet");
                 // NewScene();
             break;
         }
         case Key::O: {
             if(control)
-                TD_CORE_INFO("Open File hasn't been Implemented Yet");
-                // OpenFile();
+                // OpenAnalyzeFile();
             break;
         }
         case Key::S: {
             if(control && shift)
-                TD_CORE_INFO("Save File hasn't been Implemented Yet");
+                TD_WARN("Save File hasn't been Implemented Yet");
                 // SaveSceneAs();
             break;
         }
@@ -140,10 +206,18 @@ bool TitaniumLayer::OnKeyPressed(KeyPressedEvent& e) {
 }
 
 void TitaniumLayer::OpenAnalyzeFile() {
-    std::optional<std::string> filepath = FileDialogs::OpenFile("");
+    // std::string filepath = FileDialogs::OpenFile("");
     
-    if(filepath) {
-        m_elfFile.GetElfFile(*filepath);
-    }
+    // std::filesystem::path fileExtension(filepath);
+    
+    // m_elfFile.GetElfFile(filepath.c_str());
+    // TODO: fix PE Parser
+    // if(fileExtension.extension() == ".exe" || fileExtension.extension() == ".EXE") {
+        // TD_WARN("PE Parser (Work In Progress)\n");
+    // m_peFile.GetPeFile(filepath.c_str());
+    // } else if(fileExtension.extension() == "") {
+        // TD_INFO(std::filesystem::path(filepath).stem());
+        // m_elfFile.GetElfFile(filepath.c_str());
+    // }
 }
 }

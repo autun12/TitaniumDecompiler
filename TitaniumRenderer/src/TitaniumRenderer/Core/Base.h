@@ -2,7 +2,7 @@
 
 #include <memory>
 
-#include "TitaniumRenderer/PlatformDetection.h"
+#include "TitaniumRenderer/Core/PlatformDetection.h"
 
 // Debug settings
 #ifdef TD_DEBUG
@@ -46,5 +46,5 @@ constexpr Ref<T> CreateRef(Args&&... args) {
 
 }  // namespace TitaniumRenderer
 
-#include "TitaniumRenderer/Assert.h"
-#include "TitaniumRenderer/Log.h"
+#include "TitaniumRenderer/Core/Assert.h"
+#include "TitaniumRenderer/Core/Log.h"

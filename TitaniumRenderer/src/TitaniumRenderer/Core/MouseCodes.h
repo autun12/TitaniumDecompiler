@@ -1,7 +1,6 @@
 #pragma once
-#pragma once
 
-namespace Hazel {
+namespace TitaniumRenderer {
 using MouseCode = uint16_t;
 
 namespace Mouse {

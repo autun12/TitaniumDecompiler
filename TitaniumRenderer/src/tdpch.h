@@ -13,5 +13,5 @@
 #include <unordered_map>
 #include <unordered_set>
 
-#include "TitaniumRenderer/Base.h"
-#include "TitaniumRenderer/Log.h"
+#include "TitaniumRenderer/Core/Base.h"
+#include "TitaniumRenderer/Core/Log.h"

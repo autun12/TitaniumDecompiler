@@ -1,17 +1,17 @@
 #include "tdpch.h"
-#include "TitaniumRenderer/PlatformUtils.h"
+#include "TitaniumRenderer/Utils/PlatformUtils.h"
 
 #include <GLFW/glfw3.h>
-#include "TitaniumRenderer/Application.h"
+#include "TitaniumRenderer/Core/Application.h"
 
 #define LINUX_PATH_MAX 4096 + 255 + 1
 
 namespace TitaniumRenderer {
 bool FileDialogsUtilityCheck();
 
-std::optional<std::string> FileDialogs::OpenFile(const char* filter) {
+std::string FileDialogs::OpenFile(const char* filter) {
     if(!FileDialogsUtilityCheck()) {
-        return std::nullopt;
+        return "";
     }
 
     const char* file_extension = std::strchr(filter, 0) + 1;
@@ -29,12 +29,13 @@ std::optional<std::string> FileDialogs::OpenFile(const char* filter) {
     //Check for File dialog cancellation.
     if(fgets(path, LINUX_PATH_MAX, fp) == NULL) {
         pclose(fp);
-        return std::nullopt;
+        return "";
     }
 
     pclose(fp);
 
     std::string file_choice = std::string(path);
+    
     int endline_pos = file_choice.find_first_of("\n");
     file_choice.resize(endline_pos);
     
