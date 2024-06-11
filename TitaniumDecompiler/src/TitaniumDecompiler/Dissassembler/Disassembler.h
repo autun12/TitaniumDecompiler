@@ -11,6 +11,7 @@ public:
     void OpenFile();
 private:
     ELF m_ElfFile;
+    ClassFile m_ClassFile;
 };
 
 }

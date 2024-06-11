@@ -1,8 +1,0 @@
-# Binaries
-**/bin/
-!vendor/premake/bin/
-bin-int/
-.vscode/
-.cache/
-.gitignore
-TitaniumDecompiler.code-workspace
