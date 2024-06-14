@@ -29,10 +29,10 @@ void TitaniumLayer::OnUpdate(Timestep ts) {
 
 void TitaniumLayer::OnImGuiRender() {
     // Panel open / close variables
-    static bool hexViewerOpen = true;
-    static bool sectionPanelOpen = true;
+    static bool hexViewerOpen = false;
+    static bool sectionPanelOpen = false;
     static bool disassemblyViewOpen = true;
-    static bool consolePanelOpen = true;
+    static bool consolePanelOpen = false;
 
     // Note: Switch this to true to enable dockspace
     static bool dockspaceOpen = true;
@@ -163,46 +163,47 @@ void TitaniumLayer::OnImGuiRender() {
     }
     
     ImGui::End();
+    
     m_FileBrowser.Display();
+
     if(m_FileBrowser.HasSelected()) {
-        // TD_INFO(m_FileBrowser.GetSelected().string());
-        m_elfFile.GetElfFile(m_FileBrowser.GetSelected().c_str());
+        m_ClassFile.OpenClassFile(m_FileBrowser.GetSelected().c_str());
         m_FileBrowser.ClearSelected();
     }
 }
 
 void TitaniumLayer::OnEvent(Event& e) {
     EventDispatcher dispatcher(e);
-    dispatcher.Dispatch<KeyPressedEvent>(TD_BIND_EVENT_FN(TitaniumLayer::OnKeyPressed));
+    // dispatcher.Dispatch<KeyPressedEvent>(TD_BIND_EVENT_FN(TitaniumLayer::OnKeyPressed));
 }
 
 bool TitaniumLayer::OnKeyPressed(KeyPressedEvent& e) {
     // Shortcuts
-    if(e.GetRepeatCount() > 0) {
-        return false;
-    }
+    // if(e.GetRepeatCount() > 0) {
+    //     return false;
+    // }
 
-    bool control = Input::IsKeyPressed(Key::LeftControl) || Input::IsKeyPressed(Key::RightControl);
-    bool shift = Input::IsKeyPressed(Key::LeftShift) || Input::IsKeyPressed(Key::RightShift);
-    switch (e.GetKeyCode()) {
-        case Key::N: {
-            if(control)
-                TD_WARN("New File hasn't been Implemented Yet");
-                // NewScene();
-            break;
-        }
-        case Key::O: {
-            if(control)
-                // OpenAnalyzeFile();
-            break;
-        }
-        case Key::S: {
-            if(control && shift)
-                TD_WARN("Save File hasn't been Implemented Yet");
-                // SaveSceneAs();
-            break;
-        }
-	}
+    // bool control = Input::IsKeyPressed(Key::LeftControl) || Input::IsKeyPressed(Key::RightControl);
+    // bool shift = Input::IsKeyPressed(Key::LeftShift) || Input::IsKeyPressed(Key::RightShift);
+    // switch (e.GetKeyCode()) {
+    //     case Key::N: {
+    //         if(control)
+    //             TD_WARN("New File hasn't been Implemented Yet");
+    //             // NewScene();
+    //         break;
+    //     }
+    //     case Key::O: {
+    //         if(control)
+    //             // OpenAnalyzeFile();
+    //         break;
+    //     }
+    //     case Key::S: {
+    //         if(control && shift)
+    //             TD_WARN("Save File hasn't been Implemented Yet");
+    //             // SaveSceneAs();
+    //         break;
+    //     }
+	// }
 }
 
 void TitaniumLayer::OpenAnalyzeFile() {

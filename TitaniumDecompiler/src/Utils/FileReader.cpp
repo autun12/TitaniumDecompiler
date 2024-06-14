@@ -4,6 +4,7 @@
 #include <cstdint>
 #include <string>
 
+namespace TitaniumDecompiler {
 FileReader::FileReader() {}
 
 std::vector<uint8_t> FileReader::GetBuffer() {
@@ -75,4 +76,5 @@ uint64_t FileReader::ReadUInt64() {
 
 int64_t FileReader::ReadInt64() {
     return static_cast<int16_t>(ReadUInt64());
+}
 }

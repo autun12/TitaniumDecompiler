@@ -2,6 +2,7 @@
 
 #include <stdexcept>
 
+namespace TitaniumDecompiler {
 class FileReaderError {
 public:
     FileReaderError(const char* message) : message_(message) {}
@@ -10,3 +11,4 @@ public:
 private:
     const char* message_;
 };
+}

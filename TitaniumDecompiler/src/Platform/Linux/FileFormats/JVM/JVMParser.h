@@ -3,6 +3,7 @@
 #include <filesystem>
 #include <cstdint>
 
+namespace TitaniumDecompiler {
 class JVMParser {
 public:
     JVMParser();
@@ -16,3 +17,4 @@ public:
     uint8_t readUint64();
     int8_t readInt64();
 };
+}

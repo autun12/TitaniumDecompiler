@@ -5,6 +5,7 @@
 #include <cstdint>
 #include <fstream>
 
+namespace TitaniumDecompiler {
 class FileReader {
 public:
     FileReader();
@@ -23,3 +24,4 @@ private:
     std::vector<uint8_t> m_Buffer;
     std::ifstream m_BinaryFile;
 };
+}
