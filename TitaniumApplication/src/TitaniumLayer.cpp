@@ -167,7 +167,7 @@ void TitaniumLayer::OnImGuiRender() {
     m_FileBrowser.Display();
 
     if(m_FileBrowser.HasSelected()) {
-        m_ClassFile.OpenClassFile(m_FileBrowser.GetSelected().c_str());
+        m_ClassFileParser.OpenClassFile(m_FileBrowser.GetSelected().c_str());
         m_FileBrowser.ClearSelected();
     }
 }

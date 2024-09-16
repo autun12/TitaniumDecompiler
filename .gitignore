@@ -1,0 +1,16 @@
+bin
+bin-int
+
+# Bazel
+bazel-*
+
+/output/
+# macOS-specific
+.DS_Store
+
+# IDE Generated
+.vscode/
+
+user.bazelrc
+
+# MODULE.bazel.lock

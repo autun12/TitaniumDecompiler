@@ -1,0 +1,23 @@
+workspace(name = "titanium_decompiler")
+
+local_repository(
+    name = "Glad",
+    path = "ThirdParty/Glad/",
+)
+
+local_repository(
+    name = "imgui",
+    path = "ThirdParty/imgui",
+)
+
+local_repository(
+    name = "GLFW",
+    path = "ThirdParty/GLFW",
+)
+
+
+local_repository(
+    name = "spdlog",
+    path = "ThirdParty/spdlog",
+)
+

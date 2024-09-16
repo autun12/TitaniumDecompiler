@@ -1,8 +1,7 @@
 #include "tdpch.h"
-#include <capstone/capstone.h>
 #include <string>
-#include "Platform/Linux/FileFormats/ELF.h"
 #include <vector>
+#include "../Platform/JVM/ClassFileParser.h"
 
 namespace TitaniumDecompiler {
 
@@ -10,8 +9,7 @@ class Disassembler {
 public:
     void OpenFile();
 private:
-    ELF m_ElfFile;
-    ClassFile m_ClassFile;
+    ClassFileParser m_ClassFile;
 };
 
 }

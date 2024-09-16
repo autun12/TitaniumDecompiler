@@ -11,8 +11,5 @@ class DisassemblyViewerPanel {
 public:
     DisassemblyViewerPanel() = default;
     void OnImGuiRender(bool* open);
-private:
-    TitaniumDecompiler::ELF m_elfFile;
-
 };
 }
