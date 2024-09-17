@@ -31,26 +31,26 @@ std::string SectionsPanel::GetFileName(std::string fileName) {
 }
 
 void SectionsPanel::DisplaySections(const std::string& fileName, bool* display) {
-    Elf64Hdr header64;
-    Elf64SHdr* sectionHeaderTable64;
-    int fileDescriptor;
+    // Elf64Hdr header64;
+    // Elf64SHdr* sectionHeaderTable64;
+    // int fileDescriptor;
 
-    fileDescriptor = open(fileName.c_str(), O_RDONLY | O_SYNC);
+    // fileDescriptor = open(fileName.c_str(), O_RDONLY | O_SYNC);
 
-    if(!m_elfFile.IsElfFile(header64)) {
-        printf("is not elf file");
-        return;
-    }
-    m_elfFile.GetElfHeader(header64);
+    // if(!m_elfFile.IsElfFile(header64)) {
+    //     printf("is not elf file");
+    //     return;
+    // }
+    // m_elfFile.GetElfHeader(header64);
 
-    sectionHeaderTable64 = (Elf64SHdr*)malloc(header64.e_shentsize * header64.e_shnum);
+    // sectionHeaderTable64 = (Elf64SHdr*)malloc(header64.e_shentsize * header64.e_shnum);
     
-    if(!sectionHeaderTable64) {
-        printf("Failed to allocate % bytes\n", (header64.e_shentsize * header64.e_shnum));
-    }
+    // if(!sectionHeaderTable64) {
+    //     printf("Failed to allocate % bytes\n", (header64.e_shentsize * header64.e_shnum));
+    // }
 
-    m_elfFile.GetSectionHeaderForImGui(fileDescriptor, header64, sectionHeaderTable64);
-    printf(m_elfFile.GetSectionHeaderForImGui(fileDescriptor, header64, sectionHeaderTable64));
+    // m_elfFile.GetSectionHeaderForImGui(fileDescriptor, header64, sectionHeaderTable64);
+    // printf(m_elfFile.GetSectionHeaderForImGui(fileDescriptor, header64, sectionHeaderTable64));
     
     // ImGui::Text("&s", GetSectionHeaderForImGui(fileDescriptor, header64, sectionHeaderTable64));
 }

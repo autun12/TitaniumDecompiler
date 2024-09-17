@@ -37,7 +37,7 @@ private:
     SectionsPanel m_SectionsPanel;
     ConsolePanel m_ConsolePanel;
 
-    TitaniumDecompiler::ClassFile m_ClassFile;
+    TitaniumDecompiler::ClassFileParser m_ClassFileParser;
     // TitaniumDecompiler::ELF m_elfFile;
     // TitaniumDecompiler::PE m_peFile;
 

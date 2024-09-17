@@ -19,9 +19,9 @@ public:
 
 private:
     ImGui::FileBrowser m_FileBrowser;
-    TitaniumDecompiler::ELF m_elfFile;
-    Elf64Hdr m_elfHeader;
-    Elf64SHdr m_sectionHeader;
-    std::string m_Sections;
+    // TitaniumDecompiler::ELF m_elfFile;
+    // Elf64Hdr m_elfHeader;
+    // Elf64SHdr m_sectionHeader;
+    // std::string m_Sections;
 };
 }
