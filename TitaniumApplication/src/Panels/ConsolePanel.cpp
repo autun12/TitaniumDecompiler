@@ -1,6 +1,6 @@
 #include <TitaniumRenderer.h>
 #include "ConsolePanel.h"
-#include <imgui/imgui.h>
+#include <imgui.h>
 
 namespace TitaniumRenderer {
 void ConsolePanel::OnImGuiRender(bool* open) {

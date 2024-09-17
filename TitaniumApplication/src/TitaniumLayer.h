@@ -7,8 +7,8 @@
 #include "Panels/SectionsPanel.h"
 #include "Panels/ConsolePanel.h"
 
-#include <imgui/imgui.h>
-#include <imgui/imfilebrowser.h>
+#include <imgui.h>
+#include <imfilebrowser.h>
 
 namespace TitaniumRenderer {
 class TitaniumLayer : public Layer {

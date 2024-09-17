@@ -2,8 +2,8 @@
 
 #include <TitaniumRenderer/Core/Base.h>
 
-#include <imgui/imgui.h>
-#include <imgui/imgui_memory_editor.h>
+#include <imgui.h>
+#include <imgui_memory_editor.h>
 
 namespace TitaniumRenderer {
 class HexViewerPanel {
