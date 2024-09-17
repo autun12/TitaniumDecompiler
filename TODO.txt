@@ -11,10 +11,6 @@ Orginization
 ===============================================
 + Move All GLFW Code to Renderer Project
 
-Build System
-===============================================
-- Change to the bazel build system instead of premake5
-
 UI
 ===============================================
 + Add hex viewer
@@ -33,4 +29,6 @@ Quality of life
 
 Binary Format Parsing
 ===============================================
-- Finish JVM parser
+? Use Protobuf for binary file format structures
+- Rewrite ELF parser for linux
+- Rewrite PE parser for linux
