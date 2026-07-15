@@ -25,20 +25,85 @@ bool ThemeManager::LoadTheme(const std::filesystem::path& path) {
         if (config["imgui_style"]) {
             auto styleNode = config["imgui_style"];
 
-            if (styleNode["WindowRounding"]) m_Style.WindowRounding = styleNode["WindowRounding"].as<float>();
-            if (styleNode["FrameRounding"]) m_Style.FrameRounding = styleNode["FrameRounding"].as<float>();
-            if (styleNode["WindowBorderSize"]) m_Style.WindowBorderSize = styleNode["WindowBorderSize"].as<float>();
-            if (styleNode["FrameBorderSize"]) m_Style.FrameBorderSize = styleNode["FrameBorderSize"].as<float>();
+            if (styleNode["WindowRounding"])
+                m_Style.WindowRounding =
+                    styleNode["WindowRounding"].as<float>();
+            if (styleNode["FrameRounding"])
+                m_Style.FrameRounding = styleNode["FrameRounding"].as<float>();
+            if (styleNode["WindowBorderSize"])
+                m_Style.WindowBorderSize =
+                    styleNode["WindowBorderSize"].as<float>();
+            if (styleNode["FrameBorderSize"])
+                m_Style.FrameBorderSize =
+                    styleNode["FrameBorderSize"].as<float>();
 
             if (styleNode["WindowPadding"]) {
-                m_Style.WindowPadding = ImVec2(styleNode["WindowPadding"][0].as<float>(), styleNode["WindowPadding"][1].as<float>());
+                m_Style.WindowPadding =
+                    ImVec2(styleNode["WindowPadding"][0].as<float>(),
+                           styleNode["WindowPadding"][1].as<float>());
             }
 
             if (styleNode["FramePadding"]) {
-                m_Style.FramePadding = ImVec2(styleNode["FramePadding"][0].as<float>(), styleNode["FramePadding"][1].as<float>());
+                m_Style.FramePadding =
+                    ImVec2(styleNode["FramePadding"][0].as<float>(),
+                           styleNode["FramePadding"][1].as<float>());
             }
+            if (styleNode["ScrollbarSize"])
+                m_Style.ScrollbarSize = styleNode["ScrollbarSize"].as<float>();
+            if (styleNode["GrabRounding"])
+                m_Style.GrabRounding = styleNode["GrabRounding"].as<float>();
+            if (styleNode["TabRounding"])
+                m_Style.TabRounding = styleNode["TabRounding"].as<float>();
 
-            TD_WARN("Window Padding {0}, {1}", m_Style.WindowPadding.x, m_Style.WindowPadding.y);
+            if (styleNode["colors"]) {
+                auto colorsNode = styleNode["colors"];
+
+                auto parseAndMap = [&](const char* yamlKey, ImGuiCol imguiCol) {
+                    if (colorsNode[yamlKey]) {
+                        m_ImGuiColors[imguiCol] = ParseHexColor(
+                            colorsNode[yamlKey].as<std::string>());
+                    }
+                };
+
+                // Base Window Panels
+                parseAndMap("WindowBg", ImGuiCol_WindowBg);
+                parseAndMap("ChildBg", ImGuiCol_ChildBg);
+                parseAndMap("PopupBg", ImGuiCol_PopupBg);
+                parseAndMap("Border", ImGuiCol_Border);
+
+                // Window Header and Title Elements
+                parseAndMap("TitleBg", ImGuiCol_TitleBg);
+                parseAndMap("TitleBgActive", ImGuiCol_TitleBgActive);
+                parseAndMap("TitleBgCollapsed", ImGuiCol_TitleBgCollapsed);
+
+                // Core Window Widgets
+                parseAndMap("Button", ImGuiCol_Button);
+                parseAndMap("ButtonHovered", ImGuiCol_ButtonHovered);
+                parseAndMap("ButtonActive", ImGuiCol_ButtonActive);
+                parseAndMap("FrameBg", ImGuiCol_FrameBg);
+                parseAndMap("FrameBgHovered", ImGuiCol_FrameBgHovered);
+                parseAndMap("FrameBgActive", ImGuiCol_FrameBgActive);
+
+                // Docking Architecture and Tab Elements (ImGui Docking branch)
+                parseAndMap("Tab", ImGuiCol_Tab);
+                parseAndMap("TabHovered", ImGuiCol_TabHovered);
+                parseAndMap("TabActive", ImGuiCol_TabActive);
+                parseAndMap("TabUnfocused", ImGuiCol_TabUnfocused);
+                parseAndMap("TabUnfocusedActive", ImGuiCol_TabUnfocusedActive);
+                parseAndMap("DockingPreview", ImGuiCol_DockingPreview);
+                parseAndMap("DockingEmptyBg", ImGuiCol_DockingEmptyBg);
+
+                // Panel Grips and Window Scrollbars
+                parseAndMap("ResizeGrip", ImGuiCol_ResizeGrip);
+                parseAndMap("ResizeGripHovered", ImGuiCol_ResizeGripHovered);
+                parseAndMap("ResizeGripActive", ImGuiCol_ResizeGripActive);
+                parseAndMap("ScrollbarBg", ImGuiCol_ScrollbarBg);
+                parseAndMap("ScrollbarGrab", ImGuiCol_ScrollbarGrab);
+                parseAndMap("ScrollbarGrabHovered",
+                            ImGuiCol_ScrollbarGrabHovered);
+                parseAndMap("ScrollbarGrabActive",
+                            ImGuiCol_ScrollbarGrabActive);
+            }
         }
 
         ApplyThemeToImGui();

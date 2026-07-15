@@ -1,6 +1,6 @@
 metadata:
-  name: "Ghidra Dark Modern"
-  author: "Developer"
+  name: "Dark Modern"
+  author: "austun12"
 
 # Core color palette using YAML anchors
 palette:
@@ -26,6 +26,7 @@ imgui_style:
   FrameBorderSize: 1.0
   WindowRounding: 4.0
   FrameRounding: 3.0
+  TabRounding: 1.0
   
   colors:
     WindowBg:             *bg_dark
@@ -36,6 +37,14 @@ imgui_style:
     HeaderActive:         *accent_blue
     Button:               *bg_surface
     ButtonActive:         *accent_blue
+    TitleBgActive:        "#252526" # Match your main surface color
+
+    # Docking Tab bar styling (These must be distinct!)
+    Tab:                  "#1e1e1e" # Dimmed/Inactive tab background
+    TabHovered:           "#3f3f46" # Accent gray when hovering
+    TabActive:            "#007acc" # Bright blue (or your theme accent) for the selected tab!
+    TabUnfocused:         "#1e1e1e" # Tab color when the window doesn't have focus
+    TabUnfocusedActive:   "#2d2d30" # Selected tab color when the window is out of focus
 
 # Custom Decompiler Token Styling
 decompiler_theme:

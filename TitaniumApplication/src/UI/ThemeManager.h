@@ -16,6 +16,9 @@ struct ThemeStyle {
     float WindowBorderSize = 1.0f;
     float FrameBorderSize = 0.0f;
     ImVec2 FramePadding{8.0f, 8.0f};
+    float ScrollbarSize = 12.0f;
+    float GrabRounding = 0.0f;
+    float TabRounding = 0.0f;
     ImVec2 WindowPadding{8.0f, 8.0f};
 };
 
@@ -60,7 +63,9 @@ public:
     ThemeManager& operator=(const ThemeManager&) = default;
 
     bool LoadTheme(const std::filesystem::path& path);
-    const std::string& GetCurrentThemeName() const { return m_CurrentThemeName; }
+    const std::string& GetCurrentThemeName() const {
+        return m_CurrentThemeName;
+    }
     const ThemeStyle& GetStyleMetrics() const { return m_Style; }
 
 private:
