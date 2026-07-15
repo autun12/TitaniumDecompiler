@@ -1,0 +1,53 @@
+*.class
+*.jar
+*.log
+.vscode/
+
+./bin
+./bin-int
+*.xcodeproj
+*.sln
+bazel-*
+*.lock
+
+**/Makefile
+**/.DS_Store
+# Prerequisites
+*.d
+
+# Compiled Object files
+*.slo
+*.lo
+*.o
+*.obj
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Compiled Dynamic libraries
+*.so
+*.dylib
+*.dll
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+*.lib
+
+# IDA Pro files
+*.til
+*.id*
+*.nam
+*.i64
+
+# Test coverage output files
+*.html
+#Exclude
+!vendor/bazel
+
+test.yaml
+output.txt
+bazel-*
+compile_commands.json
