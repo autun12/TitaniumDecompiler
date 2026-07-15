@@ -49,5 +49,5 @@ bazel-*
 
 test.yaml
 output.txt
-bazel-*
+bazel-*/*
 compile_commands.json
