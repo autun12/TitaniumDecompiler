@@ -51,3 +51,4 @@ test.yaml
 output.txt
 bazel-*/*
 compile_commands.json
+external/

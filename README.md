@@ -1,4 +1,6 @@
-# Decompiler-Kotlin
+# Titanium Decompiler
+
+Writing my own decompiler for fun.
 
 ## Architecture
 
@@ -7,7 +9,9 @@
 ## Installing and setup
 Make sure you have an ssh key for github on your computer. You can find out how to make one if you don't know how read and follow the following link. [adding new SSH key to your Github account](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account?tool=webui)
 
-After you create the ssh key start by cloning the repository with `git clone --recursive git@github.com:uwp-se/Decompiler-Kotlin.git`.
+After you create the ssh key start by cloning the repository with `git clone --recursive git@github.com:autun12/TitaniumDecompiler.git`.
+
+If you do not want to use ssh you can do `git clone --recursive https://github.com/autun12/TitaniumDecompiler.git`.
 
 If the repository was cloned non-recursively previously, use `git submodule update --init` to clone the necessary submodules.
 TitaniumDecompiler uses _Bazel_ as a build tool. Visit the [Bazels website](https://github.com/bazelbuild/bazelisk/releases) to download and install it. Place that bazelisk binary into your specific os folder in vendor/bazel/bin.
