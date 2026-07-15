@@ -11,7 +11,9 @@
 #elif defined(TD_PLATFORM_LINUX)
 #include <signal.h>
 #define TD_DEBUGBREAK() raise(SIGTRAP)
-#else
+#elif defined(TD_PLATFORM_MACOS)
+#include <signal.h>
+#define TD_DEBUGBREAK() raise(SIGTRAP)
 #endif
 #define TD_ENABLE_ASSERTS
 #else
@@ -47,4 +49,3 @@ constexpr Ref<T> CreateRef(Args&&... args) {
 }  // namespace TitaniumRenderer
 
 #include "TitaniumRenderer/Core/Assert.h"
-#include "TitaniumRenderer/Core/Log.h"

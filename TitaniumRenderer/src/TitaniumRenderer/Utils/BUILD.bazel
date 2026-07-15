@@ -1,0 +1,14 @@
+# Header-only library
+cc_library(
+    name = "utils_header",
+    hdrs = [
+        "PlatformUtils.h",
+    ],
+    copts = [
+        "-ITitaniumRenderer/src"
+    ],
+    # strip_include_prefix = "//TitaniumRenderer/src",
+    visibility = [
+        "//TitaniumRenderer:__subpackages__",
+    ]
+)

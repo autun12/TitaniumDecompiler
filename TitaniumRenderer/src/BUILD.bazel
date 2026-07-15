@@ -1,0 +1,38 @@
+cc_library(
+    name = "TitaniumRenderer",
+    hdrs = [
+        "TitaniumRenderer.h"
+    ],
+    copts = [
+        "-ITitaniumRenderer/src",
+    ],
+    # strip_include_prefix = "//TitaniumRenderer/src",
+    deps = [
+        "@spdloglib//:spdlog",
+        "//TitaniumRenderer/src/TitaniumRenderer/ImGui:titanium_renderer_imgui",
+        "//TitaniumRenderer/src/TitaniumRenderer/Events:titanium_renderer_events",
+        "//TitaniumRenderer/src/TitaniumRenderer/Core:titanium_renderer_core",
+        "//TitaniumRenderer/src/TitaniumRenderer/Utils:utils_header",
+        "//TitaniumRenderer/src/Platform/Windows:titanium_renderer_platform_windows",
+    ],
+    defines = select({
+        "@platforms//os:windows": [
+            "TD_PLATFORM_WINDOWS",
+        ],
+        "@platforms//os:linux": [
+            "TD_PLATFORM_LINUX",
+        ],
+    }),
+    linkopts = select({
+        "@platforms//os:windows": [
+            "-DEFAULTLIB:opengl32.lib",
+        ],
+        "@platforms//os:linux": [
+
+        ],
+    }),
+    visibility = [
+        "//TitaniumRenderer/src:__subpackages__",
+        "//TitaniumApplication/src:__subpackages__",
+    ],
+)

@@ -1,15 +1,15 @@
-#include "tdpch.h"
+#include "TitaniumRenderer/Core/Base.h"
 #include "Platform/OpenGL/OpenGLRendererAPI.h"
-
+#include "TitaniumLogger/Logger/Log.h"
 #include <glad/glad.h>
 
 namespace TitaniumRenderer {
 void OpenGLMessageCallback(unsigned source, unsigned type, unsigned id, unsigned severity, int length,	const char* message, const void* userParam) {
     switch (severity) {
-        case GL_DEBUG_SEVERITY_HIGH:         TD_CORE_CRITICAL(message); return;
-        case GL_DEBUG_SEVERITY_MEDIUM:       TD_CORE_ERROR(message); return;
-        case GL_DEBUG_SEVERITY_LOW:          TD_CORE_WARN(message); return;
-        case GL_DEBUG_SEVERITY_NOTIFICATION: TD_CORE_TRACE(message); return;
+        case GL_DEBUG_SEVERITY_HIGH:         TD_RENDERER_CRITICAL(message); return;
+        case GL_DEBUG_SEVERITY_MEDIUM:       TD_RENDERER_ERROR(message); return;
+        case GL_DEBUG_SEVERITY_LOW:          TD_RENDERER_WARN(message); return;
+        case GL_DEBUG_SEVERITY_NOTIFICATION: TD_RENDERER_TRACE(message); return;
     }
     
     TD_CORE_ASSERT(false, "Unknown severity level!");
@@ -17,7 +17,7 @@ void OpenGLMessageCallback(unsigned source, unsigned type, unsigned id, unsigned
 
 
 void OpenGLRendererAPI::Init() {
-#ifdef HZ_DEBUG
+#ifdef TD_DEBUG
     glEnable(GL_DEBUG_OUTPUT);
     glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
     glDebugMessageCallback(OpenGLMessageCallback, nullptr);
@@ -35,7 +35,7 @@ void OpenGLRendererAPI::SetViewport(uint32_t x, uint32_t y, uint32_t width, uint
     glViewport(x, y, width, height);
 }
 
-void OpenGLRendererAPI::SetClearColor(const glm::vec4& color) {
+void OpenGLRendererAPI::SetClearColor(const Color& color) {
     glClearColor(color.r, color.g, color.b, color.a);
 }
 

@@ -5,7 +5,6 @@
 
 #include "TitaniumRenderer/Core/Application.h"
 #include "TitaniumRenderer/Core/Layer.h"
-#include "TitaniumRenderer/Core/Log.h"
 #include "TitaniumRenderer/Core/Assert.h"
 
 #include "TitaniumRenderer/Core/Timestep.h"

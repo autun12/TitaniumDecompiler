@@ -1,4 +1,5 @@
-#include "tdpch.h"
+#include "TitaniumRenderer/Core/Base.h"
+
 #include "TitaniumRenderer/Renderer/GraphicsContext.h"
 #include "TitaniumRenderer/Renderer/Renderer.h"
 #include "Platform/OpenGL/OpenGLContext.h"

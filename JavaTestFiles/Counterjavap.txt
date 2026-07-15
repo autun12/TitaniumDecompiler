@@ -1,0 +1,239 @@
+Classfile /home/austindrane/OldComputer/CollegeClasses/SE2/Decompiler-Kotlin/JavaTestFiles/Counter.class
+  Last modified Mar 11, 2025; size 1554 bytes
+  SHA-256 checksum 713d140d37927c229208ec02d4e027d0a576e93ead083c638b90f8b67cfbf8af
+  Compiled from "Counter.java"
+public class Counter implements java.lang.Runnable
+  minor version: 0
+  major version: 65
+  flags: (0x0021) ACC_PUBLIC, ACC_SUPER
+  this_class: #8                          // Counter
+  super_class: #2                         // java/lang/Object
+  interfaces: 1, fields: 2, methods: 5, attributes: 3
+Constant pool:
+   #1 = Methodref          #2.#3          // java/lang/Object."<init>":()V
+   #2 = Class              #4             // java/lang/Object
+   #3 = NameAndType        #5:#6          // "<init>":()V
+   #4 = Utf8               java/lang/Object
+   #5 = Utf8               <init>
+   #6 = Utf8               ()V
+   #7 = Fieldref           #8.#9          // Counter.my_index_:I
+   #8 = Class              #10            // Counter
+   #9 = NameAndType        #11:#12        // my_index_:I
+  #10 = Utf8               Counter
+  #11 = Utf8               my_index_
+  #12 = Utf8               I
+  #13 = Class              #14            // java/lang/Thread
+  #14 = Utf8               java/lang/Thread
+  #15 = Methodref          #13.#16        // java/lang/Thread."<init>":(Ljava/lang/Runnable;)V
+  #16 = NameAndType        #5:#17         // "<init>":(Ljava/lang/Runnable;)V
+  #17 = Utf8               (Ljava/lang/Runnable;)V
+  #18 = Methodref          #13.#19        // java/lang/Thread.start:()V
+  #19 = NameAndType        #20:#6         // start:()V
+  #20 = Utf8               start
+  #21 = Fieldref           #22.#23        // java/lang/System.out:Ljava/io/PrintStream;
+  #22 = Class              #24            // java/lang/System
+  #23 = NameAndType        #25:#26        // out:Ljava/io/PrintStream;
+  #24 = Utf8               java/lang/System
+  #25 = Utf8               out
+  #26 = Utf8               Ljava/io/PrintStream;
+  #27 = String             #28            // Parent exiting
+  #28 = Utf8               Parent exiting
+  #29 = Methodref          #30.#31        // java/io/PrintStream.println:(Ljava/lang/String;)V
+  #30 = Class              #32            // java/io/PrintStream
+  #31 = NameAndType        #33:#34        // println:(Ljava/lang/String;)V
+  #32 = Utf8               java/io/PrintStream
+  #33 = Utf8               println
+  #34 = Utf8               (Ljava/lang/String;)V
+  #35 = Methodref          #13.#36        // java/lang/Thread.currentThread:()Ljava/lang/Thread;
+  #36 = NameAndType        #37:#38        // currentThread:()Ljava/lang/Thread;
+  #37 = Utf8               currentThread
+  #38 = Utf8               ()Ljava/lang/Thread;
+  #39 = Methodref          #13.#40        // java/lang/Thread.getId:()J
+  #40 = NameAndType        #41:#42        // getId:()J
+  #41 = Utf8               getId
+  #42 = Utf8               ()J
+  #43 = Fieldref           #8.#44         // Counter.static_index_:I
+  #44 = NameAndType        #45:#12        // static_index_:I
+  #45 = Utf8               static_index_
+  #46 = String             #47            //  indexes:
+  #47 = Utf8                indexes:
+  #48 = Methodref          #30.#49        // java/io/PrintStream.print:(Ljava/lang/String;)V
+  #49 = NameAndType        #50:#34        // print:(Ljava/lang/String;)V
+  #50 = Utf8               print
+  #51 = InvokeDynamic      #0:#52         // #0:makeConcatWithConstants:(III)Ljava/lang/String;
+  #52 = NameAndType        #53:#54        // makeConcatWithConstants:(III)Ljava/lang/String;
+  #53 = Utf8               makeConcatWithConstants
+  #54 = Utf8               (III)Ljava/lang/String;
+  #55 = Methodref          #8.#3          // Counter."<init>":()V
+  #56 = Methodref          #8.#57         // Counter.create_threads:()V
+  #57 = NameAndType        #58:#6         // create_threads:()V
+  #58 = Utf8               create_threads
+  #59 = Class              #60            // java/lang/Runnable
+  #60 = Utf8               java/lang/Runnable
+  #61 = Utf8               Code
+  #62 = Utf8               LineNumberTable
+  #63 = Utf8               StackMapTable
+  #64 = Utf8               run
+  #65 = Utf8               main
+  #66 = Utf8               ([Ljava/lang/String;)V
+  #67 = Utf8               <clinit>
+  #68 = Utf8               SourceFile
+  #69 = Utf8               Counter.java
+  #70 = Utf8               BootstrapMethods
+  #71 = String             #72            // index=\u0001my_index\u0001 static_index\u0001
+  #72 = Utf8               index=\u0001my_index\u0001 static_index\u0001
+  #73 = MethodHandle       6:#74          // REF_invokeStatic java/lang/invoke/StringConcatFactory.makeConcatWithConstants:(Ljava/lang/invoke/MethodHandles$Lookup;Ljava/lang/String;Ljava/lang/invoke/MethodType;Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/invoke/CallSite;
+  #74 = Methodref          #75.#76        // java/lang/invoke/StringConcatFactory.makeConcatWithConstants:(Ljava/lang/invoke/MethodHandles$Lookup;Ljava/lang/String;Ljava/lang/invoke/MethodType;Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/invoke/CallSite;
+  #75 = Class              #77            // java/lang/invoke/StringConcatFactory
+  #76 = NameAndType        #53:#78        // makeConcatWithConstants:(Ljava/lang/invoke/MethodHandles$Lookup;Ljava/lang/String;Ljava/lang/invoke/MethodType;Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/invoke/CallSite;
+  #77 = Utf8               java/lang/invoke/StringConcatFactory
+  #78 = Utf8               (Ljava/lang/invoke/MethodHandles$Lookup;Ljava/lang/String;Ljava/lang/invoke/MethodType;Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/invoke/CallSite;
+  #79 = Utf8               InnerClasses
+  #80 = Class              #81            // java/lang/invoke/MethodHandles$Lookup
+  #81 = Utf8               java/lang/invoke/MethodHandles$Lookup
+  #82 = Class              #83            // java/lang/invoke/MethodHandles
+  #83 = Utf8               java/lang/invoke/MethodHandles
+  #84 = Utf8               Lookup
+{
+  public Counter();
+    descriptor: ()V
+    flags: (0x0001) ACC_PUBLIC
+    Code:
+      stack=2, locals=1, args_size=1
+         0: aload_0
+         1: invokespecial #1                  // Method java/lang/Object."<init>":()V
+         4: aload_0
+         5: iconst_0
+         6: putfield      #7                  // Field my_index_:I
+         9: return
+      LineNumberTable:
+        line 4: 0
+        line 6: 4
+
+  public void create_threads();
+    descriptor: ()V
+    flags: (0x0001) ACC_PUBLIC
+    Code:
+      stack=3, locals=3, args_size=1
+         0: iconst_0
+         1: istore_1
+         2: iload_1
+         3: iconst_4
+         4: if_icmpge     26
+         7: new           #13                 // class java/lang/Thread
+        10: dup
+        11: aload_0
+        12: invokespecial #15                 // Method java/lang/Thread."<init>":(Ljava/lang/Runnable;)V
+        15: astore_2
+        16: aload_2
+        17: invokevirtual #18                 // Method java/lang/Thread.start:()V
+        20: iinc          1, 1
+        23: goto          2
+        26: getstatic     #21                 // Field java/lang/System.out:Ljava/io/PrintStream;
+        29: ldc           #27                 // String Parent exiting
+        31: invokevirtual #29                 // Method java/io/PrintStream.println:(Ljava/lang/String;)V
+        34: return
+      LineNumberTable:
+        line 12: 0
+        line 14: 7
+        line 15: 16
+        line 12: 20
+        line 17: 26
+        line 18: 34
+      StackMapTable: number_of_entries = 2
+        frame_type = 252 /* append */
+          offset_delta = 2
+          locals = [ int ]
+        frame_type = 250 /* chop */
+          offset_delta = 23
+
+  public void run();
+    descriptor: ()V
+    flags: (0x0001) ACC_PUBLIC
+    Code:
+      stack=4, locals=5, args_size=1
+         0: invokestatic  #35                 // Method java/lang/Thread.currentThread:()Ljava/lang/Thread;
+         3: astore_1
+         4: aload_1
+         5: invokevirtual #39                 // Method java/lang/Thread.getId:()J
+         8: lstore_2
+         9: iconst_0
+        10: istore        4
+        12: iload         4
+        14: bipush        9
+        16: if_icmpge     71
+        19: aload_0
+        20: dup
+        21: getfield      #7                  // Field my_index_:I
+        24: iconst_1
+        25: iadd
+        26: putfield      #7                  // Field my_index_:I
+        29: getstatic     #43                 // Field static_index_:I
+        32: iconst_1
+        33: iadd
+        34: putstatic     #43                 // Field static_index_:I
+        37: getstatic     #21                 // Field java/lang/System.out:Ljava/io/PrintStream;
+        40: ldc           #46                 // String  indexes:
+        42: invokevirtual #48                 // Method java/io/PrintStream.print:(Ljava/lang/String;)V
+        45: getstatic     #21                 // Field java/lang/System.out:Ljava/io/PrintStream;
+        48: iload         4
+        50: aload_0
+        51: getfield      #7                  // Field my_index_:I
+        54: getstatic     #43                 // Field static_index_:I
+        57: invokedynamic #51,  0             // InvokeDynamic #0:makeConcatWithConstants:(III)Ljava/lang/String;
+        62: invokevirtual #29                 // Method java/io/PrintStream.println:(Ljava/lang/String;)V
+        65: iinc          4, 1
+        68: goto          12
+        71: return
+      LineNumberTable:
+        line 21: 0
+        line 22: 4
+        line 24: 9
+        line 25: 19
+        line 26: 29
+        line 28: 37
+        line 29: 45
+        line 24: 65
+        line 31: 71
+      StackMapTable: number_of_entries = 2
+        frame_type = 254 /* append */
+          offset_delta = 12
+          locals = [ class java/lang/Thread, long, int ]
+        frame_type = 250 /* chop */
+          offset_delta = 58
+
+  public static void main(java.lang.String[]);
+    descriptor: ([Ljava/lang/String;)V
+    flags: (0x0009) ACC_PUBLIC, ACC_STATIC
+    Code:
+      stack=2, locals=2, args_size=1
+         0: new           #8                  // class Counter
+         3: dup
+         4: invokespecial #55                 // Method "<init>":()V
+         7: astore_1
+         8: aload_1
+         9: invokevirtual #56                 // Method create_threads:()V
+        12: return
+      LineNumberTable:
+        line 34: 0
+        line 35: 8
+        line 36: 12
+
+  static {};
+    descriptor: ()V
+    flags: (0x0008) ACC_STATIC
+    Code:
+      stack=1, locals=0, args_size=0
+         0: iconst_0
+         1: putstatic     #43                 // Field static_index_:I
+         4: return
+      LineNumberTable:
+        line 7: 0
+}
+SourceFile: "Counter.java"
+BootstrapMethods:
+  0: #73 REF_invokeStatic java/lang/invoke/StringConcatFactory.makeConcatWithConstants:(Ljava/lang/invoke/MethodHandles$Lookup;Ljava/lang/String;Ljava/lang/invoke/MethodType;Ljava/lang/String;[Ljava/lang/Object;)Ljava/lang/invoke/CallSite;
+    Method arguments:
+      #71 index=\u0001my_index\u0001 static_index\u0001
+InnerClasses:
+  public static final #84= #80 of #82;    // Lookup=class java/lang/invoke/MethodHandles$Lookup of class java/lang/invoke/MethodHandles

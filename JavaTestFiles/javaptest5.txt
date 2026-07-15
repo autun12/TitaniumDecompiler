@@ -1,0 +1,145 @@
+Classfile /home/austin/Github/Decompiler-Kotlin/Test5.class
+  Last modified Oct 22, 2024; size 874 bytes
+  MD5 checksum 8a4e87e36c2207fc7f84716c1f52e40b
+  Compiled from "Test5.java"
+public class Test5
+  minor version: 0
+  major version: 52
+  flags: ACC_PUBLIC, ACC_SUPER
+Constant pool:
+   #1 = Methodref          #16.#27        // java/lang/Object."<init>":()V
+   #2 = Class              #28            // java/lang/ArithmeticException
+   #3 = String             #29            // Error occurred at i = 3
+   #4 = Methodref          #2.#30         // java/lang/ArithmeticException."<init>":(Ljava/lang/String;)V
+   #5 = Fieldref           #31.#32        // java/lang/System.out:Ljava/io/PrintStream;
+   #6 = Class              #33            // java/lang/StringBuilder
+   #7 = Methodref          #6.#27         // java/lang/StringBuilder."<init>":()V
+   #8 = String             #34            // Iteration
+   #9 = Methodref          #6.#35         // java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;
+  #10 = Methodref          #6.#36         // java/lang/StringBuilder.append:(I)Ljava/lang/StringBuilder;
+  #11 = Methodref          #6.#37         // java/lang/StringBuilder.toString:()Ljava/lang/String;
+  #12 = Methodref          #38.#39        // java/io/PrintStream.println:(Ljava/lang/String;)V
+  #13 = String             #40            // Caught exception:
+  #14 = Methodref          #2.#41         // java/lang/ArithmeticException.getMessage:()Ljava/lang/String;
+  #15 = Class              #42            // Test5
+  #16 = Class              #43            // java/lang/Object
+  #17 = Utf8               <init>
+  #18 = Utf8               ()V
+  #19 = Utf8               Code
+  #20 = Utf8               LineNumberTable
+  #21 = Utf8               main
+  #22 = Utf8               ([Ljava/lang/String;)V
+  #23 = Utf8               StackMapTable
+  #24 = Class              #28            // java/lang/ArithmeticException
+  #25 = Utf8               SourceFile
+  #26 = Utf8               Test5.java
+  #27 = NameAndType        #17:#18        // "<init>":()V
+  #28 = Utf8               java/lang/ArithmeticException
+  #29 = Utf8               Error occurred at i = 3
+  #30 = NameAndType        #17:#44        // "<init>":(Ljava/lang/String;)V
+  #31 = Class              #45            // java/lang/System
+  #32 = NameAndType        #46:#47        // out:Ljava/io/PrintStream;
+  #33 = Utf8               java/lang/StringBuilder
+  #34 = Utf8               Iteration
+  #35 = NameAndType        #48:#49        // append:(Ljava/lang/String;)Ljava/lang/StringBuilder;
+  #36 = NameAndType        #48:#50        // append:(I)Ljava/lang/StringBuilder;
+  #37 = NameAndType        #51:#52        // toString:()Ljava/lang/String;
+  #38 = Class              #53            // java/io/PrintStream
+  #39 = NameAndType        #54:#44        // println:(Ljava/lang/String;)V
+  #40 = Utf8               Caught exception:
+  #41 = NameAndType        #55:#52        // getMessage:()Ljava/lang/String;
+  #42 = Utf8               Test5
+  #43 = Utf8               java/lang/Object
+  #44 = Utf8               (Ljava/lang/String;)V
+  #45 = Utf8               java/lang/System
+  #46 = Utf8               out
+  #47 = Utf8               Ljava/io/PrintStream;
+  #48 = Utf8               append
+  #49 = Utf8               (Ljava/lang/String;)Ljava/lang/StringBuilder;
+  #50 = Utf8               (I)Ljava/lang/StringBuilder;
+  #51 = Utf8               toString
+  #52 = Utf8               ()Ljava/lang/String;
+  #53 = Utf8               java/io/PrintStream
+  #54 = Utf8               println
+  #55 = Utf8               getMessage
+{
+  public Test5();
+    descriptor: ()V
+    flags: ACC_PUBLIC
+    Code:
+      stack=1, locals=1, args_size=1
+         0: aload_0
+         1: invokespecial #1                  // Method java/lang/Object."<init>":()V
+         4: return
+      LineNumberTable:
+        line 1: 0
+
+  public static void main(java.lang.String[]);
+    descriptor: ([Ljava/lang/String;)V
+    flags: ACC_PUBLIC, ACC_STATIC
+    Code:
+      stack=3, locals=3, args_size=1
+         0: iconst_0
+         1: istore_1
+         2: iload_1
+         3: iconst_5
+         4: if_icmpge     85
+         7: iload_1
+         8: iconst_3
+         9: if_icmpne     22
+        12: new           #2                  // class java/lang/ArithmeticException
+        15: dup
+        16: ldc           #3                  // String Error occurred at i = 3
+        18: invokespecial #4                  // Method java/lang/ArithmeticException."<init>":(Ljava/lang/String;)V
+        21: athrow
+        22: getstatic     #5                  // Field java/lang/System.out:Ljava/io/PrintStream;
+        25: new           #6                  // class java/lang/StringBuilder
+        28: dup
+        29: invokespecial #7                  // Method java/lang/StringBuilder."<init>":()V
+        32: ldc           #8                  // String Iteration
+        34: invokevirtual #9                  // Method java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;
+        37: iload_1
+        38: invokevirtual #10                 // Method java/lang/StringBuilder.append:(I)Ljava/lang/StringBuilder;
+        41: invokevirtual #11                 // Method java/lang/StringBuilder.toString:()Ljava/lang/String;
+        44: invokevirtual #12                 // Method java/io/PrintStream.println:(Ljava/lang/String;)V
+        47: goto          79
+        50: astore_2
+        51: getstatic     #5                  // Field java/lang/System.out:Ljava/io/PrintStream;
+        54: new           #6                  // class java/lang/StringBuilder
+        57: dup
+        58: invokespecial #7                  // Method java/lang/StringBuilder."<init>":()V
+        61: ldc           #13                 // String Caught exception:
+        63: invokevirtual #9                  // Method java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;
+        66: aload_2
+        67: invokevirtual #14                 // Method java/lang/ArithmeticException.getMessage:()Ljava/lang/String;
+        70: invokevirtual #9                  // Method java/lang/StringBuilder.append:(Ljava/lang/String;)Ljava/lang/StringBuilder;
+        73: invokevirtual #11                 // Method java/lang/StringBuilder.toString:()Ljava/lang/String;
+        76: invokevirtual #12                 // Method java/io/PrintStream.println:(Ljava/lang/String;)V
+        79: iinc          1, 1
+        82: goto          2
+        85: return
+      Exception table:
+         from    to  target type
+             7    47    50   Class java/lang/ArithmeticException
+      LineNumberTable:
+        line 3: 0
+        line 5: 7
+        line 6: 12
+        line 8: 22
+        line 11: 47
+        line 9: 50
+        line 10: 51
+        line 3: 79
+        line 13: 85
+      StackMapTable: number_of_entries = 5
+        frame_type = 252 /* append */
+          offset_delta = 2
+          locals = [ int ]
+        frame_type = 19 /* same */
+        frame_type = 91 /* same_locals_1_stack_item */
+          stack = [ class java/lang/ArithmeticException ]
+        frame_type = 28 /* same */
+        frame_type = 250 /* chop */
+          offset_delta = 5
+}
+SourceFile: "Test5.java"

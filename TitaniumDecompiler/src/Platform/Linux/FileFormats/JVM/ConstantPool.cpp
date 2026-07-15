@@ -1,101 +1,84 @@
 #include "ConstantPool.h"
 // #include "ConstPoolInfo.h"
-#include "ConstPoolInfo.h"
+#include <TitaniumLogger/Logger/Log.h>
+
 #include <iostream>
+
+#include "ConstPoolInfo.h"
 
 namespace TitaniumDecompiler {
 ConstantPool::ConstantPool() {}
+
 void ConstantPool::Deserialize(BigEndianStreamReader *deserializer, ConstantPool &instance) {
     deserializer->ReadRawBigEndian<uint16_t>(instance.ConstantPoolCount);
 
-    for(uint16_t i = 1; i < instance.ConstantPoolCount; i++) {
+    for (uint16_t i = 1; i < instance.ConstantPoolCount; i++) {
         ConstPoolInfo info;
         ConstPoolInfo::Deserialize(deserializer, info);
-        if(info.Tag == Tags::Long || info.Tag == Tags::Double) {
+
+        if (info.Tag == Tags::Long || info.Tag == Tags::Double) {
             i++;
         }
+
         instance.m_ConstPoolInfo.push_back(info);
     }
 }
 
 std::string GetConstantUTF8(int idx) {
-    int constantIdx = idx - 2;
-
-    auto cpInfo = g_ConstPool.m_ConstPoolInfo.at(constantIdx);
-    UTF8Info *utf8Info = cpInfo.asUTF8Info();
-
+    int constantIdx = idx - 1;
     std::stringstream s;
-    for (int i = 0; i < utf8Info->GetLength(); i++) {
-        s << utf8Info->GetByte(i);
-    }
+    s.str("");
+    s.clear();
+    for (auto &constPool : g_ConstPool) {
+        auto cpInfo = constPool.m_ConstPoolInfo.at(constantIdx);
+        UTF8Info *utf8Info = cpInfo.asUTF8Info();
 
+        for (int i = 0; i < utf8Info->length; i++) {
+            s << utf8Info->bytes[i];
+        }
+    }
     return s.str();
 }
 
-ConstPoolInfo GetConstant(int idx) {
-    return g_ConstPool.m_ConstPoolInfo.at(idx - 1);
+std::string GetConstantClass(int idx) {
+    TD_DECOMP_INFO("const idx = %x\n", idx);
+    std::string className = "";
+    for (auto &constPool : g_ConstPool) {
+        auto cpInfo = constPool.m_ConstPoolInfo.at(idx - 1);
+        ClassInfo *classInfo = cpInfo.asClassInfo();
+        TD_DECOMP_INFO("name index = %d\n", classInfo->nameIndex);
+        className = GetConstantUTF8(classInfo->nameIndex);
+    }
+    return className;
 }
 
-// // std::string print(const ConstPoolInfo& cpinfo) {
-// //     std::stringstream ss;
-// //     ss << "ConstPoolInfo{tag=" << (int)cpinfo.tag << ", ";
+std::string GetNameAndType(int idx) {
+    std::string output = "";
+    for (auto &constPool : g_ConstPool) {
+        auto cpInfo = constPool.m_ConstPoolInfo.at(idx - 1);
+        NameAndTypeInfo *nameAndTypeInfo = cpInfo.asNameAndType();
+        std::string name = GetConstantUTF8(nameAndTypeInfo->nameIndex);
+        std::string desc = GetConstantUTF8(nameAndTypeInfo->descriptorIndex);
+        output.append(name);
+        output.append(":");
+        output.append(desc);
+    }
+    return output;
+}
 
-// //     switch (cpinfo.tag) {
-// //         case 1: // UTF8
-// //             ss << "UTF8Info{length=" << cpinfo.m_UTF8Info->length << ", bytes=\"";
-// //             for(auto bytes : cpinfo.m_UTF8Info->bytes) {
-// //                 std::cout << bytes;
-// //             }
-// //             std::cout << "\"}";
-// //             break;
-// //         case 3: // Integer
-// //             ss << "IntegerInfo{bytes=" << cpinfo.m_IntegerInfo->bytes << "}";
-// //             break;
-// //         case 4: // Float
-// //             ss << "FloatInfo{bytes=" << cpinfo.m_FloatInfo->bytes << "}";
-// //             break;
-// //         case 5: // Long
-// //             ss << "BigIntInfo{bytes=" << cpinfo.m_LongInfo->bytes << "}";
-// //             break;
-// //         case 6: // Double
-// //             ss << "DoubleInfo{bytes=" << cpinfo.m_DoubleInfo->bytes << "}";
-// //             break;
-// //         case 7: // Class
-// //             ss << "ClassInfo{name_index=" << cpinfo.m_ClassInfo->nameIndex << "}";
-// //             break;
-// //         case 8: // String
-// //             ss << "StringInfo{string_index=" << cpinfo.m_StringInfo->stringIndex << "}";
-// //             break;
-// //         case 9: // Fieldref
-// //         case 10: // Methodref
-// //         case 11: // InterfaceMethodref
-// //             ss << "RefInfo{class_index=" << cpinfo.m_FieldRefInfo->classIndex << ", name_and_type_index=" << cpinfo.m_FieldRefInfo->nameAndTypeIndex << "}";
-// //             break;
-// //         case 12: // NameAndType
-// //             ss << "NameAndTypeInfo{name_index=" << cpinfo.m_NameAndTypeInfo->nameIndex << ", descriptor_index=" << cpinfo.m_NameAndTypeInfo->descriptorIndex << "}";
-// //             break;
-// //         case 15: // MethodHandle
-// //             ss << "MethodHandleInfo{reference_kind=" << (int)cpinfo.m_MethodHandleInfo->referenceKind << ", reference_index=" << cpinfo.m_MethodHandleInfo->referenceIndex << "}";
-// //             break;
-// //         case 16: // MethodType
-// //             ss << "MethodTypeInfo{descriptor_index=" << cpinfo.m_MethodTypeInfo->descriptorIndex << "}";
-// //             break;
-// //         case 18: // InvokeDynamic
-// //             ss << "InvokeDynamicInfo{bootstrap_method_attr_index=" << cpinfo.m_InvokeDynamicInfo->bootstrapMethodAttrIndex << ", name_and_type_index=" << cpinfo.m_InvokeDynamicInfo->nameAndTypeIndex << "}";
-// //             break;
-// //         default:
-// //             ss << "Unknown tag " << (int)cpinfo.tag;
-// //             break;
-// //     }
+ConstPoolInfo GetConstant(int idx) {
+    ConstPoolInfo pool;
+    for (auto &constPool : g_ConstPool) {
+        pool = constPool.m_ConstPoolInfo.at(idx);
+    }
 
-// //     ss << "}";
-// //     return ss.str();
-// // }
+    return pool;
+}
 
 // std::string ConstantPool::GetQualifiedName(uint16_t index) {
 //     std::string qualifiedName = "";
 //     ConstPoolInfo* data = &m_ConstPoolInfo[index];
-    
+
 //     if(data->tag == Tags::Utf8) {
 //         for(auto bytes : m_UTF8Info->bytes) {
 //             qualifiedName += bytes;
@@ -115,4 +98,4 @@ ConstPoolInfo GetConstant(int idx) {
 //     return className;
 // }
 
-}
+}  // namespace TitaniumDecompiler

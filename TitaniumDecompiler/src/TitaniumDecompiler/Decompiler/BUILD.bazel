@@ -1,0 +1,59 @@
+load("@rules_cc//cc:defs.bzl", "cc_library", "objc_library")
+
+cc_library(
+    name = "decompiler",
+    srcs = [
+        "AST.cpp",
+        "Codegen.cpp",
+        "CommonOps.cpp",
+        "Decompiler.cpp",
+        "DomHelper.cpp",
+        "Expr.cpp",
+        "MethodParser.cpp",
+        "SSA.cpp",
+        "ASTNodes.cpp",
+        "GraphUtils.cpp"
+    ],
+    visibility = [
+        "//:__pkg__",
+        "//TitaniumDecompiler/src:__subpackages__",
+    ],
+    deps = [
+        ":headers",
+        "//TitaniumDecompiler/src/TitaniumDecompiler/Disassembler:headers",
+        "//TitaniumDecompiler/src/TitaniumDecompiler/CFGReducer:cfg_reducer",
+        "//TitaniumLogger/src/TitaniumLogger/Logger:titanium_logger",
+    ],
+    copts = [
+        "-ITitaniumDecompiler/src",
+        "-ITitaniumLogger/src",
+    ],
+)
+
+cc_library(
+    name = "headers",
+    hdrs = [
+        "AST.h",
+        "Codegen.h",
+        "CommonOps.h",
+        "Decompiler.h",
+        "DomHelper.h",
+        "Expr.h",
+        "MethodParser.h",
+        "SSA.h",
+        "ASTNodes.h",
+        "GraphUtils.h",
+    ],
+    visibility = [
+        "//:__pkg__",
+        "//TitaniumDecompiler/src:__subpackages__",
+    ],
+    copts = [
+        "-ITitaniumDecompiler/src",
+    ],
+    # strip_include_prefix = "//TitaniumDecompiler/src",
+    deps = [
+        "//TitaniumDecompiler/src/TitaniumDecompiler/Disassembler:headers",
+        "//TitaniumDecompiler/src/TitaniumDecompiler/CFGReducer:headers",
+    ],
+)

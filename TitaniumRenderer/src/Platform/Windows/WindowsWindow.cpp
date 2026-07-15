@@ -1,4 +1,5 @@
-#include "tdpch.h"
+#include "TitaniumRenderer/Core/Base.h"
+#include "TitaniumLogger/Logger/Log.h"
 #include "Platform/Windows/WindowsWindow.h"
 
 #include "TitaniumRenderer/Core/Input.h"
@@ -16,7 +17,7 @@ namespace TitaniumRenderer {
 static uint8_t s_GLFWWindowCount = 0;
 
 static void GLFWErrorCallback(int error, const char* description) {
-    TD_CORE_ERROR("GLFW Error ({0}): {1}", error, description);
+    TD_RENDERER_ERROR("GLFW Error ({0}): {1}", error, description);
 }
 
 WindowsWindow::WindowsWindow(const WindowProps& props) { 
@@ -32,7 +33,7 @@ void WindowsWindow::Init(const WindowProps& props) {
     m_Data.Width = props.Width;
     m_Data.Height = props.Height;
 
-    TD_CORE_INFO("Creating window {0} ({1}, {2})", props.Title, props.Width, props.Height);
+    TD_RENDERER_INFO("Creating window {0} ({1}, {2})", props.Title, props.Width, props.Height);
 
     if(s_GLFWWindowCount == 0) {
         // TODO: glfwTerminate on system shutdown
@@ -92,7 +93,7 @@ void WindowsWindow::Init(const WindowProps& props) {
                 break;
             }
             case GLFW_REPEAT: {
-                KeyPressedEvent event(key, 1);
+                KeyPressedEvent event(key, true);
                 data.EventCallback(event);
                 break;
             }

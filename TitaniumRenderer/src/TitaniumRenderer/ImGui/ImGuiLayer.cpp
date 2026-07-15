@@ -1,15 +1,13 @@
-#include "tdpch.h"
 #include "TitaniumRenderer/ImGui/ImGuiLayer.h"
 
 #include <imgui.h>
-#include <examples/imgui_impl_glfw.h>
-#include <examples/imgui_impl_opengl3.h>
+#include <backends/imgui_impl_glfw.h>
+#include <backends/imgui_impl_opengl3.h>
 
 #include "TitaniumRenderer/Core/Application.h"
 
 // TEMPORARY
 #include <GLFW/glfw3.h>
-#include <glad/glad.h>
 
 namespace TitaniumRenderer {
 
@@ -26,9 +24,9 @@ void ImGuiLayer::OnAttach() {
     io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable; // Enable Multi-Viewport / Platform Windows
     // io.ConfigFlags |= ImGuiConfigFlags_ViewportsNoTaskBarIcons;
     // io.ConfigFlags |= ImGuiConfigFlags_ViewportsNoMerge;
-
-    // io.Fonts->AddFontFromFileTTF(font, font_pixel_size);
-    // io.FontDefault = io.Fonts->AddFontFromFileTTF(font, font_pixel_size);
+    float fontSize = 24.0f;
+    io.Fonts->AddFontFromFileTTF("TitaniumApplication/assets/fonts/jetbrainsmono/JetBrainsMono-Bold.ttf", fontSize);
+    io.FontDefault = io.Fonts->AddFontFromFileTTF("TitaniumApplication/assets/fonts/jetbrainsmono/JetBrainsMono-Regular.ttf", fontSize);
 
     // Setup Dear ImGui style
     ImGui::StyleColorsDark();

@@ -5,8 +5,8 @@
 // #include <string>
 #include <vector>
 
-#include "../../../../Utils/FileReader.h"
 #include "Attributes.h"
+#include "Utils/FileReader.h"
 // #include "ConstantPool.h"
 
 namespace TitaniumDecompiler {
@@ -15,7 +15,7 @@ public:
     Fields();
     ~Fields() = default;
 
-    static void Deserialize(BigEndianStreamReader* deserializer, Fields &instance);
+    static void Deserialize(BigEndianStreamReader* deserializer, Fields& instance);
 
 public:
     uint16_t m_Access = 0;
@@ -23,4 +23,4 @@ public:
     uint16_t m_Desc = 0;
     Attributes m_Attr;
 };
-}
+}  // namespace TitaniumDecompiler

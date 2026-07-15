@@ -1,0 +1,143 @@
+load("@rules_cc//cc:defs.bzl", "cc_binary", "cc_test")
+
+cc_test(
+    name = "ast_test",
+    size = "small",
+    srcs = ["ASTTest.cpp"],
+    tags = ["manual_gcov", "gcov",],
+    deps = [
+        "//TitaniumDecompiler/src:TitaniumDecompiler",
+        "//TitaniumDecompiler/src/TitaniumDecompiler/Disassembler:disassembler_test",
+        "//TitaniumDecompiler/src/Platform/Linux/FileFormats/JVM:platform_jvm_test",
+        "@googletest//:gtest",
+        "@googletest//:gtest_main",
+    ],
+    data = [
+        "//JavaTestFiles:jar_test_files",
+        "//JavaTestFiles:TestJarFile/TestJarFile.jar",
+        "//JavaTestFiles:Test.class",
+    ],
+    copts = ["-ITitaniumDecompiler/src",
+    "--coverage",
+    ],
+    linkopts = ["--coverage",],
+)
+cc_test(
+    name = "codegen_test",
+    size = "small",
+    srcs = ["CodegenTest.cpp"],
+    copts = [
+        "-ITitaniumDecompiler/src",
+    ],
+    data = [
+        "//JavaTestFiles:jar_test_files",
+        "//JavaTestFiles:TestJarFile/TestJarFile.jar",
+    ],
+    deps = [
+        "//TitaniumDecompiler/src:TitaniumDecompiler",
+        "@googletest//:gtest",
+        "@googletest//:gtest_main",
+    ],
+)
+cc_test(
+    name = "common_ops_test",
+    size = "small",
+    srcs = ["CommonOpsTest.cpp"],
+    copts = [
+        "-ITitaniumDecompiler/src",
+    ],
+    data = [
+        "//JavaTestFiles:jar_test_files",
+        "//JavaTestFiles:TestJarFile/TestJarFile.jar",
+    ],
+    deps = [
+        "//TitaniumDecompiler/src:TitaniumDecompiler",
+        "@googletest//:gtest",
+        "@googletest//:gtest_main",
+    ],
+)
+cc_test(
+    name = "dom_helper_test",
+    size = "small",
+    srcs = ["DomHelperTest.cpp"],
+    copts = [
+        "-ITitaniumDecompiler/src",
+    ],
+    data = [
+        "//JavaTestFiles:jar_test_files",
+        "//JavaTestFiles:TestJarFile/TestJarFile.jar",
+    ],
+    deps = [
+        "//TitaniumDecompiler/src:TitaniumDecompiler",
+        "@googletest//:gtest",
+        "@googletest//:gtest_main",
+    ],
+)
+cc_test(
+    name = "decompiler_test",
+    size = "small",
+    srcs = ["DecompilerTest.cpp"],
+    copts = [
+        "-ITitaniumDecompiler/src",
+    ],
+    data = [
+        "//JavaTestFiles:jar_test_files",
+        "//JavaTestFiles:TestJarFile/TestJarFile.jar",
+    ],
+    deps = [
+        "//TitaniumDecompiler/src:TitaniumDecompiler",
+        "@googletest//:gtest",
+        "@googletest//:gtest_main",
+    ],
+)
+cc_test(
+    name = "constant_pool_test",
+    size = "small",
+    srcs = ["ConstantPoolTest.cpp"],
+    copts = [
+        "-ITitaniumDecompiler/src",
+    ],
+    data = [
+        "//JavaTestFiles:jar_test_files",
+        "//JavaTestFiles:TestJarFile/TestJarFile.jar",
+    ],
+    deps = [
+        "//TitaniumDecompiler/src:TitaniumDecompiler",
+        "@googletest//:gtest",
+        "@googletest//:gtest_main",
+    ],
+)
+cc_test(
+    name = "constant_info_pool_test",
+    size = "small",
+    srcs = ["ConstInfoPoolTest.cpp"],
+    copts = [
+        "-ITitaniumDecompiler/src",
+    ],
+    data = [
+        "//JavaTestFiles:jar_test_files",
+        "//JavaTestFiles:TestJarFile/TestJarFile.jar",
+    ],
+    deps = [
+        "//TitaniumDecompiler/src:TitaniumDecompiler",
+        "@googletest//:gtest",
+        "@googletest//:gtest_main",
+    ],
+)
+cc_test(
+    name = "instruction_test",
+    size = "small",
+    srcs = ["InstructionTest.cpp"],
+    copts = [
+        "-ITitaniumDecompiler/src",
+    ],
+    data = [
+        "//JavaTestFiles:jar_test_files",
+        "//JavaTestFiles:TestJarFile/TestJarFile.jar",
+    ],
+    deps = [
+        "//TitaniumDecompiler/src:TitaniumDecompiler",
+        "@googletest//:gtest",
+        "@googletest//:gtest_main",
+    ],
+)

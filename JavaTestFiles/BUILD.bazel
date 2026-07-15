@@ -1,0 +1,20 @@
+filegroup(
+    name = "test_files",
+    srcs = glob(["*.class"]),
+    visibility = ["//visibility:public"],
+)
+
+filegroup(
+    name = "jar_test_files",
+    srcs = glob(["*.jar"]),
+    visibility = ["//visibility:public"],
+)
+
+exports_files([
+"TestJarFile/TestJarFile.jar",
+"Test.class",
+"Test.java",
+],
+ visibility = ["//visibility:public"],)
+
+exports_files(["TestJarFile/TestJarFile.jar"], visibility = ["//visibility:public"])

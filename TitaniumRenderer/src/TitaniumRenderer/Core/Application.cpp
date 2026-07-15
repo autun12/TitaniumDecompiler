@@ -1,11 +1,12 @@
-#include "tdpch.h"
 #include "TitaniumRenderer/Core/Application.h"
 
-#include "TitaniumRenderer/Core/Input.h"
-#include "TitaniumRenderer/Core/Log.h"
-#include "TitaniumRenderer/Renderer/Renderer.h"
-
 #include <GLFW/glfw3.h>
+
+#include <iostream>
+
+#include "TitaniumRenderer/Core/Base.h"
+#include "TitaniumRenderer/Core/Input.h"
+#include "TitaniumRenderer/Renderer/Renderer.h"
 
 namespace TitaniumRenderer {
 
@@ -19,7 +20,6 @@ Application::Application(std::string base_directory, const std::string& name) {
 
     m_Window = std::unique_ptr<Window>(Window::Create());
     m_Window->SetEventCallback(TD_BIND_EVENT_FN(OnEvent));
-
     Renderer::Init();
 
     m_ImGuiLayer = new ImGuiLayer();
@@ -38,20 +38,18 @@ void Application::PushOverlay(Layer* layer) {
     layer->OnAttach();
 }
 
-void Application::Close() {
-    m_Running = false;
-}
+void Application::Close() { m_Running = false; }
 
 void Application::OnEvent(Event& e) {
     EventDispatcher dispatcher(e);
     dispatcher.Dispatch<WindowCloseEvent>(TD_BIND_EVENT_FN(Application::OnWindowClose));
     dispatcher.Dispatch<WindowResizeEvent>(TD_BIND_EVENT_FN(Application::OnWindowResize));
-    
-    for(auto it = m_LayerStack.rbegin(); it != m_LayerStack.rend(); ++it) {
-        if(e.Handled) { 
+
+    for (auto it = m_LayerStack.rbegin(); it != m_LayerStack.rend(); ++it) {
+        if (e.Handled) {
             break;
         }
-       
+
         (*it)->OnEvent(e);
     }
 }
@@ -62,22 +60,22 @@ void Application::Run() {
         Timestep timestep = time - m_LastFrameTime;
         m_LastFrameTime = time;
 
-        if(!m_Minimized) {
+        if (!m_Minimized) {
             {
-                for(Layer* layer : m_LayerStack) {
+                for (Layer* layer : m_LayerStack) {
                     layer->OnUpdate(timestep);
                 }
             }
 
             m_ImGuiLayer->Begin();
             {
-                for(Layer* layer : m_LayerStack) {
+                for (Layer* layer : m_LayerStack) {
                     layer->OnImGuiRender();
                 }
             }
             m_ImGuiLayer->End();
         }
-        
+
         m_Window->OnUpdate();
     }
 }
@@ -88,7 +86,7 @@ bool Application::OnWindowClose(WindowCloseEvent& e) {
 }
 
 bool Application::OnWindowResize(WindowResizeEvent& e) {
-    if(e.GetWidth() == 0 || e.GetHeight() == 0) {
+    if (e.GetWidth() == 0 || e.GetHeight() == 0) {
         m_Minimized = true;
         return false;
     }

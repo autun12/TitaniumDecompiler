@@ -5,6 +5,7 @@
 #include <spdlog/sinks/base_sink.h>
 #include <spdlog/details/null_mutex.h>
 #include <mutex>
+#include <format>
 
 namespace TitaniumRenderer {
 template<typename Mutex>
@@ -20,8 +21,8 @@ protected:
         spdlog::memory_buf_t formatted;
         spdlog::sinks::base_sink<Mutex>::formatter_->format(msg, formatted);
 
-        m_Message.LoggerName = fmt::to_string(msg.logger_name);
-        m_Message.MessageString = fmt::to_string(formatted);
+        m_Message.LoggerName = std::format("{}", msg.logger_name);
+        m_Message.MessageString = std::format("{}", formatted);
         m_Message.MessageLevel = (ConsolePanel::Level)msg.level;
     }
 

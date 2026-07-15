@@ -1,0 +1,27 @@
+load("@rules_cc//cc:defs.bzl", "cc_library")
+
+package(default_visibility = ["//visibility:public"])
+
+cc_library(
+    name = "glad",
+    srcs = ["src/glad.c"],
+    hdrs = glob([
+        "include/glad/*.h",
+        "include/KHR/*.h",
+    ]),
+    includes = [
+        "include/KHR",
+        "include/glad",
+    ],
+    linkopts = select({
+       "@platforms//os:linux": [
+            "-lGL",
+            "-ldl",
+            "-lpthread",
+        ], 
+        "@platforms//os:windows": [
+            "-DEFAULTLIB:opengl32.lib",
+        ],
+    }),
+    strip_include_prefix = "include",
+)

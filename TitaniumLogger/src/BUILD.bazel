@@ -1,0 +1,19 @@
+cc_library(
+    name = "TitaniumLogger",
+    hdrs = [
+        "TitaniumLogger.h"
+    ],
+    deps = [
+        "@spdloglib//:spdlog",
+        "//TitaniumLogger/src/TitaniumLogger/Logger:titanium_logger",
+    ],
+    copts = [
+        "-ITitaniumLogger/src",
+    ],
+    visibility = [
+        "//TitaniumApplication/src:__subpackages__",
+        "//TitaniumDecompiler/src:__subpackages__",
+        "//TitaniumRenderer/src:__subpackages__",
+        "//TitaniumTests/TitaniumDecompilerTests:__subpackages__",
+    ],
+)

@@ -1,0 +1,26 @@
+cc_library(
+    name = "titanium_renderer_platform_windows",
+    srcs = [
+        "WindowsInput.cpp",
+        "WindowsWindow.cpp",
+    ],
+    hdrs = [
+        "WindowsWindow.h",
+    ],
+    deps = [
+        "//TitaniumRenderer/src/TitaniumRenderer/Core:headers",
+        "//TitaniumRenderer/src/TitaniumRenderer/Renderer:headers",
+        "//TitaniumRenderer/src/TitaniumRenderer/Renderer:renderer_internals",
+        "//TitaniumLogger/src/TitaniumLogger/Logger:titanium_logger",
+        "@GLFW//:glfw",
+        "@spdloglib//:spdlog",
+    ],
+    copts = [
+        "-ITitaniumRenderer/src",
+        "-ITitaniumLogger/src",
+    ],
+    # strip_include_prefix = "//TitaniumRenderer/src",
+    visibility = [
+        "//TitaniumRenderer/src:__subpackages__",
+    ],
+)

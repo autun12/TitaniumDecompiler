@@ -1,0 +1,41 @@
+load("@rules_cc//cc:defs.bzl", "cc_library", "objc_library")
+
+cc_library(
+    name = "cfg_reducer",
+    srcs = [
+        "DeadCodeRemover.cpp"
+    ],
+    # strip_include_prefix = "//TitaniumDecompiler/src",
+    visibility = [
+        "//:__pkg__",
+        "//TitaniumDecompiler/src:__subpackages__",
+    ],
+    deps = [
+        ":headers",
+        "//TitaniumDecompiler/src/TitaniumDecompiler/Disassembler:disassembler",
+        "//TitaniumLogger/src/TitaniumLogger/Logger:titanium_logger",
+    ],
+    copts = [
+        "-ITitaniumDecompiler/src",
+        "-ITitaniumLogger/src",
+    ],
+    linkstatic = 1,
+)
+
+cc_library(
+    name = "headers",
+    hdrs = [
+        "DeadCodeRemover.h"
+    ],
+    # strip_include_prefix = "//TitaniumDecompiler/src",
+    visibility = [
+        "//:__pkg__",
+        "//TitaniumDecompiler/src:__subpackages__",
+    ],
+    deps = [
+        "//TitaniumDecompiler/src/TitaniumDecompiler/Disassembler:headers",
+    ],
+    copts = [
+        "-ITitaniumDecompiler/src",
+    ],
+)

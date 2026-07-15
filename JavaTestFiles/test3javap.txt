@@ -1,0 +1,118 @@
+Classfile /home/austin/Github/Decompiler-Kotlin/Test3.class
+  Last modified Oct 21, 2024; size 669 bytes
+  MD5 checksum e777e07adfe32024aa60c31ab81f165c
+  Compiled from "Test3.java"
+public class Test3
+  minor version: 0
+  major version: 52
+  flags: ACC_PUBLIC, ACC_SUPER
+Constant pool:
+   #1 = Methodref          #8.#26         // java/lang/Object."<init>":()V
+   #2 = Fieldref           #27.#28        // java/lang/System.out:Ljava/io/PrintStream;
+   #3 = String             #29            // HELLO
+   #4 = Methodref          #30.#31        // java/io/PrintStream.println:(Ljava/lang/String;)V
+   #5 = Methodref          #30.#32        // java/io/PrintStream.println:(I)V
+   #6 = Methodref          #7.#33         // Test3.hello:()V
+   #7 = Class              #34            // Test3
+   #8 = Class              #35            // java/lang/Object
+   #9 = Class              #36            // Test3$Inner
+  #10 = Utf8               Inner
+  #11 = Utf8               InnerClasses
+  #12 = Utf8               DICK
+  #13 = Utf8               I
+  #14 = Utf8               ConstantValue
+  #15 = Integer            5
+  #16 = Utf8               <init>
+  #17 = Utf8               ()V
+  #18 = Utf8               Code
+  #19 = Utf8               LineNumberTable
+  #20 = Utf8               hello
+  #21 = Utf8               main
+  #22 = Utf8               ([Ljava/lang/String;)V
+  #23 = Utf8               StackMapTable
+  #24 = Utf8               SourceFile
+  #25 = Utf8               Test3.java
+  #26 = NameAndType        #16:#17        // "<init>":()V
+  #27 = Class              #37            // java/lang/System
+  #28 = NameAndType        #38:#39        // out:Ljava/io/PrintStream;
+  #29 = Utf8               HELLO
+  #30 = Class              #40            // java/io/PrintStream
+  #31 = NameAndType        #41:#42        // println:(Ljava/lang/String;)V
+  #32 = NameAndType        #41:#43        // println:(I)V
+  #33 = NameAndType        #20:#17        // hello:()V
+  #34 = Utf8               Test3
+  #35 = Utf8               java/lang/Object
+  #36 = Utf8               Test3$Inner
+  #37 = Utf8               java/lang/System
+  #38 = Utf8               out
+  #39 = Utf8               Ljava/io/PrintStream;
+  #40 = Utf8               java/io/PrintStream
+  #41 = Utf8               println
+  #42 = Utf8               (Ljava/lang/String;)V
+  #43 = Utf8               (I)V
+{
+  public static final int DICK;
+    descriptor: I
+    flags: ACC_PUBLIC, ACC_STATIC, ACC_FINAL
+    ConstantValue: int 5
+
+  public Test3();
+    descriptor: ()V
+    flags: ACC_PUBLIC
+    Code:
+      stack=1, locals=1, args_size=1
+         0: aload_0
+         1: invokespecial #1                  // Method java/lang/Object."<init>":()V
+         4: return
+      LineNumberTable:
+        line 1: 0
+
+  static void hello();
+    descriptor: ()V
+    flags: ACC_STATIC
+    Code:
+      stack=2, locals=0, args_size=0
+         0: getstatic     #2                  // Field java/lang/System.out:Ljava/io/PrintStream;
+         3: ldc           #3                  // String HELLO
+         5: invokevirtual #4                  // Method java/io/PrintStream.println:(Ljava/lang/String;)V
+         8: return
+      LineNumberTable:
+        line 5: 0
+        line 6: 8
+
+  public static void main(java.lang.String[]);
+    descriptor: ([Ljava/lang/String;)V
+    flags: ACC_PUBLIC, ACC_STATIC
+    Code:
+      stack=2, locals=2, args_size=1
+         0: iconst_0
+         1: istore_1
+         2: iload_1
+         3: ifne          19
+         6: iinc          1, 1
+         9: getstatic     #2                  // Field java/lang/System.out:Ljava/io/PrintStream;
+        12: iload_1
+        13: invokevirtual #5                  // Method java/io/PrintStream.println:(I)V
+        16: goto          26
+        19: getstatic     #2                  // Field java/lang/System.out:Ljava/io/PrintStream;
+        22: iload_1
+        23: invokevirtual #5                  // Method java/io/PrintStream.println:(I)V
+        26: invokestatic  #6                  // Method hello:()V
+        29: return
+      LineNumberTable:
+        line 9: 0
+        line 10: 2
+        line 11: 6
+        line 12: 9
+        line 14: 19
+        line 17: 26
+        line 18: 29
+      StackMapTable: number_of_entries = 2
+        frame_type = 252 /* append */
+          offset_delta = 19
+          locals = [ int ]
+        frame_type = 6 /* same */
+}
+SourceFile: "Test3.java"
+InnerClasses:
+     #10= #9 of #7; //Inner=class Test3$Inner of class Test3

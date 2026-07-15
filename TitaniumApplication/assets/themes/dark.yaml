@@ -1,0 +1,47 @@
+metadata:
+  name: "Ghidra Dark Modern"
+  author: "Developer"
+
+# Core color palette using YAML anchors
+palette:
+  background: &bg_dark     "#1e1e1e"
+  surface:    &bg_surface  "#252526"
+  border:     &border_gray "#3f3f46"
+  accent:     &accent_blue "#007acc"
+  text_main:  &text_white  "#d4d4d4"
+  
+  # Decompiler syntax highlighting colors
+  keyword:    &syntax_kw   "#569cd6"
+  type:       &syntax_type "#4ec9b0"
+  variable:   &syntax_var  "#9cdcfe"
+  constant:   &syntax_const "#b5cea8"
+  comment:    &syntax_comm "#6a9955"
+
+# ImGui Style Overrides
+imgui_style:
+  WindowPadding: [8.0, 8.0]
+  FramePadding: [4.0, 3.0]
+  CellPadding: [4.0, 2.0]
+  WindowBorderSize: 1.0
+  FrameBorderSize: 1.0
+  WindowRounding: 4.0
+  FrameRounding: 3.0
+  
+  colors:
+    WindowBg:             *bg_dark
+    ChildBg:              *bg_dark
+    PopupBg:              *bg_surface
+    Border:               *border_gray
+    Header:               *bg_surface
+    HeaderActive:         *accent_blue
+    Button:               *bg_surface
+    ButtonActive:         *accent_blue
+
+# Custom Decompiler Token Styling
+decompiler_theme:
+  Keyword:  *syntax_kw
+  Type:     *syntax_type
+  Variable: *syntax_var
+  Constant: *syntax_const
+  Comment:  *syntax_comm
+  Address:  "#808080"

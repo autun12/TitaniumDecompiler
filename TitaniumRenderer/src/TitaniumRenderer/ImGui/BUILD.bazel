@@ -1,0 +1,39 @@
+cc_library(
+    name = "titanium_renderer_imgui",
+    srcs = [
+        "ImGuiBuild.cpp",
+        "ImGuiLayer.cpp",
+    ],
+    deps = [
+        ":headers",
+        "//TitaniumRenderer/src/TitaniumRenderer/Core:headers",
+        "@GLFW//:glfw",
+        "@imguilib//:imgui",
+        "@GLAD//:glad",
+        "@spdloglib//:spdlog",
+
+    ],
+    copts = [
+        "-ITitaniumRenderer/src"
+    ],
+    visibility = [
+        "//TitaniumRenderer/src:__subpackages__",
+    ],
+)
+
+cc_library(
+    name = "headers",
+    hdrs = [
+        "ImGuiLayer.h",
+    ],
+    deps = [
+        # "//TitaniumRenderer/src/TitaniumRenderer/Core:headers",
+    ],
+    copts = [
+        "-ITitaniumRenderer/src"
+    ],
+    # strip_include_prefix = "//TitaniumRenderer/src",
+    visibility = [
+        "//TitaniumRenderer/src:__subpackages__",
+    ],
+)

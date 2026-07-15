@@ -1,0 +1,49 @@
+load("@rules_cc//cc:defs.bzl", "cc_library", "objc_library")
+
+cc_library(
+    name = "titanium_layer_library",
+    srcs = [
+        "TitaniumLayer.cpp"
+    ],
+    hdrs = [
+        "TitaniumLayer.h"
+    ],
+    copts = [
+        "-ITitaniumDecompiler/src",
+        "-ITitaniumRenderer/src",
+        "-ITitaniumLogger/src",
+
+    ],
+    deps = [
+        "//TitaniumApplication/src/Panels:panels",
+        "//TitaniumApplication/src/UI:ui",
+        "//TitaniumDecompiler/src:TitaniumDecompiler",
+    ],
+    linkstatic = 1,
+    visibility = ["//:__pkg__"],
+)
+
+cc_binary(
+    name = "TitaniumApplication",
+    srcs = [
+        "TitaniumApp.cpp",
+    ],
+    data = [
+        "//TitaniumApplication/assets"
+    ],
+    deps = [
+        "@imguilib//:imgui",
+        ":titanium_layer_library",
+        "//TitaniumRenderer/src:TitaniumRenderer",
+        "//TitaniumApplication/src/Panels:panels",
+        "//TitaniumDecompiler/src:TitaniumDecompiler",
+        "//TitaniumLogger/src:TitaniumLogger",
+    ],
+    copts = [
+        "-ITitaniumDecompiler/src",
+        "-ITitaniumRenderer/src",
+        "-ITitaniumLogger/src",
+
+    ],
+    linkstatic = True,
+)

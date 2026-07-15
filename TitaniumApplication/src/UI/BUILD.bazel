@@ -1,0 +1,24 @@
+load("@rules_cc//cc:defs.bzl", "cc_library", "objc_library")
+
+cc_library(
+    name = "ui",
+    srcs = [
+      "ThemeManager.cpp"
+    ],
+    hdrs = [
+      "ThemeManager.h"
+    ],
+    visibility = [
+        "//:__pkg__",
+        "//TitaniumApplication/src:__subpackages__",
+    ],
+    copts = [
+        "-ITitaniumLogger/src",
+    ],
+    deps = [
+        "@imguilib//:imgui",
+        "@yaml-cpp//:yaml-cpp",
+        "//TitaniumLogger/src/TitaniumLogger/Logger:titanium_logger",
+    ],
+    linkstatic = 1,
+)

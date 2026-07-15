@@ -2,8 +2,9 @@
 
 #pragma once
 
-#include <memory>
 #include <string.h>
+
+#include <memory>
 
 namespace TitaniumDecompiler {
 
@@ -11,14 +12,11 @@ struct Buffer {
     void* Data;
     uint64_t Size;
 
-    Buffer()
-        : Data(nullptr), Size(0) {}
+    Buffer() : Data(nullptr), Size(0) {}
 
-    Buffer(const void* data, uint64_t size)
-        : Data((void*)data), Size(size) {}
+    Buffer(const void* data, uint64_t size) : Data((void*)data), Size(size) {}
 
-    Buffer(const Buffer& other, uint64_t size)
-        : Data(other.Data), Size(size) { }
+    Buffer(const Buffer& other, uint64_t size) : Data(other.Data), Size(size) {}
 
     static Buffer Copy(const Buffer& other) {
         Buffer buffer;
@@ -35,33 +33,31 @@ struct Buffer {
     }
 
     void Allocate(uint64_t size) {
-        delete[](uint8_t*)Data;
+        delete[] (uint8_t*)Data;
         Data = nullptr;
 
-        if (size == 0)
-            return;
+        if (size == 0) return;
 
         Data = new uint8_t[size];
         Size = size;
     }
 
     void Release() {
-        delete[](uint8_t*)Data;
+        delete[] (uint8_t*)Data;
         Data = nullptr;
         Size = 0;
     }
 
     void ZeroInitialize() {
-        if (Data)
-            memset(Data, 0, Size);
+        if (Data) memset(Data, 0, Size);
     }
 
-    template<typename T>
+    template <typename T>
     T& Read(uint64_t offset = 0) {
         return *(T*)((uint32_t*)Data + offset);
     }
 
-    template<typename T>
+    template <typename T>
     const T& Read(uint64_t offset = 0) const {
         return *(T*)((uint32_t*)Data + offset);
     }
@@ -72,23 +68,15 @@ struct Buffer {
         return buffer;
     }
 
-    void Write(const void* data, uint64_t size, uint64_t offset = 0) {
-        memcpy((uint8_t*)Data + offset, data, size);
-    }
+    void Write(const void* data, uint64_t size, uint64_t offset = 0) { memcpy((uint8_t*)Data + offset, data, size); }
 
-    operator bool() const {
-        return Data;
-    }
+    operator bool() const { return Data; }
 
-    uint8_t& operator[](int index) {
-        return ((uint8_t*)Data)[index];
-    }
+    uint8_t& operator[](int index) { return ((uint8_t*)Data)[index]; }
 
-    uint8_t operator[](int index) const {
-        return ((uint8_t*)Data)[index];
-    }
+    uint8_t operator[](int index) const { return ((uint8_t*)Data)[index]; }
 
-    template<typename T>
+    template <typename T>
     T* As() const {
         return (T*)Data;
     }
@@ -96,4 +84,4 @@ struct Buffer {
     inline uint64_t GetSize() const { return Size; }
 };
 
-}
+}  // namespace TitaniumDecompiler

@@ -6,8 +6,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdint.h>
-#include <imgui.h>
-#include <imfilebrowser.h>
+#include "imgui.h"
+#include "imfilebrowser.h"
 
 namespace TitaniumRenderer {
 class SectionsPanel {

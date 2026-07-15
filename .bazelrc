@@ -1,0 +1,42 @@
+common --enable_platform_specific_config
+common --enable_bzlmod
+
+build:linux --action_env=CC=clang
+build:linux --action_env=CXX=clang++
+build:linux --action_env=BAZEL_CXXOPTS="-std=c++20"
+
+build:linux --cxxopt=-std=c++20
+build:linux --host_cxxopt=-std=c++20
+build:macos --cxxopt=-std=c++20
+build:macos --host_cxxopt=-std=c++20
+build:windows --cxxopt=/std:c++20
+build:windows --host_cxxopt=/std:c++20
+
+# We use LLVM's MSVC-compatible compiler driver to compile our code on Windows under Bazel. MSVC is
+# natively supported when using CMake builds.
+build:windows --extra_toolchains=@local_config_cc//:cc-toolchain-x64_windows-clang-cl
+build:windows --extra_execution_platforms=//:x64_windows-clang-cl
+
+build:windows --cxxopt='/std:c++20' --host_cxxopt='/std:c++20' --verbose_failures
+
+# MSVC disappointingly sets __cplusplus to 199711L by default. Defining /Zc:__cplusplus makes it
+# set the correct value.
+build:windows --cxxopt='/Zc:__cplusplus' --host_cxxopt='/Zc:__cplusplus'
+build:windows --enable_runfiles
+
+coverage:gcov --collect_code_coverage
+coverage:gcov --instrumentation_filter=//TitaniumDecompiler/...
+coverage:gcov --combined_report=lcov
+coverage:gcov --build_tests_only
+coverage:gcov --spawn_strategy=local
+coverage:gcov --action_env=CC=gcc
+coverage:gcov --action_env=CXX=g++
+coverage:gcov --cxxopt=-fprofile-arcs
+coverage:gcov --cxxopt=-ftest-coverage
+coverage:gcov --linkopt=-fprofile-arcs
+coverage:gcov --linkopt=-ftest-coverage
+
+build:asan --copt=-fsanitize=address
+build:asan --linkopt=-fsanitize=address
+build:asan --strip=never
+build:asan --cxxopt=-g

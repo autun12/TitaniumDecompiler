@@ -1,6 +1,6 @@
 #include "TitaniumRenderer/Core/LayerStack.h"
-
-#include "tdpch.h"
+#include "TitaniumRenderer/Core/Base.h"
+#include <algorithm>
 
 namespace TitaniumRenderer {
 

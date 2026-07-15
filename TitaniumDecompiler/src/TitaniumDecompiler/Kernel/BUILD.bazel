@@ -1,0 +1,22 @@
+load("@rules_cc//cc:defs.bzl", "cc_library", "objc_library")
+
+cc_library(
+    name = "kernel",
+    srcs = [
+        "Loader.cpp",
+    ],
+    hdrs = [
+        "Loader.h",
+    ],
+    visibility = [
+        "//:__pkg__",
+        "//TitaniumDecompiler/src:__subpackages__",
+    ],
+    deps = [
+        "//TitaniumDecompiler/src/Platform/Linux/FileFormats/JVM:platform_jvm",
+    ],
+    copts = [
+        "-ITitaniumDecompiler/src",
+    ],
+    # strip_include_prefix = "//TitaniumDecompiler/src",
+)

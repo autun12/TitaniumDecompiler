@@ -1,0 +1,16 @@
+cc_library(
+    name = "titanium_renderer_events",
+    hdrs = [
+        "ApplicationEvent.h",
+        "Event.h",
+        "KeyEvent.h",
+        "MouseEvent.h",
+    ],
+    copts = [
+        "-ITitaniumRenderer/src"
+    ],
+    # strip_include_prefix = "//TitaniumRenderer/src",
+    visibility = [
+        "//TitaniumRenderer/src:__subpackages__",
+    ],
+)

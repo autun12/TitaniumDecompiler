@@ -4,20 +4,22 @@
 #include <filesystem>
 #include <string>
 
-#include "../../../../Utils/FileReader.h"
-#include "../../../../Utils/StreamReader.h"
-// #include "ConstPoolInfo.h"
 #include "AttributeStructures.h"
 #include "ConstantPool.h"
 #include "Fields.h"
 #include "Methods.h"
-// #include "Methods.h"
+#include "Utils/FileReader.h"
+#include "Utils/StreamReader.h"
 
 namespace TitaniumDecompiler {
+
+#define MAGIC_NUMBER 0xCAFEBABE
+
 class ClassFile {
 public:
     ~ClassFile() = default;
     static void Deserialize(BigEndianStreamReader* deserializer, ClassFile& instance);
+
 public:
     uint32_t m_Magic = 0;
     uint16_t m_Minor = 0;
@@ -39,20 +41,7 @@ class ClassFileParser {
 public:
     ClassFileParser();
     ~ClassFileParser() = default;
-    void OpenClassFile(const std::filesystem::path& path);
-    void Parse(std::vector<uint8_t> data);
-    // std::string ParseInterface();
-// private:
-//     uint32_t m_Magic = 0;
-//     uint16_t m_Minor = 0;
-//     uint16_t m_Major = 0;
-//     uint16_t m_AccessFlags = 0;
-//     uint16_t m_ThisClass = 0;
-//     uint16_t m_SuperClass = 0;
-    // ConstantPool m_ConstantPool;
-    // FileReader m_Reader;
-    // std::vector<std::string> m_Interfaces;
-    // std::vector<Fields> m_Fields;
-    // std::vector<Methods> m_Methods;
+    ClassFile OpenClassFile(const std::filesystem::path& path);
+    ClassFile Parse(const std::vector<uint8_t>& data);
 };
-}
+}  // namespace TitaniumDecompiler

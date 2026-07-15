@@ -1,0 +1,111 @@
+Classfile /home/austin/Github/Decompiler-Kotlin/JavaTestFiles/Test7.class
+  Last modified Oct 24, 2024; size 609 bytes
+  MD5 checksum bfcde795b7b078bbe846cce4f9eb56f1
+  Compiled from "Test7.java"
+public class JavaTestFiles.Test7
+  minor version: 0
+  major version: 52
+  flags: ACC_PUBLIC, ACC_SUPER
+Constant pool:
+   #1 = Methodref          #9.#20         // java/lang/Object."<init>":()V
+   #2 = String             #21            // Case 1
+   #3 = String             #22            // Case 2
+   #4 = String             #23            // Case 3
+   #5 = String             #24            // Default case
+   #6 = Fieldref           #25.#26        // java/lang/System.out:Ljava/io/PrintStream;
+   #7 = Methodref          #27.#28        // java/io/PrintStream.println:(Ljava/lang/String;)V
+   #8 = Class              #29            // JavaTestFiles/Test7
+   #9 = Class              #30            // java/lang/Object
+  #10 = Utf8               <init>
+  #11 = Utf8               ()V
+  #12 = Utf8               Code
+  #13 = Utf8               LineNumberTable
+  #14 = Utf8               main
+  #15 = Utf8               ([Ljava/lang/String;)V
+  #16 = Utf8               StackMapTable
+  #17 = Class              #31            // java/lang/String
+  #18 = Utf8               SourceFile
+  #19 = Utf8               Test7.java
+  #20 = NameAndType        #10:#11        // "<init>":()V
+  #21 = Utf8               Case 1
+  #22 = Utf8               Case 2
+  #23 = Utf8               Case 3
+  #24 = Utf8               Default case
+  #25 = Class              #32            // java/lang/System
+  #26 = NameAndType        #33:#34        // out:Ljava/io/PrintStream;
+  #27 = Class              #35            // java/io/PrintStream
+  #28 = NameAndType        #36:#37        // println:(Ljava/lang/String;)V
+  #29 = Utf8               JavaTestFiles/Test7
+  #30 = Utf8               java/lang/Object
+  #31 = Utf8               java/lang/String
+  #32 = Utf8               java/lang/System
+  #33 = Utf8               out
+  #34 = Utf8               Ljava/io/PrintStream;
+  #35 = Utf8               java/io/PrintStream
+  #36 = Utf8               println
+  #37 = Utf8               (Ljava/lang/String;)V
+{
+  public JavaTestFiles.Test7();
+    descriptor: ()V
+    flags: ACC_PUBLIC
+    Code:
+      stack=1, locals=1, args_size=1
+         0: aload_0
+         1: invokespecial #1                  // Method java/lang/Object."<init>":()V
+         4: return
+      LineNumberTable:
+        line 3: 0
+
+  public static void main(java.lang.String[]);
+    descriptor: ([Ljava/lang/String;)V
+    flags: ACC_PUBLIC, ACC_STATIC
+    Code:
+      stack=2, locals=3, args_size=1
+         0: iconst_2
+         1: istore_1
+         2: iload_1
+         3: tableswitch   { // 1 to 3
+                       1: 28
+                       2: 34
+                       3: 40
+                 default: 46
+            }
+        28: ldc           #2                  // String Case 1
+        30: astore_2
+        31: goto          49
+        34: ldc           #3                  // String Case 2
+        36: astore_2
+        37: goto          49
+        40: ldc           #4                  // String Case 3
+        42: astore_2
+        43: goto          49
+        46: ldc           #5                  // String Default case
+        48: astore_2
+        49: getstatic     #6                  // Field java/lang/System.out:Ljava/io/PrintStream;
+        52: aload_2
+        53: invokevirtual #7                  // Method java/io/PrintStream.println:(Ljava/lang/String;)V
+        56: return
+      LineNumberTable:
+        line 5: 0
+        line 8: 2
+        line 10: 28
+        line 11: 31
+        line 13: 34
+        line 14: 37
+        line 16: 40
+        line 17: 43
+        line 19: 46
+        line 23: 49
+        line 24: 56
+      StackMapTable: number_of_entries = 5
+        frame_type = 252 /* append */
+          offset_delta = 28
+          locals = [ int ]
+        frame_type = 5 /* same */
+        frame_type = 5 /* same */
+        frame_type = 5 /* same */
+        frame_type = 252 /* append */
+          offset_delta = 2
+          locals = [ class java/lang/String ]
+}
+SourceFile: "Test7.java"

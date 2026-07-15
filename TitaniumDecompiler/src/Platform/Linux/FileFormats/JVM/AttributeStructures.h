@@ -1,7 +1,8 @@
 #pragma once
 
-#include "../../../../Utils/FileReader.h"
-
+#include "AttributeInnerStructures.h"
+#include "StackMapFrame.h"
+#include "Utils/FileReader.h"
 // #include "ConstantPool.h"
 
 #include <memory>
@@ -10,54 +11,58 @@
 namespace TitaniumDecompiler {
 
 enum AttributeTypes {
-    // AnnotationDefaultType,
+    AnnotationDefaultType,
     BootstrapMethodsType,
     CodeType,
     ConstantValueType,
-    // DeprecatedType,
-    // EnclosingMethodType,
+    DeprecatedType,
+    EnclosingMethodType,
     ExceptionsType,
-    // InnerClassesType,
+    InnerClassesType,
     LineNumberTableType,
-    // LocalVariableTableType,
-    // LocalVariableTypeTableType,
-    // MethodParametersType,
+    LocalVariableTableType,
+    LocalVariableTypeTableType,
+    MethodParametersType,
     // ModulesType,
-    // NestHostType,
-    // NestMembersType,
+    NestHostType,
+    NestMembersType,
     // PermittedSubclassesType,
     // RecordType,
 
-    // RuntimeInvisibleAnnotationsType,
-    // RuntimeInvisibleParameterAnnotationsType,
-    // RuntimeInvisibleTypeAnnotationsType,
-    // RuntimeVisibleAnnotationsType,
-    // RuntimeVisibleParameterAnnotationsType,
-    // RuntimeVisibleTypeAnnotationsType,
+    RuntimeInvisibleAnnotationsType,
+    RuntimeInvisibleParameterAnnotationsType,
+    RuntimeInvisibleTypeAnnotationsType,
+    RuntimeVisibleAnnotationsType,
+    RuntimeVisibleParameterAnnotationsType,
+    RuntimeVisibleTypeAnnotationsType,
 
-    // SignatureType,
+    SignatureType,
     SourceFileType,
-    // SyntheticType,
-    Unknown = 60
+    StackMapTableType,
+    SyntheticType,
+    Unknown = 61
 };
 
 struct Attribute {
     virtual ~Attribute() = default;
-    virtual void Deserialize(BigEndianStreamReader* deserializer, Attribute &instance) = 0;
+    virtual void Deserialize(BigEndianStreamReader* deserializer, Attribute& instance) = 0;
 };
 
 struct AttributeInfo {
 public:
     AttributeInfo() : m_AttributeNameIndex(0), m_AttributeLength(0), tag(AttributeTypes::Unknown), info(nullptr) {}
-    AttributeInfo(uint16_t attributeNameIndex, uint32_t attributeLength, Attribute* info) : m_AttributeNameIndex(attributeNameIndex), m_AttributeLength(attributeLength), info(info) {}
+    AttributeInfo(uint16_t attributeNameIndex, uint32_t attributeLength, Attribute* info)
+        : m_AttributeNameIndex(attributeNameIndex), m_AttributeLength(attributeLength), info(info) {}
 
     ~AttributeInfo() = default;
 
     AttributeTypes GetAttrTypeFromName(std::string name);
-    
+
     static void Deserialize(BigEndianStreamReader* deserializer, AttributeInfo& instance);
+
 private:
     std::shared_ptr<Attribute> CreateAttributeFromTag(AttributeInfo& instance);
+
 public:
     uint16_t m_AttributeNameIndex;
     uint32_t m_AttributeLength;
@@ -65,14 +70,9 @@ public:
     std::shared_ptr<Attribute> info;
 };
 
-struct ExceptionTable : Attribute {
+struct ExceptionTable {
     ExceptionTable() {}
     ~ExceptionTable() = default;
-
-    void Deserialize(BigEndianStreamReader* deserializer, Attribute& instance) override {
-        ExceptionTable& exceptionTableInstance = static_cast<ExceptionTable&>(instance);
-        Deserialize(deserializer, exceptionTableInstance);
-    };
 
     static void Deserialize(BigEndianStreamReader* deserializer, ExceptionTable& instance) {
         deserializer->ReadRawBigEndian<uint16_t>(instance.startPc);
@@ -80,23 +80,24 @@ struct ExceptionTable : Attribute {
         deserializer->ReadRawBigEndian<uint16_t>(instance.handlerPc);
         deserializer->ReadRawBigEndian<uint16_t>(instance.catchType);
     }
+
     uint16_t startPc;
     uint16_t endPc;
     uint16_t handlerPc;
     uint16_t catchType;
 };
 
-// struct BootstrapMethodsInfo {
-//     BootstrapMethodsInfo(FileReader& reader);
-//     uint16_t bootstrapMethodRef;
-//     uint16_t numBootstrapArguments;
-//     std::vector<uint16_t> bootstrapArguments;
-// };
+struct ConstantValue : Attribute {
+    ConstantValue() {}
+    ~ConstantValue() = default;
 
-// struct ConstantValue {
-//     ConstantValue(FileReader& reader, ConstantPool& cpInfo);
-//     uint16_t constantValueIndex;
-// };
+    void Deserialize(BigEndianStreamReader* deserializer, Attribute& instance) override {
+        ConstantValue& constantValueInstance = static_cast<ConstantValue&>(instance);
+        deserializer->ReadRawBigEndian<uint16_t>(constantValueInstance.constValIdx);
+    };
+
+    uint16_t constValIdx;
+};
 
 struct Code : Attribute {
     Code() {}
@@ -106,13 +107,22 @@ struct Code : Attribute {
         deserializer->ReadRawBigEndian<uint16_t>(codeInstance.maxStack);
         deserializer->ReadRawBigEndian<uint16_t>(codeInstance.maxLocals);
         deserializer->ReadRawBigEndian<uint32_t>(codeInstance.codeLength);
-        deserializer->ReadArrayBigEndian(codeInstance.code, codeInstance.codeLength);
+
+        if (codeInstance.codeLength > 0 && codeInstance.codeLength < 65536) {
+            deserializer->ReadArrayBigEndian(codeInstance.code, codeInstance.codeLength);
+        }
+
         deserializer->ReadRawBigEndian<uint16_t>(codeInstance.exceptionTableLength);
-        if(codeInstance.exceptionTableLength > 0) {
+
+        if (codeInstance.exceptionTableLength > 0) {
             deserializer->ReadArrayBigEndian(codeInstance.exceptionTable, codeInstance.exceptionTableLength);
         }
+
         deserializer->ReadRawBigEndian<uint16_t>(codeInstance.attributesCount);
-        deserializer->ReadArrayBigEndian(codeInstance.attributes, codeInstance.attributesCount);
+
+        if (codeInstance.attributesCount > 0) {
+            deserializer->ReadArrayBigEndian(codeInstance.attributes, codeInstance.attributesCount);
+        }
     }
 
     uint16_t maxStack;
@@ -125,15 +135,6 @@ struct Code : Attribute {
     std::vector<AttributeInfo> attributes;
 };
 
-struct LineNumTableItem {
-    LineNumTableItem() {}
-    ~LineNumTableItem() = default;
-    uint16_t startPc;
-    uint16_t lineNumber;
-
-    static void Deserialize(BigEndianStreamReader* deserializer, LineNumTableItem &instance);
-};
-
 struct LineNumberTable : Attribute {
     LineNumberTable() {}
     ~LineNumberTable() = default;
@@ -141,24 +142,209 @@ struct LineNumberTable : Attribute {
     void Deserialize(BigEndianStreamReader* deserializer, Attribute& instance) override {
         LineNumberTable& lineNumberTableInstance = static_cast<LineNumberTable&>(instance);
         deserializer->ReadRawBigEndian<uint16_t>(lineNumberTableInstance.lineNumberTableLength);
-        deserializer->ReadArrayBigEndian(lineNumberTableInstance.lineNumberTable, lineNumberTableInstance.lineNumberTableLength);
+        if (lineNumberTableInstance.lineNumberTableLength > 0)
+            deserializer->ReadArrayBigEndian(lineNumberTableInstance.lineNumberTable, lineNumberTableInstance.lineNumberTableLength);
     }
 
     uint16_t lineNumberTableLength;
     std::vector<LineNumTableItem> lineNumberTable;
 };
 
-// struct Exception {
-//     Exception(FileReader& reader, ConstantPool& cpInfo);
-//     uint16_t numberOfExceptions;
-//     std::vector<uint16_t> exceptionIndexTable;
-// };
+struct LocalVariableTable : Attribute {
+    LocalVariableTable() {}
+    ~LocalVariableTable() = default;
 
-// struct BootstrapMethods {
-//     BootstrapMethods(FileReader& reader, ConstantPool& cpInfo);
-//     uint16_t numBootstrapMethods;
-//     std::vector<BootstrapMethodsInfo> bootstrapMethods;
-// };
+    void Deserialize(BigEndianStreamReader* deserializer, Attribute& instance) override {
+        LocalVariableTable& lineNumberTableInstance = static_cast<LocalVariableTable&>(instance);
+        deserializer->ReadRawBigEndian<uint16_t>(lineNumberTableInstance.localVariableTableLength);
+        if (lineNumberTableInstance.localVariableTableLength > 0) {
+            deserializer->ReadArrayBigEndian(lineNumberTableInstance.localVariableTable, lineNumberTableInstance.localVariableTableLength);
+        }
+    }
+
+    uint16_t localVariableTableLength;
+    std::vector<LocalVariableTableEntry> localVariableTable;
+};
+
+struct StackMapTable : Attribute {
+    StackMapTable() {}
+    ~StackMapTable() = default;
+
+    void Deserialize(BigEndianStreamReader* deserializer, Attribute& instance) override {
+        StackMapTable& stackMapTableInstance = static_cast<StackMapTable&>(instance);
+        deserializer->ReadRawBigEndian<uint16_t>(stackMapTableInstance.numOfEntries);
+        if (stackMapTableInstance.numOfEntries > 0) {
+            deserializer->ReadArrayBigEndian(stackMapTableInstance.entries, stackMapTableInstance.numOfEntries);
+        }
+    }
+
+    std::string ResolveLocalVariable(int slot, uint16_t bytecodeOffset) const {
+        for (const auto& frame : entries) {
+            if (auto* fullFrame = dynamic_cast<StackMapAppendFrame*>(frame.m_StackFrameType.get())) {
+                if (fullFrame->offsetDelta == bytecodeOffset) {
+                    if (slot < fullFrame->locals.size()) {
+                        return fullFrame->locals[slot].ResolveType();
+                    }
+                    return "slot out of bounds";
+                }
+            }
+            if (auto* fullFrame = dynamic_cast<StackMapFullFrame*>(frame.m_StackFrameType.get())) {
+                if (fullFrame->offsetDelta == bytecodeOffset) {
+                    if (slot < fullFrame->locals.size()) {
+                        return fullFrame->locals[slot].ResolveType();
+                    }
+                    return "slot out of bounds";
+                }
+            }
+        }
+
+        return "";
+    }
+
+    uint16_t numOfEntries;
+    std::vector<StackMapFrame> entries;
+};
+
+struct ExceptionsAttr : Attribute {
+    ExceptionsAttr() {}
+    ~ExceptionsAttr() = default;
+
+    void Deserialize(BigEndianStreamReader* deserializer, Attribute& instance) override {
+        ExceptionsAttr& exceptionInstance = static_cast<ExceptionsAttr&>(instance);
+        deserializer->ReadRawBigEndian<uint16_t>(exceptionInstance.numOfExceptions);
+        if (exceptionInstance.numOfExceptions > 0) deserializer->ReadArrayBigEndian(exceptionInstance.exceptionIndexTable, exceptionInstance.numOfExceptions);
+    }
+
+    uint16_t numOfExceptions;
+    std::vector<uint16_t> exceptionIndexTable;
+};
+
+struct InnerClasses : Attribute {
+    InnerClasses() {}
+    ~InnerClasses() = default;
+
+    void Deserialize(BigEndianStreamReader* deserializer, Attribute& instance) override {
+        InnerClasses& innerClassInstance = static_cast<InnerClasses&>(instance);
+        deserializer->ReadRawBigEndian<uint16_t>(innerClassInstance.numOfClasses);
+        if (innerClassInstance.numOfClasses > 0) deserializer->ReadArrayBigEndian(innerClassInstance.classes, innerClassInstance.numOfClasses);
+    }
+
+    uint16_t numOfClasses;
+    std::vector<Classes> classes;
+};
+
+struct EnclosingMethod : Attribute {
+    EnclosingMethod() {}
+    ~EnclosingMethod() = default;
+
+    void Deserialize(BigEndianStreamReader* deserializer, Attribute& instance) override {
+        EnclosingMethod& enclosingMethodInstance = static_cast<EnclosingMethod&>(instance);
+        deserializer->ReadRawBigEndian<uint16_t>(enclosingMethodInstance.classIdx);
+        deserializer->ReadRawBigEndian<uint16_t>(enclosingMethodInstance.methodIdx);
+    }
+
+    uint16_t classIdx;
+    uint16_t methodIdx;
+};
+
+struct Synthetic : Attribute {
+    Synthetic() {}
+    ~Synthetic() = default;
+
+    void Deserialize(BigEndianStreamReader* deserializer, Attribute& instance) override {
+        Synthetic& enclosingMethodInstance = static_cast<Synthetic&>(instance);
+    }
+};
+
+struct Signature : Attribute {
+    Signature() {}
+    ~Signature() = default;
+
+    void Deserialize(BigEndianStreamReader* deserializer, Attribute& instance) override {
+        Signature& signatureInstance = static_cast<Signature&>(instance);
+        deserializer->ReadRawBigEndian<uint16_t>(signatureInstance.signatureIdx);
+    }
+
+    uint16_t signatureIdx;
+};
+
+struct LocalVariableTypeTableAttr : Attribute {
+    LocalVariableTypeTableAttr() {}
+    ~LocalVariableTypeTableAttr() = default;
+
+    void Deserialize(BigEndianStreamReader* deserializer, Attribute& instance) override {
+        LocalVariableTypeTableAttr& localVarTypeTableInstance = static_cast<LocalVariableTypeTableAttr&>(instance);
+        deserializer->ReadRawBigEndian<uint16_t>(localVarTypeTableInstance.localVarTypeTableLength);
+        if (localVarTypeTableInstance.localVarTypeTableLength > 0)
+            deserializer->ReadArrayBigEndian(localVarTypeTableInstance.localVarTypeTable, localVarTypeTableInstance.localVarTypeTableLength);
+    }
+
+    uint16_t localVarTypeTableLength;
+    std::vector<LocalVariableTypeTable> localVarTypeTable;
+};
+
+struct Deprecated : Attribute {
+    Deprecated() {}
+    ~Deprecated() = default;
+
+    void Deserialize(BigEndianStreamReader* deserializer, Attribute& instance) override { Deprecated& deprecatedInstance = static_cast<Deprecated&>(instance); }
+};
+
+struct BootstrapMethods : Attribute {
+    BootstrapMethods() {}
+    ~BootstrapMethods() = default;
+
+    void Deserialize(BigEndianStreamReader* deserializer, Attribute& instance) override {
+        BootstrapMethods& bootstrapMethodsInstance = static_cast<BootstrapMethods&>(instance);
+        deserializer->ReadRawBigEndian<uint16_t>(bootstrapMethodsInstance.numBootstrapMethods);
+        if (bootstrapMethodsInstance.numBootstrapMethods > 0)
+            deserializer->ReadArrayBigEndian(bootstrapMethodsInstance.bootstrapsMethods, bootstrapMethodsInstance.numBootstrapMethods);
+    }
+
+    uint16_t numBootstrapMethods;
+    std::vector<BootstrapMethodsInner> bootstrapsMethods;
+};
+
+struct MethodParameters : Attribute {
+    MethodParameters() {}
+    ~MethodParameters() = default;
+
+    void Deserialize(BigEndianStreamReader* deserializer, Attribute& instance) override {
+        MethodParameters& methodParametersInstance = static_cast<MethodParameters&>(instance);
+        deserializer->ReadRawBigEndian<uint16_t>(methodParametersInstance.paramCount);
+        if (methodParametersInstance.paramCount > 0) deserializer->ReadArrayBigEndian(methodParametersInstance.parameters, methodParametersInstance.paramCount);
+    }
+
+    uint16_t paramCount;
+    std::vector<Parameters> parameters;
+};
+
+struct NestHost : Attribute {
+    NestHost() {}
+    ~NestHost() = default;
+
+    void Deserialize(BigEndianStreamReader* deserializer, Attribute& instance) override {
+        NestHost& nestHostInstance = static_cast<NestHost&>(instance);
+        deserializer->ReadRawBigEndian<uint16_t>(nestHostInstance.mainClassIndex);
+        // deserializer->ReadArrayBigEndian(nestHostInstance.parameters, nestHostInstance.paramCount);
+    }
+
+    uint16_t mainClassIndex;
+};
+
+struct NestMembers : Attribute {
+    NestMembers() {}
+    ~NestMembers() = default;
+
+    void Deserialize(BigEndianStreamReader* deserializer, Attribute& instance) override {
+        NestMembers& nestMembersInstance = static_cast<NestMembers&>(instance);
+        deserializer->ReadRawBigEndian<uint16_t>(nestMembersInstance.numOfClasses);
+        if (nestMembersInstance.numOfClasses > 0) deserializer->ReadArrayBigEndian(nestMembersInstance.classes, nestMembersInstance.numOfClasses);
+    }
+
+    uint16_t numOfClasses;
+    std::vector<uint16_t> classes;
+};
 
 struct SourceFile : Attribute {
     SourceFile() {}
@@ -172,8 +358,111 @@ struct SourceFile : Attribute {
     uint16_t sourceFileIndex;
 };
 
+struct RuntimeVisibleAnnotations : Attribute {
+    RuntimeVisibleAnnotations() {}
+    ~RuntimeVisibleAnnotations() = default;
+
+    void Deserialize(BigEndianStreamReader* deserializer, Attribute& instance) override {
+        RuntimeVisibleAnnotations& runtimeVisAnnotationsInstance = static_cast<RuntimeVisibleAnnotations&>(instance);
+        deserializer->ReadRawBigEndian<uint16_t>(runtimeVisAnnotationsInstance.numAnnotations);
+        if (runtimeVisAnnotationsInstance.numAnnotations > 0) {
+            deserializer->ReadArrayBigEndian(runtimeVisAnnotationsInstance.annotations, runtimeVisAnnotationsInstance.numAnnotations);
+        }
+    }
+
+    uint16_t numAnnotations;
+    std::vector<Annotation> annotations;
+};
+
+struct RuntimeInvisibleAnnotations : Attribute {
+    RuntimeInvisibleAnnotations() {}
+    ~RuntimeInvisibleAnnotations() = default;
+
+    void Deserialize(BigEndianStreamReader* deserializer, Attribute& instance) override {
+        RuntimeInvisibleAnnotations& runtimeInvisAnnotationsInstance = static_cast<RuntimeInvisibleAnnotations&>(instance);
+        deserializer->ReadRawBigEndian<uint16_t>(runtimeInvisAnnotationsInstance.numAnnotations);
+        if (runtimeInvisAnnotationsInstance.numAnnotations > 0)
+            deserializer->ReadArrayBigEndian(runtimeInvisAnnotationsInstance.annotations, runtimeInvisAnnotationsInstance.numAnnotations);
+    }
+
+    uint16_t numAnnotations;
+    std::vector<Annotation> annotations;
+};
+
+struct RuntimeVisibleParameterAnnotations : Attribute {
+    RuntimeVisibleParameterAnnotations() {}
+    ~RuntimeVisibleParameterAnnotations() = default;
+
+    void Deserialize(BigEndianStreamReader* deserializer, Attribute& instance) override {
+        RuntimeVisibleParameterAnnotations& runtimeVisParamInstance = static_cast<RuntimeVisibleParameterAnnotations&>(instance);
+        deserializer->ReadRawBigEndian<uint16_t>(runtimeVisParamInstance.numParameters);
+        if (runtimeVisParamInstance.numParameters > 0)
+            deserializer->ReadArrayBigEndian(runtimeVisParamInstance.paramAnnotations, runtimeVisParamInstance.numParameters);
+    }
+
+    uint16_t numParameters;
+    std::vector<ParameterAnnotations> paramAnnotations;
+};
+
+struct RuntimeInvisibleParameterAnnotations : Attribute {
+    RuntimeInvisibleParameterAnnotations() {}
+    ~RuntimeInvisibleParameterAnnotations() = default;
+
+    void Deserialize(BigEndianStreamReader* deserializer, Attribute& instance) override {
+        RuntimeInvisibleParameterAnnotations& runtimeInvisParamInstance = static_cast<RuntimeInvisibleParameterAnnotations&>(instance);
+        deserializer->ReadRawBigEndian<uint16_t>(runtimeInvisParamInstance.numParameters);
+        if (runtimeInvisParamInstance.numParameters > 0)
+            deserializer->ReadArrayBigEndian(runtimeInvisParamInstance.paramAnnotations, runtimeInvisParamInstance.numParameters);
+    }
+
+    uint16_t numParameters;
+    std::vector<ParameterAnnotations> paramAnnotations;
+};
+
+struct RuntimeVisibleTypeAnnotations : Attribute {
+    RuntimeVisibleTypeAnnotations() {}
+    ~RuntimeVisibleTypeAnnotations() = default;
+
+    void Deserialize(BigEndianStreamReader* deserializer, Attribute& instance) override {
+        RuntimeVisibleTypeAnnotations& runtimeVisibleTypeAnnotationsInstance = static_cast<RuntimeVisibleTypeAnnotations&>(instance);
+        deserializer->ReadRawBigEndian<uint16_t>(runtimeVisibleTypeAnnotationsInstance.numAnnotations);
+        if (runtimeVisibleTypeAnnotationsInstance.numAnnotations > 0)
+            deserializer->ReadArrayBigEndian(runtimeVisibleTypeAnnotationsInstance.annotations, runtimeVisibleTypeAnnotationsInstance.numAnnotations);
+    }
+
+    uint16_t numAnnotations;
+    std::vector<TypeAnnotation> annotations;
+};
+
+struct RuntimeInvisibleTypeAnnotations : Attribute {
+    RuntimeInvisibleTypeAnnotations() {}
+    ~RuntimeInvisibleTypeAnnotations() = default;
+
+    void Deserialize(BigEndianStreamReader* deserializer, Attribute& instance) override {
+        RuntimeInvisibleTypeAnnotations& runtimeInvisTypeAnnotationsInstance = static_cast<RuntimeInvisibleTypeAnnotations&>(instance);
+        deserializer->ReadRawBigEndian<uint16_t>(runtimeInvisTypeAnnotationsInstance.numParameters);
+        if (runtimeInvisTypeAnnotationsInstance.numParameters > 0)
+            deserializer->ReadArrayBigEndian(runtimeInvisTypeAnnotationsInstance.paramAnnotations, runtimeInvisTypeAnnotationsInstance.numParameters);
+    }
+
+    uint16_t numParameters;
+    std::vector<ParameterAnnotations> paramAnnotations;
+};
+
+struct AnnotationDefault : Attribute {
+    AnnotationDefault() {}
+    ~AnnotationDefault() = default;
+
+    void Deserialize(BigEndianStreamReader* deserializer, Attribute& instance) override {
+        AnnotationDefault& annotationDefaultInstance = static_cast<AnnotationDefault&>(instance);
+        deserializer->ReadObject(defaultVal);
+    }
+
+    ElementValue defaultVal;
+};
+
 // struct Unknown {
 //     Unknown(FileReader& reader, uint32_t value);
 //     std::vector<uint8_t> info;
 // };
-}
+}  // namespace TitaniumDecompiler

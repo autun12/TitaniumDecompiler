@@ -1,0 +1,35 @@
+load("@rules_cc//cc:defs.bzl", "cc_library", "objc_library")
+
+cc_library(
+    name = "utils",
+    srcs = [
+        "FileReader.cpp",
+        "StreamReader.cpp",
+        "Utils.cpp",
+    ],
+    hdrs = [
+        "Buffer.h",
+        "FileReader.h",
+        "FileReaderError.h",
+        "StreamReader.h",
+        "zip_file.hpp",
+        "Utils.h",
+    ],
+    copts = select({
+        "@platforms//os:macos": [
+            "-Wno-incompatible-function-pointer-types",
+        ],
+        "@platforms//os:linux": [
+            "-Wno-incompatible-function-pointer-types",
+        ],
+        "//conditions:default": [],
+    }),
+    visibility = [
+        "//:__pkg__",
+        "//TitaniumDecompiler/src:__subpackages__",
+    ],
+    # strip_include_prefix = "//TitaniumDecompiler/src",
+    deps = [
+        # "@com_google_absl//absl/strings:str_format",
+    ],
+)

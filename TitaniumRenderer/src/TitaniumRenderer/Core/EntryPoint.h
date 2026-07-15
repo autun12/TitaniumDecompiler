@@ -1,9 +1,10 @@
 #pragma once
 
+#include <TitaniumLogger.h>
 extern TitaniumRenderer::Application* TitaniumRenderer::CreateApplication();
 
 int main(int argc, char** argv) {
-	TitaniumRenderer::Log::Init();
+	TitaniumLogger::Log::Init();
 	auto app = TitaniumRenderer::CreateApplication();
 	app->Run();
 	delete app;

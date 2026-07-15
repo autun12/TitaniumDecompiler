@@ -1,0 +1,40 @@
+Classfile /home/austindrane/OldComputer/CollegeClasses/SE2/Decompiler-Kotlin/JavaTestFiles/MyTypeAnnotation.class
+  Last modified Mar 11, 2025; size 388 bytes
+  SHA-256 checksum 8610c31957d117517077dd234870d6bb47e0b5edc1aa73f03d430c4457c3d98d
+  Compiled from "Test4.java"
+interface JavaTestFiles.MyTypeAnnotation extends java.lang.annotation.Annotation
+  minor version: 0
+  major version: 65
+  flags: (0x2600) ACC_INTERFACE, ACC_ABSTRACT, ACC_ANNOTATION
+  this_class: #1                          // JavaTestFiles/MyTypeAnnotation
+  super_class: #3                         // java/lang/Object
+  interfaces: 1, fields: 0, methods: 0, attributes: 2
+Constant pool:
+   #1 = Class              #2             // JavaTestFiles/MyTypeAnnotation
+   #2 = Utf8               JavaTestFiles/MyTypeAnnotation
+   #3 = Class              #4             // java/lang/Object
+   #4 = Utf8               java/lang/Object
+   #5 = Class              #6             // java/lang/annotation/Annotation
+   #6 = Utf8               java/lang/annotation/Annotation
+   #7 = Utf8               SourceFile
+   #8 = Utf8               Test4.java
+   #9 = Utf8               RuntimeVisibleAnnotations
+  #10 = Utf8               Ljava/lang/annotation/Target;
+  #11 = Utf8               value
+  #12 = Utf8               Ljava/lang/annotation/ElementType;
+  #13 = Utf8               TYPE_USE
+  #14 = Utf8               Ljava/lang/annotation/Retention;
+  #15 = Utf8               Ljava/lang/annotation/RetentionPolicy;
+  #16 = Utf8               CLASS
+{
+}
+SourceFile: "Test4.java"
+RuntimeVisibleAnnotations:
+  0: #10(#11=[e#12.#13])
+    java.lang.annotation.Target(
+      value=[Ljava/lang/annotation/ElementType;.TYPE_USE]
+    )
+  1: #14(#11=e#15.#16)
+    java.lang.annotation.Retention(
+      value=Ljava/lang/annotation/RetentionPolicy;.CLASS
+    )

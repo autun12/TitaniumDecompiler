@@ -1,3 +1,5 @@
 #!/bin/bash
 
-./bin/Debug-linux-x86_64/TitaniumApplication/TitaniumApplication
+cd bin/Debug-linux-x86_64/TitaniumApplication
+./TitaniumApplication
+# ./bin/Debug-linux-x86_64/TitaniumApplication/TitaniumApplication

@@ -11,4 +11,4 @@ public:
 private:
     const char* message_;
 };
-}
+}  // namespace TitaniumDecompiler

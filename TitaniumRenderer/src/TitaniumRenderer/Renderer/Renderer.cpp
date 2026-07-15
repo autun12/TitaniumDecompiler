@@ -1,4 +1,4 @@
-#include "tdpch.h"
+#include "TitaniumRenderer/Core/Base.h"
 #include "TitaniumRenderer/Renderer/Renderer.h"
 
 namespace TitaniumRenderer {

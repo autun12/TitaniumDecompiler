@@ -1,0 +1,36 @@
+cc_library(
+    name = "titanium_logger",
+    srcs = [
+        "Log.cpp",
+    ],
+    deps = [
+        "@spdloglib//:spdlog",
+        ":headers",
+    ],
+    copts = [
+        "-ITitaniumLogger/src",
+    ],
+    # strip_include_prefix = "//TitaniumRenderer/src",
+    visibility = [
+        "//TitaniumLogger/src:__subpackages__",
+        "//TitaniumRenderer/src:__subpackages__",
+        "//TitaniumDecompiler/src:__subpackages__",
+        "//TitaniumApplication/src:__subpackages__",
+    ],
+    linkstatic = 1,
+)
+
+cc_library(
+    name = "headers",
+    hdrs = [
+        "Log.h",
+    ],
+    copts = [
+        "-ITitaniumLogger/src"
+    ],
+    # strip_include_prefix = "//TitaniumRenderer/src",
+    visibility = [
+        "//TitaniumLogger/src:__subpackages__",
+        "//TitaniumLogger/src:__pkg__",
+    ],
+)

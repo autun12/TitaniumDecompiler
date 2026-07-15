@@ -1,0 +1,17 @@
+cc_library(
+    name = "titanium_renderer_platform_linux",
+    srcs = [
+        "LinuxPlatformUtils.cpp"
+    ],
+    deps = [
+        "//TitaniumRenderer/src/TitaniumRenderer/Core:headers",
+        "//TitaniumRenderer/src/TitaniumRenderer/Utils:utils_header",
+    ],
+    copts = [
+        "-ITitaniumRenderer/src"
+    ],
+    # strip_include_prefix = "//TitaniumRenderer/src",
+    visibility = [
+        "//TitaniumRenderer/src:__subpackages__",
+    ],
+)

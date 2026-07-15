@@ -1,5 +1,5 @@
-
-#include "tdpch.h"
+#include "TitaniumLogger/Logger/Log.h"
+#include "TitaniumRenderer/Core/Base.h"
 #include "Platform/OpenGL/OpenGLContext.h"
 
 #include <GLFW/glfw3.h>
@@ -16,10 +16,10 @@ void OpenGLContext::Init() {
     int status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
     TD_CORE_ASSERT(status, "Failed to initialize Glad!");
     
-    TD_CORE_INFO("OpenGL Info:");
-    TD_CORE_INFO("  Vendor: {0}", glGetString(GL_VENDOR));
-    TD_CORE_INFO("  Renderer: {0}", glGetString(GL_RENDERER));
-    TD_CORE_INFO("  Version: {0}", glGetString(GL_VERSION));
+    TD_RENDERER_INFO("OpenGL Info:");
+    TD_RENDERER_INFO("  Vendor: {0}", (const char*)glGetString(GL_VENDOR));
+    TD_RENDERER_INFO("  Renderer: {0}", (const char*)glGetString(GL_RENDERER));
+    TD_RENDERER_INFO("  Version: {0}", (const char*)glGetString(GL_VERSION));
 
     TD_CORE_ASSERT(GLVersion.major > 4 || (GLVersion.major == 4 && GLVersion.minor >= 5), "Titanium Decompiler requires at least OpenGL version 4.5!");
 }

@@ -1,0 +1,64 @@
+Classfile /home/austin/Github/Decompiler-Kotlin/Test3$Inner.class
+  Last modified Oct 21, 2024; size 336 bytes
+  MD5 checksum 687be62b2cc28e0e2b29bd900da5944b
+  Compiled from "Test3.java"
+class Test3$Inner
+  minor version: 0
+  major version: 52
+  flags: ACC_SUPER
+Constant pool:
+   #1 = Fieldref           #4.#16         // Test3$Inner.this$0:LTest3;
+   #2 = Methodref          #5.#17         // java/lang/Object."<init>":()V
+   #3 = Fieldref           #4.#18         // Test3$Inner.tatter:I
+   #4 = Class              #20            // Test3$Inner
+   #5 = Class              #23            // java/lang/Object
+   #6 = Utf8               tatter
+   #7 = Utf8               I
+   #8 = Utf8               this$0
+   #9 = Utf8               LTest3;
+  #10 = Utf8               <init>
+  #11 = Utf8               (LTest3;)V
+  #12 = Utf8               Code
+  #13 = Utf8               LineNumberTable
+  #14 = Utf8               SourceFile
+  #15 = Utf8               Test3.java
+  #16 = NameAndType        #8:#9          // this$0:LTest3;
+  #17 = NameAndType        #10:#24        // "<init>":()V
+  #18 = NameAndType        #6:#7          // tatter:I
+  #19 = Class              #25            // Test3
+  #20 = Utf8               Test3$Inner
+  #21 = Utf8               Inner
+  #22 = Utf8               InnerClasses
+  #23 = Utf8               java/lang/Object
+  #24 = Utf8               ()V
+  #25 = Utf8               Test3
+{
+  int tatter;
+    descriptor: I
+    flags:
+
+  final Test3 this$0;
+    descriptor: LTest3;
+    flags: ACC_FINAL, ACC_SYNTHETIC
+
+  Test3$Inner(Test3);
+    descriptor: (LTest3;)V
+    flags:
+    Code:
+      stack=2, locals=2, args_size=2
+         0: aload_0
+         1: aload_1
+         2: putfield      #1                  // Field this$0:LTest3;
+         5: aload_0
+         6: invokespecial #2                  // Method java/lang/Object."<init>":()V
+         9: aload_0
+        10: bipush        15
+        12: putfield      #3                  // Field tatter:I
+        15: return
+      LineNumberTable:
+        line 20: 0
+        line 21: 9
+}
+SourceFile: "Test3.java"
+InnerClasses:
+     #21= #4 of #19; //Inner=class Test3$Inner of class Test3

@@ -3,9 +3,9 @@
 #include <cstdint>
 #include <memory>
 
-#include "../../../../Utils/FileReader.h"
 #include "AttributeStructures.h"
 #include "ConstantPool.h"
+#include "Utils/FileReader.h"
 
 namespace TitaniumDecompiler {
 class Attributes {
@@ -19,4 +19,4 @@ public:
     uint16_t AttributesCount = 0;
     std::vector<AttributeInfo> m_Attributes;
 };
-}
+}  // namespace TitaniumDecompiler

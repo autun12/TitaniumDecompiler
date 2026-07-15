@@ -1,0 +1,103 @@
+Classfile /home/austin/Github/Decompiler-Kotlin/Test2.class
+  Last modified Oct 19, 2024; size 565 bytes
+  MD5 checksum ed32f5dd24028dda621cb721407bd5b5
+  Compiled from "Test2.java"
+public class Test2
+  minor version: 0
+  major version: 52
+  flags: ACC_PUBLIC, ACC_SUPER
+Constant pool:
+   #1 = Methodref          #8.#19         // java/lang/Object."<init>":()V
+   #2 = Fieldref           #20.#21        // java/lang/System.out:Ljava/io/PrintStream;
+   #3 = String             #22            // HELLO
+   #4 = Methodref          #23.#24        // java/io/PrintStream.println:(Ljava/lang/String;)V
+   #5 = Methodref          #23.#25        // java/io/PrintStream.println:(I)V
+   #6 = Methodref          #7.#26         // Test2.hello:()V
+   #7 = Class              #27            // Test2
+   #8 = Class              #28            // java/lang/Object
+   #9 = Utf8               <init>
+  #10 = Utf8               ()V
+  #11 = Utf8               Code
+  #12 = Utf8               LineNumberTable
+  #13 = Utf8               hello
+  #14 = Utf8               main
+  #15 = Utf8               ([Ljava/lang/String;)V
+  #16 = Utf8               StackMapTable
+  #17 = Utf8               SourceFile
+  #18 = Utf8               Test2.java
+  #19 = NameAndType        #9:#10         // "<init>":()V
+  #20 = Class              #29            // java/lang/System
+  #21 = NameAndType        #30:#31        // out:Ljava/io/PrintStream;
+  #22 = Utf8               HELLO
+  #23 = Class              #32            // java/io/PrintStream
+  #24 = NameAndType        #33:#34        // println:(Ljava/lang/String;)V
+  #25 = NameAndType        #33:#35        // println:(I)V
+  #26 = NameAndType        #13:#10        // hello:()V
+  #27 = Utf8               Test2
+  #28 = Utf8               java/lang/Object
+  #29 = Utf8               java/lang/System
+  #30 = Utf8               out
+  #31 = Utf8               Ljava/io/PrintStream;
+  #32 = Utf8               java/io/PrintStream
+  #33 = Utf8               println
+  #34 = Utf8               (Ljava/lang/String;)V
+  #35 = Utf8               (I)V
+{
+  public Test2();
+    descriptor: ()V
+    flags: ACC_PUBLIC
+    Code:
+      stack=1, locals=1, args_size=1
+         0: aload_0
+         1: invokespecial #1                  // Method java/lang/Object."<init>":()V
+         4: return
+      LineNumberTable:
+        line 1: 0
+
+  static void hello();
+    descriptor: ()V
+    flags: ACC_STATIC
+    Code:
+      stack=2, locals=0, args_size=0
+         0: getstatic     #2                  // Field java/lang/System.out:Ljava/io/PrintStream;
+         3: ldc           #3                  // String HELLO
+         5: invokevirtual #4                  // Method java/io/PrintStream.println:(Ljava/lang/String;)V
+         8: return
+      LineNumberTable:
+        line 4: 0
+        line 5: 8
+
+  public static void main(java.lang.String[]);
+    descriptor: ([Ljava/lang/String;)V
+    flags: ACC_PUBLIC, ACC_STATIC
+    Code:
+      stack=2, locals=2, args_size=1
+         0: iconst_0
+         1: istore_1
+         2: iload_1
+         3: ifne          19
+         6: iinc          1, 1
+         9: getstatic     #2                  // Field java/lang/System.out:Ljava/io/PrintStream;
+        12: iload_1
+        13: invokevirtual #5                  // Method java/io/PrintStream.println:(I)V
+        16: goto          26
+        19: getstatic     #2                  // Field java/lang/System.out:Ljava/io/PrintStream;
+        22: iload_1
+        23: invokevirtual #5                  // Method java/io/PrintStream.println:(I)V
+        26: invokestatic  #6                  // Method hello:()V
+        29: return
+      LineNumberTable:
+        line 8: 0
+        line 9: 2
+        line 10: 6
+        line 11: 9
+        line 13: 19
+        line 16: 26
+        line 17: 29
+      StackMapTable: number_of_entries = 2
+        frame_type = 252 /* append */
+          offset_delta = 19
+          locals = [ int ]
+        frame_type = 6 /* same */
+}
+SourceFile: "Test2.java"

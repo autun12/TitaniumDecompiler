@@ -1,0 +1,52 @@
+Classfile /home/austin/Github/Decompiler-Kotlin/JavaTestFiles/Test6.class
+  Last modified Oct 23, 2024; size 289 bytes
+  MD5 checksum a13c1b78a326cdfd5e324d5eeb8dc34c
+  Compiled from "Test6.java"
+public class JavaTestFiles.Test6
+  minor version: 0
+  major version: 52
+  flags: ACC_PUBLIC, ACC_SUPER
+Constant pool:
+   #1 = Methodref          #4.#13         // java/lang/Object."<init>":()V
+   #2 = Class              #14            // "[[I"
+   #3 = Class              #15            // JavaTestFiles/Test6
+   #4 = Class              #16            // java/lang/Object
+   #5 = Utf8               <init>
+   #6 = Utf8               ()V
+   #7 = Utf8               Code
+   #8 = Utf8               LineNumberTable
+   #9 = Utf8               main
+  #10 = Utf8               ([Ljava/lang/String;)V
+  #11 = Utf8               SourceFile
+  #12 = Utf8               Test6.java
+  #13 = NameAndType        #5:#6          // "<init>":()V
+  #14 = Utf8               [[I
+  #15 = Utf8               JavaTestFiles/Test6
+  #16 = Utf8               java/lang/Object
+{
+  public JavaTestFiles.Test6();
+    descriptor: ()V
+    flags: ACC_PUBLIC
+    Code:
+      stack=1, locals=1, args_size=1
+         0: aload_0
+         1: invokespecial #1                  // Method java/lang/Object."<init>":()V
+         4: return
+      LineNumberTable:
+        line 2: 0
+
+  public static void main(java.lang.String[]);
+    descriptor: ([Ljava/lang/String;)V
+    flags: ACC_PUBLIC, ACC_STATIC
+    Code:
+      stack=2, locals=2, args_size=1
+         0: iconst_3
+         1: iconst_4
+         2: multianewarray #2,  2             // class "[[I"
+         6: astore_1
+         7: return
+      LineNumberTable:
+        line 5: 0
+        line 6: 7
+}
+SourceFile: "Test6.java"

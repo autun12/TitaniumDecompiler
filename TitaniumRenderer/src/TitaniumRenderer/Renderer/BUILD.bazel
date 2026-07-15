@@ -1,0 +1,45 @@
+# Renderer internal library
+cc_library(
+    name = "renderer_internals",
+    srcs = [
+        "GraphicsContext.cpp",
+        "RenderCommand.cpp",
+        "Renderer.cpp",
+        "RendererAPI.cpp",
+    ],
+    deps = [
+        ":headers",
+        "@spdloglib//:spdlog",
+        "//TitaniumRenderer/src/Platform/OpenGL:titanium_renderer_platform_opengl",
+
+    ],
+    copts = [
+        "-ITitaniumRenderer/src"
+    ],
+    # strip_include_prefix = "//TitaniumRenderer/src",
+    visibility = [
+        "//TitaniumRenderer/src:__subpackages__",
+    ],
+    linkstatic = 1,
+)
+
+cc_library(
+    name = "headers",
+    hdrs = [
+        "GraphicsContext.h",
+        "RenderCommand.h",
+        "Renderer.h",
+        "RendererAPI.h",
+    ],
+    deps = [
+        "//TitaniumRenderer/src/TitaniumRenderer/Core:headers",
+        "//TitaniumRenderer/src/Platform/OpenGL:headers",
+    ],
+    copts = [
+        "-ITitaniumRenderer/src"
+    ],
+    # strip_include_prefix = "//TitaniumRenderer/src",
+    visibility = [
+        "//TitaniumRenderer/src:__subpackages__",
+    ],
+)

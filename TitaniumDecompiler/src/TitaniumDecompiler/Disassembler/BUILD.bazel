@@ -1,0 +1,81 @@
+load("@rules_cc//cc:defs.bzl", "cc_library", "objc_library")
+
+cc_library(
+    name = "disassembler",
+    srcs = [
+        "BasicBlock.cpp",
+        "CFG.cpp",
+        "Disassembler.cpp",
+        "ExceptionRangeCFG.cpp",
+        "Function.cpp",
+        "JVMDisassembler.cpp",
+    ],
+    visibility = [
+        "//:__pkg__",
+        "//TitaniumDecompiler/src:__subpackages__",
+    ],
+    # strip_include_prefix = "//TitaniumDecompiler/src",
+    deps = [
+        ":headers",
+        "//TitaniumDecompiler/src/Platform/Linux/FileFormats/JVM:platform_jvm",
+        "//TitaniumDecompiler/src/TitaniumDecompiler/Kernel:kernel",
+        "//TitaniumDecompiler/src/TitaniumDecompiler/Decompiler:headers",
+        "//TitaniumLogger/src/TitaniumLogger/Logger:titanium_logger",
+    ],
+    copts = [
+        "-ITitaniumDecompiler/src",
+        "-ITitaniumLogger/src",
+    ],
+)
+
+cc_library(
+    name = "disassembler_test",
+    srcs = [
+        "BasicBlock.cpp",
+        "CFG.cpp",
+        "Disassembler.cpp",
+        "Function.cpp",
+        "JVMDisassembler.cpp",
+    ],
+    visibility = [
+        "//visibility:public",
+    ],
+    # strip_include_prefix = "//TitaniumDecompiler/src",
+    deps = [
+        ":headers",
+        "//TitaniumDecompiler/src/Platform/Linux/FileFormats/JVM:platform_jvm",
+        "//TitaniumDecompiler/src/TitaniumDecompiler/Kernel:kernel",
+        "//TitaniumDecompiler/src/TitaniumDecompiler/Decompiler:headers",
+        "//TitaniumLogger/src/TitaniumLogger/Logger:titanium_logger",
+    ],
+    copts = [
+        "-ITitaniumDecompiler/src",
+        "-ITitaniumLogger/src",
+        "-DUNIT_TEST",
+    ],
+)
+
+cc_library(
+    name = "headers",
+    hdrs = [
+        "BasicBlock.h",
+        "CFG.h",
+        "Disassembler.h",
+        "ExceptionRangeCFG.h",
+        "Function.h",
+        "JVMDisassembler.h",
+    ],
+    visibility = [
+        "//:__pkg__",
+        "//TitaniumDecompiler/src:__subpackages__",
+    ],
+    # strip_include_prefix = "//TitaniumDecompiler/src",
+    deps = [
+        "//TitaniumDecompiler/src/Platform/Linux/FileFormats/JVM:platform_jvm",
+        "//TitaniumDecompiler/src/TitaniumDecompiler/Kernel:kernel",
+        # "//TitaniumDecompiler/src/TitaniumDecompiler/Decompiler:headers",
+    ],
+    copts = [
+        "-ITitaniumDecompiler/src",
+    ],
+)

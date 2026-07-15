@@ -1,0 +1,47 @@
+cc_library(
+    name = "titanium_renderer_platform_opengl",
+    srcs = [
+        "OpenGLContext.cpp",
+        "OpenGLRendererAPI.cpp",
+    ],
+    defines = [
+        "GLFW_INCLUDE_NONE",
+    ],
+    deps = [
+        ":headers",
+        "//TitaniumRenderer/src/TitaniumRenderer/Core:headers",
+        "//TitaniumRenderer/src/TitaniumRenderer/Renderer:headers",
+        "@GLAD//:glad",
+        "@GLFW//:glfw",
+        "//TitaniumLogger/src/TitaniumLogger/Logger:titanium_logger",
+        # "//TitaniumLogger/src:TitaniumLogger",
+        "@spdloglib//:spdlog",
+    ],
+    copts = [
+        "-ITitaniumRenderer/src",
+        "-ITitaniumLogger/src",
+    ],
+    # strip_include_prefix = "//TitaniumRenderer/src",
+    visibility = [
+        "//TitaniumRenderer/src:__subpackages__",
+    ],
+)
+
+cc_library(
+    name = "headers",
+    hdrs = [
+        "OpenGLContext.h",
+        "OpenGLRendererAPI.h"
+    ],
+    deps = [
+        # "//TitaniumRenderer/src/TitaniumRenderer/Core:headers",
+        # "//TitaniumRenderer/src/TitaniumRenderer/Renderer:headers",
+    ],
+    copts = [
+        "-ITitaniumRenderer/src"
+    ],
+    # strip_include_prefix = "//TitaniumRenderer/src",
+    visibility = [
+        "//TitaniumRenderer/src:__subpackages__",
+    ],
+)

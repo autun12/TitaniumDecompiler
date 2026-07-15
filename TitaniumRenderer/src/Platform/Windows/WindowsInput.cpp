@@ -1,4 +1,4 @@
-#include "tdpch.h"
+#include "TitaniumRenderer/Core/Base.h"
 #include "TitaniumRenderer/Core/Input.h"
 
 #include "TitaniumRenderer/Core/Application.h"
@@ -18,7 +18,7 @@ bool Input::IsMouseButtonPressed(const MouseCode button) {
     return state == GLFW_PRESS;
 }
 
-glm::vec2 Input::GetMousePosition() {
+MousePos Input::GetMousePosition() {
     auto* window = static_cast<GLFWwindow*>(Application::Get().GetWindow().GetNativeWindow());
     double xpos, ypos;
     glfwGetCursorPos(window, &xpos, &ypos);

@@ -1,0 +1,56 @@
+cc_library(
+    name = "titanium_renderer_core",
+    srcs = [
+        "Application.cpp",
+        "Layer.cpp",
+        "LayerStack.cpp",
+        "Window.cpp",
+    ],
+    deps = [
+        "@spdloglib//:spdlog",
+        ":headers",
+        "//TitaniumLogger/src:TitaniumLogger",
+        "//TitaniumRenderer/src/TitaniumRenderer/Renderer:renderer_internals",
+        "//TitaniumRenderer/src/Platform/Windows:titanium_renderer_platform_windows",
+        "//TitaniumRenderer/src/TitaniumRenderer/ImGui:titanium_renderer_imgui",
+    ],
+    copts = [
+        "-ITitaniumRenderer/src"
+    ],
+    # strip_include_prefix = "//TitaniumRenderer/src",
+    visibility = [
+        "//TitaniumRenderer/src:__subpackages__",
+    ],
+    linkstatic = 1,
+)
+
+cc_library(
+    name = "headers",
+    hdrs = [
+        "Application.h",
+        "Assert.h",
+        "Base.h",
+        "EntryPoint.h",
+        "Input.h",
+        "KeyCodes.h",
+        "Layer.h",
+        "LayerStack.h",
+        "MouseCodes.h",
+        "PlatformDetection.h",
+        "Timestep.h",
+        "Window.h",
+    ],
+    copts = [
+        "-ITitaniumRenderer/src"
+    ],
+    deps = [
+        "//TitaniumRenderer/src/TitaniumRenderer/Events:titanium_renderer_events",
+        "//TitaniumRenderer/src/TitaniumRenderer/ImGui:headers",
+    ],
+    # strip_include_prefix = "//TitaniumRenderer/src",
+    visibility = [
+        "//TitaniumRenderer/src:__subpackages__",
+        "//TitaniumRenderer/src:__pkg__",
+
+    ],
+)

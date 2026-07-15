@@ -1,15 +1,15 @@
 #pragma once
 
+#include <cstdint>
 #include <memory>
+#include <string>
 #include <utility>
 #include <vector>
-#include <cstdint>
-#include <string>
-#include "../../../../Utils/FileReader.h"
+
 #include "ConstPoolInfo.h"
+#include "Utils/FileReader.h"
 
 namespace TitaniumDecompiler {
-
 
 class ConstantPool {
 public:
@@ -19,23 +19,19 @@ public:
 
     static void Deserialize(BigEndianStreamReader* deserializer, ConstantPool& instance);
 
-//     bool ReadConstPoolInfo(FileReader& reader);
-//     ConstantPool newFromReader(FileReader& reader);
-
-//     std::vector<ConstPoolInfo> GetConstPoolInfo();
-
-//     std::string GetQualifiedName(uint16_t index);
-//     std::string CheckClassName(std::string className);
-//     std::string GetUtf8Content(UTF8Info& utf8);
+    //     std::string GetQualifiedName(uint16_t index);
+    //     std::string CheckClassName(std::string className);
 public:
     uint16_t ConstantPoolCount = 0;
     std::vector<ConstPoolInfo> m_ConstPoolInfo;
 };
 
-
 std::string GetConstantUTF8(int idx);
-static ConstPoolInfo GetConstant(int idx);
+std::string GetConstantClass(int idx);
+std::string GetNameAndType(int idx);
 
-extern ConstantPool g_ConstPool;
+ConstPoolInfo GetConstant(int idx);
 
-}
+extern std::vector<ConstantPool> g_ConstPool;
+
+}  // namespace TitaniumDecompiler

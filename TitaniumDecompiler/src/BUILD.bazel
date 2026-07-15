@@ -1,0 +1,16 @@
+cc_library(
+    name = "TitaniumDecompiler",
+    hdrs = [
+        "TitaniumDecompiler.h"
+    ],
+    deps = [
+        "//TitaniumDecompiler/src/TitaniumDecompiler/Decompiler:decompiler",
+    ],
+    copts = [
+        "-ITitaniumDecompiler/src",
+    ],
+    visibility = [
+        "//TitaniumApplication/src:__subpackages__",
+        "//TitaniumTests/TitaniumDecompilerTests:__subpackages__",
+    ],
+)
