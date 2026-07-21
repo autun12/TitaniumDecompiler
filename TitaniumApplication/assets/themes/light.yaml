@@ -1,0 +1,61 @@
+metadata:
+  name: "Light Modern"
+  author: "austun12"
+
+# Core color palette using YAML anchors
+palette:
+  background: &bg_light     "#f3f3f3"  # Soft light gray background
+  surface:    &bg_surface   "#ffffff"  # Pure white surface panels
+  border:     &border_gray  #cccccc"  # Clear, distinct border lines
+  accent:     &accent_blue  #007acc"  # Main selection blue anchor
+  text_main:  &text_dark    "#232323"  # High-contrast readable charcoal text
+  
+  # Decompiler syntax highlighting colors optimized for light backgrounds
+  keyword:    &syntax_kw    "#0000ff"  # Classic syntax blue
+  type:       &syntax_type  "#08856c"  # Dark teal/cyan
+  variable:   &syntax_var   "#a31515"  # Deep red/maroon
+  constant:   &syntax_const "#098658"  # Forest green for numbers/constants
+  comment:    &syntax_comm  "#008000"  # Rich dark green comments
+
+# ImGui Style Overrides
+imgui_style:
+  WindowPadding: [8.0, 8.0]
+  FramePadding: [4.0, 3.0]
+  CellPadding: [4.0, 2.0]
+  WindowBorderSize: 1.0
+  FrameBorderSize: 1.0
+  WindowRounding: 4.0
+  FrameRounding: 3.0
+  TabRounding: 1.0
+  
+  colors:
+    WindowBg:              *bg_light
+    ChildBg:               *bg_light
+    PopupBg:               *bg_surface
+    Border:                *border_gray
+    Header:                *bg_surface
+    HeaderActive:          *accent_blue
+    Button:                *bg_surface
+    ButtonActive:          *accent_blue
+
+    Text:                  *text_dark    # Ensures default text is dark charcoal
+    TextDisabled:          "#8c8c8c"     # Muted gray for disabled interface elements
+
+    # Update your Docking Tab bar styling to override text tinting rules explicitly
+    Tab:                   "#e1e1e1"     # Inactive, muted background tab
+    TabHovered:            "#d8d8d8"     # Light gray feedback frame hover
+    TabActive:             "#007acc"     # Bright accent blue for active tool targets
+    TabUnfocused:          "#f3f3f3"     # Background match frame element
+    TabUnfocusedActive:    "#e6e6e6"     # Secondary focal point selector
+# Tab Close button & widget context states
+    Button:                "0x00000000"  # Invisible by default so the tab background shows through
+    ButtonHovered:         "#d04242"     # Soft light red highlight color when hovering the 'X'
+    ButtonActive:          "#b03434"     # Darker red feedback shade when clicking down to close
+# Custom Decompiler Token Styling
+decompiler_theme:
+  Keyword:  *syntax_kw
+  Type:     *syntax_type
+  Variable: *syntax_var
+  Constant: *syntax_const
+  Comment:  *syntax_comm
+  Address:  "#6f6f6f"  # Muted middle gray for instruction offset tags

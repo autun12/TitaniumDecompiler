@@ -1,21 +1,25 @@
 #pragma once
 
-#include <TitaniumRenderer.h>
-#include <TitaniumLogger/Logger/Log.h>
 #include <TitaniumDecompiler.h>
-#include "Panels/DecompilerViewerPanel.h"
-#include "Panels/DisassemblyViewerPanel.h"
-#include "Panels/HexViewerPanel.h"
-#include "Panels/SectionsPanel.h"
-#include "Panels/ConsolePanel.h"
-#include "Panels/FunctionListingPanel.h"
-#include "Panels/GraphViewPanel.h"
-// #include "Panels/Decompiler.h"
+#include <TitaniumLogger/Logger/Log.h>
+#include <TitaniumRenderer.h>
 
-#include "imgui.h"
-#include "imfilebrowser.h"
-#include <vector>
+#include <memory>
 #include <string>
+#include <vector>
+
+#include "Core/ProjectContext.h"
+#include "TitaniumRenderer/UI/WidgetManager.h"
+#include "UI/Components/SettingsWidget.h"
+#include "UI/Panels/ConsolePanel.h"
+#include "UI/Panels/DecompilerViewerPanel.h"
+#include "UI/Panels/DisassemblyViewerPanel.h"
+#include "UI/Panels/FunctionListingPanel.h"
+#include "UI/Panels/GraphViewPanel.h"
+#include "UI/Panels/HexViewerPanel.h"
+#include "UI/Panels/PanelManager.h"
+#include "imfilebrowser.h"
+#include "imgui.h"
 
 namespace TitaniumRenderer {
 struct Viewport {
@@ -38,29 +42,25 @@ private:
     bool OnKeyPressed(KeyPressedEvent& e);
     void AnalyzeFile(const std::filesystem::path& path);
     void OpenFile();
+    void HandleFileBrowserResolution();
 
 private:
     std::filesystem::path m_FilePath;
-    std::vector<std::string> m_funcNames;
+    std::unique_ptr<PanelManager> m_PanelManager;
+    std::unique_ptr<WidgetManager> m_WidgetManager;
+    std::unique_ptr<ProjectContext> m_ProjectContext;
 
     // Panels
-    DisassemblyViewerPanel m_DisassemblyViewerPanel;
-    HexViewerPanel m_HexViewerPanel;
-    SectionsPanel m_SectionsPanel;
-    ConsolePanel m_ConsolePanel;
-    FunctionListingPanel m_FunctionListPanel;
-    DecompilerViewerPanel m_DecompilerViewerPanel;
-    GraphViewPanel m_GraphViewPanel;
-    
-    // Disassembler
-    TitaniumDecompiler::JVMDisassembler m_JVMDisassembler;
-    TitaniumDecompiler::Disassembler m_Disassembler;
+    DisassemblyViewerPanel* m_DisassemblyViewerPanel;
+    HexViewerPanel* m_HexViewerPanel;
+    ConsolePanel* m_ConsolePanel;
+    FunctionListingPanel* m_FunctionListPanel;
+    DecompilerViewerPanel* m_DecompilerViewerPanel;
+    GraphViewPanel* m_GraphViewPanel;
 
-    // Decompiler
-    TitaniumDecompiler::Decompiler m_Decompiler;
-
+    // Widgets
+    SettingsWidget* m_SettingsWidget;
     // ImGui file browser
     ImGui::FileBrowser m_FileBrowser;
-
 };
-}
+}  // namespace TitaniumRenderer

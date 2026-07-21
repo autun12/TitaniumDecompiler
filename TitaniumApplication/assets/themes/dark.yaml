@@ -37,8 +37,8 @@ imgui_style:
     HeaderActive:         *accent_blue
     Button:               *bg_surface
     ButtonActive:         *accent_blue
-    TitleBgActive:        "#252526" # Match your main surface color
-
+    TitleBgActive:        "#252526"
+   
     # Docking Tab bar styling (These must be distinct!)
     Tab:                  "#1e1e1e" # Dimmed/Inactive tab background
     TabHovered:           "#3f3f46" # Accent gray when hovering

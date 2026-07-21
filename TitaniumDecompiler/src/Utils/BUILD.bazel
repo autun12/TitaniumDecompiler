@@ -5,6 +5,7 @@ cc_library(
     srcs = [
         "FileReader.cpp",
         "StreamReader.cpp",
+        "StreamWriter.cpp",
         "Utils.cpp",
     ],
     hdrs = [
@@ -12,6 +13,7 @@ cc_library(
         "FileReader.h",
         "FileReaderError.h",
         "StreamReader.h",
+        "StreamWriter.h",
         "zip_file.hpp",
         "Utils.h",
     ],

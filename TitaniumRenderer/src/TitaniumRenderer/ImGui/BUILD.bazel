@@ -7,11 +7,11 @@ cc_library(
     deps = [
         ":headers",
         "//TitaniumRenderer/src/TitaniumRenderer/Core:headers",
+        "//TitaniumRenderer/src/TitaniumRenderer/UI:ui",
         "@GLFW//:glfw",
         "@imguilib//:imgui",
         "@GLAD//:glad",
         "@spdloglib//:spdlog",
-
     ],
     copts = [
         "-ITitaniumRenderer/src"

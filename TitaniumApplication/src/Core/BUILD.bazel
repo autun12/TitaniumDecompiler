@@ -1,0 +1,27 @@
+
+load("@rules_cc//cc:defs.bzl", "cc_library", "objc_library")
+
+cc_library(
+    name = "core",
+    srcs = [
+        "ProjectContext.cpp",
+    ],
+    hdrs = [
+        "ProjectContext.h",
+    ],
+    visibility = [
+        "//:__pkg__",
+        "//TitaniumApplication/src:__subpackages__",
+    ],
+    copts = [
+        "-ITitaniumDecompiler/src",
+        "-ITitaniumRenderer/src",
+        "-ITitaniumLogger/src",
+    ],
+    deps = [
+        "@imguilib//:imgui",
+        "//TitaniumDecompiler/src:TitaniumDecompiler",
+        "//TitaniumLogger/src/TitaniumLogger/Logger:titanium_logger",
+    ],
+    linkstatic = 1,
+)

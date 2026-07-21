@@ -14,6 +14,7 @@ cc_library(
         "//TitaniumRenderer/src/TitaniumRenderer/Core:titanium_renderer_core",
         "//TitaniumRenderer/src/TitaniumRenderer/Utils:utils_header",
         "//TitaniumRenderer/src/Platform/Windows:titanium_renderer_platform_windows",
+        "//TitaniumRenderer/src/TitaniumRenderer/UI:ui",
     ],
     defines = select({
         "@platforms//os:windows": [

@@ -3,22 +3,45 @@ load("@rules_cc//cc:defs.bzl", "cc_library", "objc_library")
 cc_library(
     name = "ui",
     srcs = [
-      "ThemeManager.cpp"
+        "Panels/ConsolePanel.cpp",
+        "Panels/DecompilerViewerPanel.cpp",
+        "Panels/DisassemblyViewerPanel.cpp",
+        "Panels/FunctionListingPanel.cpp",
+        "Panels/HexViewerPanel.cpp",
+        "Panels/GraphViewPanel.cpp",
+        "Components/ThirdPartyTextRenderer.cpp",
+        "Components/SettingsWidget.cpp",
     ],
     hdrs = [
-      "ThemeManager.h"
+        "Panels/ConsolePanel.h",
+        "Panels/ConsoleSink.h",
+        "Panels/DecompilerViewerPanel.h",
+        "Panels/DisassemblyViewerPanel.h",
+        "Panels/FunctionListingPanel.h",
+        "Panels/HexViewerPanel.h",
+        "Panels/GraphViewPanel.h",
+        "Panels/IPanel.h",
+        "Panels/PanelManager.h",
+        "Components/ITextRenderer.h",
+        "Components/ThirdPartyTextRenderer.h",
+        "Components/SettingsWidget.h",
     ],
     visibility = [
         "//:__pkg__",
         "//TitaniumApplication/src:__subpackages__",
     ],
     copts = [
+        "-ITitaniumDecompiler/src",
         "-ITitaniumLogger/src",
+        "-ITitaniumRenderer/src"
     ],
     deps = [
         "@imguilib//:imgui",
-        "@yaml-cpp//:yaml-cpp",
+        "//TitaniumApplication/src/Core:core",
         "//TitaniumLogger/src/TitaniumLogger/Logger:titanium_logger",
+        "//TitaniumDecompiler/src:TitaniumDecompiler",
+        "//TitaniumRenderer/src/TitaniumRenderer/UI:ui",
+        "//TitaniumRenderer/src:TitaniumRenderer",
     ],
     linkstatic = 1,
 )

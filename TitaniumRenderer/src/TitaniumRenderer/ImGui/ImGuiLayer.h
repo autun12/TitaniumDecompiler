@@ -1,7 +1,6 @@
 #pragma once
 
 #include "TitaniumRenderer/Core/Layer.h"
-
 #include "TitaniumRenderer/Events/ApplicationEvent.h"
 #include "TitaniumRenderer/Events/KeyEvent.h"
 #include "TitaniumRenderer/Events/MouseEvent.h"

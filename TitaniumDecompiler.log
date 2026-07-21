@@ -1,5 +1,5 @@
-[20:59:59] [info] TitaniumRenderer: Creating window Titanium Decompiler (1280, 720)
-[20:59:59] [info] TitaniumRenderer: OpenGL Info:
-[20:59:59] [info] TitaniumRenderer:   Vendor: AMD
-[20:59:59] [info] TitaniumRenderer:   Renderer: AMD Radeon R7 Graphics (radeonsi, carrizo, LLVM 17.0.6, DRM 3.54, 6.6.32-1-lts)
-[20:59:59] [info] TitaniumRenderer:   Version: 4.6 (Core Profile) Mesa 24.1.1-arch1.1
+[10:22:37] [info] TitaniumRenderer: Creating window Titanium Decompiler (1280, 720)
+[10:22:37] [info] TitaniumRenderer: OpenGL Info:
+[10:22:37] [info] TitaniumRenderer:   Vendor: Intel
+[10:22:37] [info] TitaniumRenderer:   Renderer: Mesa Intel(R) Graphics (MTL)
+[10:22:37] [info] TitaniumRenderer:   Version: 4.6 (Core Profile) Mesa 26.1.4-arch1.1

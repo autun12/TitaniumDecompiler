@@ -16,6 +16,10 @@ ThemeManager& ThemeManager::Get() {
 bool ThemeManager::LoadTheme(const std::filesystem::path& path) {
     try {
         YAML::Node config = YAML::LoadFile(path.string());
+        m_ImGuiColors.clear();
+        m_TokenStyles.clear();
+        m_Style = ThemeStyle();
+
         if (config["metadata"] && config["metadata"]["name"]) {
             m_CurrentThemeName = config["metadata"]["name"].as<std::string>();
         } else {
@@ -103,7 +107,39 @@ bool ThemeManager::LoadTheme(const std::filesystem::path& path) {
                             ImGuiCol_ScrollbarGrabHovered);
                 parseAndMap("ScrollbarGrabActive",
                             ImGuiCol_ScrollbarGrabActive);
+
+                parseAndMap("Text", ImGuiCol_Text);
+                parseAndMap("TextDisabled", ImGuiCol_TextDisabled);
+                parseAndMap("TextSelectedBg", ImGuiCol_TextSelectedBg);
+                parseAndMap("Button", ImGuiCol_Button);
+                parseAndMap("ButtonHovered", ImGuiCol_ButtonHovered);
+                parseAndMap("ButtonActive", ImGuiCol_ButtonActive);
             }
+        }
+
+        // 3. Parse Decompiler Syntax Highlighting Configurations
+        if (config["decompiler_theme"]) {
+            auto decompNode = config["decompiler_theme"];
+
+            auto parseToken = [&](const char* yamlKey, TokenType type,
+                                  bool defaultItalic = false) {
+                if (decompNode[yamlKey]) {
+                    DecompilerTokenStyle style;
+                    style.Color =
+                        ParseHexColor(decompNode[yamlKey].as<std::string>());
+                    style.Italic = defaultItalic;
+                    m_TokenStyles[type] = style;
+                }
+            };
+
+            parseToken("Keyword", TokenType::Keyword);
+            parseToken("Type", TokenType::Type);
+            parseToken("Variable", TokenType::Variable);
+            parseToken("Constant", TokenType::Constant);
+            parseToken("Comment", TokenType::Comment,
+                       true);  // Italic comment tokens by default
+            parseToken("Address", TokenType::Address);
+            parseToken("DefaultText", TokenType::DefaultText);
         }
 
         ApplyThemeToImGui();
@@ -130,6 +166,25 @@ void ThemeManager::ApplyThemeToImGui() {
     }
 }
 
+ImVec4 ThemeManager::GetImGuiColor(ImGuiCol val) const {
+    auto it = m_ImGuiColors.find(val);
+    if (it != m_ImGuiColors.end()) {
+        return it->second;
+    }
+    // Safe context fallback directly to ImGui's built-in styles
+    return ImGui::GetStyle().Colors[val];
+}
+
+const DecompilerTokenStyle& ThemeManager::GetTokenStyle(TokenType type) const {
+    auto it = m_TokenStyles.find(type);
+    if (it != m_TokenStyles.end()) {
+        return it->second;
+    }
+
+    static DecompilerTokenStyle fallbackStyle;
+    return fallbackStyle;
+}
+
 ImVec4 ThemeManager::ParseHexColor(const std::string& hex) {
     if (hex.empty() || hex[0] != '#') {
         return ImVec4(1.0f, 1.0f, 1.0f, 1.0f);
@@ -145,5 +200,19 @@ ImVec4 ThemeManager::ParseHexColor(const std::string& hex) {
     }
 
     return ImVec4(r / 255.0f, g / 255.0f, b / 255.0f, a / 255.0f);
+}
+
+void ThemeManager::InitializeFonts(ImGuiIO& io) {
+    float fontSize = 24.0f;
+
+    m_BoldFont = io.Fonts->AddFontFromFileTTF(
+        "TitaniumApplication/assets/fonts/jetbrainsmono/JetBrainsMono-Bold.ttf",
+        fontSize);
+    m_DefaultFont = io.Fonts->AddFontFromFileTTF(
+        "TitaniumApplication/assets/fonts/jetbrainsmono/"
+        "JetBrainsMono-Regular.ttf",
+        fontSize);
+
+    io.FontDefault = m_DefaultFont;
 }
 }  // namespace TitaniumRenderer

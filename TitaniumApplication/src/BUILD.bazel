@@ -3,10 +3,10 @@ load("@rules_cc//cc:defs.bzl", "cc_library", "objc_library")
 cc_library(
     name = "titanium_layer_library",
     srcs = [
-        "TitaniumLayer.cpp"
+        "TitaniumLayer.cpp",
     ],
     hdrs = [
-        "TitaniumLayer.h"
+        "TitaniumLayer.h",
     ],
     copts = [
         "-ITitaniumDecompiler/src",
@@ -15,7 +15,7 @@ cc_library(
 
     ],
     deps = [
-        "//TitaniumApplication/src/Panels:panels",
+        "//TitaniumApplication/src/Core:core",
         "//TitaniumApplication/src/UI:ui",
         "//TitaniumDecompiler/src:TitaniumDecompiler",
     ],
@@ -35,7 +35,6 @@ cc_binary(
         "@imguilib//:imgui",
         ":titanium_layer_library",
         "//TitaniumRenderer/src:TitaniumRenderer",
-        "//TitaniumApplication/src/Panels:panels",
         "//TitaniumDecompiler/src:TitaniumDecompiler",
         "//TitaniumLogger/src:TitaniumLogger",
     ],

@@ -22,6 +22,23 @@ struct ThemeStyle {
     ImVec2 WindowPadding{8.0f, 8.0f};
 };
 
+enum class TokenType {
+    Keyword,
+    Type,
+    Variable,
+    Constant,
+    Comment,
+    Address,
+    DefaultText
+};
+
+// Layout structure for token text styles
+struct DecompilerTokenStyle {
+    ImVec4 Color{1.0f, 1.0f, 1.0f, 1.0f};
+    bool Bold = false;
+    bool Italic = false;
+};
+
 class ScopedTheme {
 public:
     ScopedTheme() = default;
@@ -67,6 +84,11 @@ public:
         return m_CurrentThemeName;
     }
     const ThemeStyle& GetStyleMetrics() const { return m_Style; }
+    ImFont* GetDefaultFont() const { return m_DefaultFont; }
+    ImFont* GetBoldFont() const { return m_BoldFont; }
+    const DecompilerTokenStyle& GetTokenStyle(TokenType type) const;
+    ImVec4 GetImGuiColor(ImGuiCol val) const;
+    void InitializeFonts(ImGuiIO& io);
 
 private:
     ThemeManager() = default;
@@ -80,5 +102,9 @@ private:
     ThemeStyle m_Style;
 
     std::unordered_map<int, ImVec4> m_ImGuiColors;
+    std::unordered_map<TokenType, DecompilerTokenStyle> m_TokenStyles;
+
+    ImFont* m_DefaultFont = nullptr;
+    ImFont* m_BoldFont = nullptr;
 };
 }  // namespace TitaniumRenderer
