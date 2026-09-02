@@ -22,11 +22,6 @@
 #include "imgui.h"
 
 namespace TitaniumRenderer {
-struct Viewport {
-    float x;
-    float y;
-};
-
 class TitaniumLayer : public Layer {
 public:
     TitaniumLayer();

@@ -17,7 +17,7 @@ cc_library(
     # strip_include_prefix = "//TitaniumDecompiler/src",
     deps = [
         ":headers",
-        "//TitaniumDecompiler/src/Platform/Linux/FileFormats/JVM:platform_jvm",
+        "//TitaniumDecompiler/src/FileFormats/JVM:jvm_format",
         "//TitaniumDecompiler/src/TitaniumDecompiler/Kernel:kernel",
         "//TitaniumDecompiler/src/TitaniumDecompiler/Decompiler:headers",
         "//TitaniumLogger/src/TitaniumLogger/Logger:titanium_logger",
@@ -43,7 +43,7 @@ cc_library(
     # strip_include_prefix = "//TitaniumDecompiler/src",
     deps = [
         ":headers",
-        "//TitaniumDecompiler/src/Platform/Linux/FileFormats/JVM:platform_jvm",
+        "//TitaniumDecompiler/src/FileFormats/JVM:jvm_format",
         "//TitaniumDecompiler/src/TitaniumDecompiler/Kernel:kernel",
         "//TitaniumDecompiler/src/TitaniumDecompiler/Decompiler:headers",
         "//TitaniumLogger/src/TitaniumLogger/Logger:titanium_logger",
@@ -71,7 +71,7 @@ cc_library(
     ],
     # strip_include_prefix = "//TitaniumDecompiler/src",
     deps = [
-        "//TitaniumDecompiler/src/Platform/Linux/FileFormats/JVM:platform_jvm",
+        "//TitaniumDecompiler/src/FileFormats/JVM:jvm_format",
         "//TitaniumDecompiler/src/TitaniumDecompiler/Kernel:kernel",
         # "//TitaniumDecompiler/src/TitaniumDecompiler/Decompiler:headers",
     ],

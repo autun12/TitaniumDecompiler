@@ -1,8 +1,9 @@
 #include <gtest/gtest.h>
-#include <sstream>
+
 #include <iostream>
-#include "TitaniumDecompiler\src\TitaniumDecompiler\Decompiler\Codegen.h"
- 
+#include <sstream>
+
+#include "TitaniumDecompiler/src/TitaniumDecompiler/Decompiler/Codegen.h"
 
 namespace TitaniumDecompiler {
 
@@ -25,7 +26,7 @@ TEST_F(CodegenTest, TestIINCOutput) {
     // Create a dummy instruction for OPCODE_IINC
     Insn instruction;
     instruction.opcode = OPCODE_IINC;
-    instruction.Op2.value = (1 << 8) | 5; // Example: localIdx = 1, amount = 5
+    instruction.Op2.value = (1 << 8) | 5;  // Example: localIdx = 1, amount = 5
 
     // Create a Codegen instance
     Codegen codegen;
@@ -40,4 +41,4 @@ TEST_F(CodegenTest, TestIINCOutput) {
     EXPECT_EQ(output.str(), "IINC\n");
 }
 
-} // namespace TitaniumDecompiler
+}  // namespace TitaniumDecompiler

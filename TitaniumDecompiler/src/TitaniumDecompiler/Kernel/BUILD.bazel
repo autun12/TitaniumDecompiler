@@ -13,7 +13,7 @@ cc_library(
         "//TitaniumDecompiler/src:__subpackages__",
     ],
     deps = [
-        "//TitaniumDecompiler/src/Platform/Linux/FileFormats/JVM:platform_jvm",
+        "//TitaniumDecompiler/src/FileFormats/JVM:jvm_format",
     ],
     copts = [
         "-ITitaniumDecompiler/src",

@@ -1,5 +1,4 @@
 #include <memory>
-#include <unordered_map>
 #include <vector>
 
 #include "../../Core/ProjectContext.h"
@@ -11,7 +10,7 @@ class PanelManager {
 public:
     PanelManager() = default;
 
-    // Add any panel derived from our base interface
+    // Add any panel derived from the base interface
     template <typename T, typename... Args>
     std::shared_ptr<T> AddPanel(Args&&... args) {
         auto panel = std::make_shared<T>(std::forward<Args>(args)...);
@@ -22,7 +21,9 @@ public:
     // Loop through and render every active viewport automatically
     void OnImGuiRender() {
         for (auto& panel : m_Panels) {
-            panel->OnImGuiRender();
+            if (panel->IsOpen()) {
+                panel->OnImGuiRender();
+            }
         }
     }
 

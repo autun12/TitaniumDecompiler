@@ -9,8 +9,8 @@
 #include <vector>
 
 #include "CFG.h"
-#include "Platform/Linux/FileFormats/JVM/ClassFileParser.h"
-#include "Platform/Linux/FileFormats/JVM/Methods.h"
+#include "FileFormats/JVM/ClassFileParser.h"
+#include "FileFormats/JVM/Methods.h"
 #include "TitaniumDecompiler/Decompiler/AST.h"
 
 namespace TitaniumDecompiler {
@@ -37,14 +37,16 @@ struct MethodDescriptor {
     std::vector<Type> args;
     Type returnType;
 
-    MethodDescriptor(std::vector<Type> arguments, Type ret_type) : args(std::move(arguments)), returnType(std::move(ret_type)) {}
+    MethodDescriptor(std::vector<Type> arguments, Type ret_type)
+        : args(std::move(arguments)), returnType(std::move(ret_type)) {}
 
     static MethodDescriptor newDescriptor(const std::string& s) {
         auto it = s.begin();
         auto end = s.end();
 
         if (it == end || *it != '(') {
-            throw std::runtime_error("Invalid starting character in method descriptor");
+            throw std::runtime_error(
+                "Invalid starting character in method descriptor");
         }
         ++it;
 
@@ -79,10 +81,13 @@ struct FunctionHeader {
     std::string name;
     MethodDescriptor descriptor;
 
-    FunctionHeader(std::string className, std::string name, MethodDescriptor desc)
-        : className(std::move(className)), name(std::move(name)), descriptor(std::move(desc)) {}
+    FunctionHeader(std::string className, std::string name,
+                   MethodDescriptor desc)
+        : className(std::move(className)),
+          name(std::move(name)),
+          descriptor(std::move(desc)) {}
 };
-
+//
 struct Function {
 public:
     Function() = default;

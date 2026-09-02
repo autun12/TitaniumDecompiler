@@ -6,7 +6,7 @@
 #include <vector>
 
 #include "ASTNodes.h"
-#include "Platform/Linux/FileFormats/JVM/Instruction.h"
+#include "FileFormats/JVM/Instruction.h"
 #include "TitaniumDecompiler/Disassembler/BasicBlock.h"
 #include "TitaniumDecompiler/Disassembler/CFG.h"
 
@@ -21,11 +21,15 @@ public:
     void Print() const;
     std::map<size_t, size_t> GetImmediateDominators() const { return idom; }
     std::map<size_t, std::set<size_t>> GetDoms() const { return dom; }
-    // std::shared_ptr<RootStatement> createStatement(const std::shared_ptr<CFG>& cfg, const Function& func);
-    std::shared_ptr<ASTNode> BuildASTFromDomTree(std::shared_ptr<BasicBlock> block, std::map<size_t, std::set<size_t>>& domTree,
-                                                 std::unordered_map<int, std::shared_ptr<BasicBlock>>& basicBlocks);
+    // std::shared_ptr<RootStatement> createStatement(const
+    // std::shared_ptr<CFG>& cfg, const Function& func);
+    std::shared_ptr<ASTNode> BuildASTFromDomTree(
+        std::shared_ptr<BasicBlock> block,
+        std::map<size_t, std::set<size_t>>& domTree,
+        std::unordered_map<int, std::shared_ptr<BasicBlock>>& basicBlocks);
     void PrintAST(const std::shared_ptr<ASTNode>& node, int depth = 0);
-    std::string GenerateStructuredCode(std::shared_ptr<ASTNode> node, int indentLevel = 0);
+    std::string GenerateStructuredCode(std::shared_ptr<ASTNode> node,
+                                       int indentLevel = 0);
     std::vector<std::pair<size_t, size_t>> FindBackEdges();
     std::set<size_t> FindLoop(size_t header, size_t backEdgeSource);
 
@@ -40,8 +44,13 @@ private:
 
 class DominatorTree {
 public:
-    DominatorTree(const std::map<uint32_t, uint32_t>& dominators, const std::map<uint32_t, std::shared_ptr<BasicBlock>>& cfgBlocks, uint32_t startNodeId)
-        : m_Dominators(dominators), m_CFGBlocks(cfgBlocks), m_StartNodeId(startNodeId) {
+    DominatorTree(
+        const std::map<uint32_t, uint32_t>& dominators,
+        const std::map<uint32_t, std::shared_ptr<BasicBlock>>& cfgBlocks,
+        uint32_t startNodeId)
+        : m_Dominators(dominators),
+          m_CFGBlocks(cfgBlocks),
+          m_StartNodeId(startNodeId) {
         buildDominatorTree();
     }
 
@@ -51,7 +60,8 @@ public:
         if (it != m_Dominators.end()) {
             return it->second;
         }
-        return nodeId;  // Or throw an exception, depending on your error handling policy
+        return nodeId;  // Or throw an exception, depending on your error
+                        // handling policy
     }
 
     // Function to check if node A dominates node B
@@ -81,7 +91,8 @@ public:
     void printDominatorTree() const {
         std::cout << "Dominator Tree:\n";
         for (const auto& [nodeId, dominatorId] : m_Dominators) {
-            std::cout << "Node " << nodeId << " is dominated by: " << dominatorId << "\n";
+            std::cout << "Node " << nodeId
+                      << " is dominated by: " << dominatorId << "\n";
         }
     }
 
@@ -89,8 +100,10 @@ public:
     uint32_t getRootNodeId() const { return m_StartNodeId; }
 
 private:
-    std::map<uint32_t, uint32_t> m_Dominators;                    // Maps node ID to its immediate dominator's ID.
-    std::map<uint32_t, std::shared_ptr<BasicBlock>> m_CFGBlocks;  // Copy of the CFG's blocks.
+    std::map<uint32_t, uint32_t>
+        m_Dominators;  // Maps node ID to its immediate dominator's ID.
+    std::map<uint32_t, std::shared_ptr<BasicBlock>>
+        m_CFGBlocks;  // Copy of the CFG's blocks.
     uint32_t m_StartNodeId;
     std::map<uint32_t, std::vector<uint32_t>> m_DominatorTree;
 
@@ -101,5 +114,6 @@ private:
     }
 };
 
-std::vector<std::set<uint32_t>> FindLoops(CFG& cfg, const DominatorTree& domTree);
+std::vector<std::set<uint32_t>> FindLoops(CFG& cfg,
+                                          const DominatorTree& domTree);
 }  // namespace TitaniumDecompiler

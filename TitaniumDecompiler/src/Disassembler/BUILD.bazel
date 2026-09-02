@@ -1,0 +1,52 @@
+load("@rules_cc//cc:defs.bzl", "cc_library", "objc_library")
+
+cc_library(
+    name = "disassembler_core",
+    srcs = glob(["Core/*.cpp"]),
+    hdrs = glob(["Core/*.h"]) + ["IDisassembler.h"] + ["IDisassemblerFormatter.h"],
+    visibility = [
+        "//visibility:public",
+    ],
+    includes = ["//TitaniumDecompiler/src"],
+    # strip_include_prefix = "//TitaniumDecompiler/src",
+    copts = [
+        "-ITitaniumDecompiler/src",
+        "-ITitaniumLogger/src",
+    ],
+    deps = [
+        "//TitaniumDecompiler/src/Utils:utils",
+        "//TitaniumLogger/src/TitaniumLogger/Logger:titanium_logger",
+    ],
+)
+
+cc_library(
+  name = "jvm_disassembler_provider",
+  srcs = glob(["Providers/JVM/*.cpp"]),
+  hdrs = glob(["Providers/JVM/*.h"]),
+    copts = [
+        "-ITitaniumDecompiler/src",
+        "-ITitaniumLogger/src",
+    ],
+  deps = [
+    ":disassembler_core",
+    "//TitaniumDecompiler/src/Utils:utils",
+    "//TitaniumDecompiler/src/FileFormats/JVM:jvm_format",
+  ],
+  visibility = ["//visibility:public"],
+)
+
+cc_library(
+  name = "jvm_disassembler_formatter",
+  srcs = glob(["Formatters/JVM/*.cpp"]),
+  hdrs = glob(["Formatters/JVM/*.h"]),
+    copts = [
+        "-ITitaniumDecompiler/src",
+        "-ITitaniumLogger/src",
+    ],
+  deps = [
+    ":disassembler_core",
+    "//TitaniumDecompiler/src/Utils:utils",
+    "//TitaniumDecompiler/src/FileFormats/JVM:jvm_format",
+  ],
+  visibility = ["//visibility:public"],
+)

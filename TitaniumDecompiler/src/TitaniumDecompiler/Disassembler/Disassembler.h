@@ -7,11 +7,11 @@
 #include <vector>
 
 #include "CFG.h"
+#include "FileFormats/JVM/ClassFileParser.h"
+#include "FileFormats/JVM/Instruction.h"
 #include "Function.h"
 #include "TitaniumDecompiler/Decompiler/SSA.h"
 #include "TitaniumDecompiler/Kernel/Loader.h"
-#include "TitaniumDecompiler/src/Platform/Linux/FileFormats/JVM/ClassFileParser.h"
-#include "TitaniumDecompiler/src/Platform/Linux/FileFormats/JVM/Instruction.h"
 
 namespace TitaniumDecompiler {
 
@@ -29,7 +29,8 @@ public:
     std::vector<std::string> GetFunctionNames() { return m_ClassFunctions; }
     std::vector<std::string> GetClassNames() { return m_ClassFileNames; }
     std::string DisassembleJarFile(const JarFile& jarFile);
-    std::string DisassembleClassFile(const ClassFile& classFile, const std::string& className);
+    std::string DisassembleClassFile(const ClassFile& classFile,
+                                     const std::string& className);
 
     std::string OutputJarClassHeaders(const ClassFile& classFile);
     ClassesMap GetClassesMap() { return m_ClassesMap; }
@@ -38,17 +39,25 @@ public:
 
 public:
     CFG BuildCFG(const std::vector<uint8_t>& bytes);
-    void CreateFunctions(const ClassFile& classFile, const std::string& className);
+    void CreateFunctions(const ClassFile& classFile,
+                         const std::string& className);
     std::string GetConstantUTF8FromClass(const ClassFile& classFile, int idx);
 
-    std::string GetConstantClassFromClass(Function* function, const ClassFile& classFile, int idx);
-    std::string GetNameAndTypeFromClass(Function* function, const ClassFile& classFile, int idx);
+    std::string GetConstantClassFromClass(Function* function,
+                                          const ClassFile& classFile, int idx);
+    std::string GetNameAndTypeFromClass(Function* function,
+                                        const ClassFile& classFile, int idx);
     std::string GetConstantFromClass(const ClassFile& classFile, int idx);
 
     std::string ParseFunction(const ClassFile& classFile, Function& function);
-    std::string ParseFunctionInstructions(Function& function, const ClassFile& classFile, const std::vector<Insn>& instructions);
-    std::string InstructionsWithReferences(Function& function, const ClassFile& classFile, const Insn& insn);
-    std::string LoadConstFromPool(const Function& function, const ClassFile& classFile, const Insn& insn);
+    std::string ParseFunctionInstructions(
+        Function& function, const ClassFile& classFile,
+        const std::vector<Insn>& instructions);
+    std::string InstructionsWithReferences(Function& function,
+                                           const ClassFile& classFile,
+                                           const Insn& insn);
+    std::string LoadConstFromPool(const Function& function,
+                                  const ClassFile& classFile, const Insn& insn);
     std::string ParseIfStatement(const Insn& insn);
     std::string ParseIncrement(const Insn& insn);
     std::string ParseBiPushOpCode(const Insn& insn);
@@ -72,8 +81,6 @@ private:
     ClassesToFuntions m_ClassToFunctions;
     Function m_Function;
     std::vector<Function> m_Functions;
-    
-
 };
 
 }  // namespace TitaniumDecompiler

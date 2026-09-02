@@ -33,7 +33,7 @@ void TitaniumLayer::OnAttach() {
     m_GraphViewPanel = graphViewer.get();
     auto disasmViewer = m_PanelManager->AddPanel<DisassemblyViewerPanel>(true);
     m_DisassemblyViewerPanel = disasmViewer.get();
-    auto decompViewer = m_PanelManager->AddPanel<DecompilerViewerPanel>(true);
+    auto decompViewer = m_PanelManager->AddPanel<DecompilerViewerPanel>(false);
     m_DecompilerViewerPanel = decompViewer.get();
 
     // console output creation
@@ -55,7 +55,6 @@ void TitaniumLayer::OnUpdate(Timestep ts) {
 }
 
 void TitaniumLayer::OnImGuiRender() {
-    // Note: Switch this to true to enable dockspace
     static bool dockspaceOpen = true;
     static bool opt_fullscreen_persistant = true;
     bool opt_fullscreen = opt_fullscreen_persistant;
@@ -190,7 +189,7 @@ bool TitaniumLayer::OnKeyPressed(KeyPressedEvent& e) {
         case Key::S: {
             if (control && shift)
                 TD_WARN("Save File hasn't been Implemented Yet");
-            //             // SaveSceneAs();
+            // SaveProjectAs();
             break;
         }
     }
@@ -214,14 +213,12 @@ void TitaniumLayer::HandleFileBrowserResolution() {
         return;
     }
 
-    // Display the java class file binary in a hex viewer.
+    // Display the binary in a hex viewer.
     if (m_HexViewerPanel) {
         m_HexViewerPanel->ReadFile(m_FilePath);
     }
 
     m_FileBrowser.ClearSelected();
     m_PanelManager->BroadcastProjectLoad(*m_ProjectContext);
-    // m_DecompilerViewerPanel.SetDecompilerText(decompiledOutput);
-    TD_INFO("JVM Class File has been fully read.");
 }
 }  // namespace TitaniumRenderer

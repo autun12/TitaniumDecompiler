@@ -1,8 +1,8 @@
 // Taken from StudioCherno Walnut
 
 #pragma once
-
 #include <cstdint>
+#include <iostream>
 #include <map>
 #include <string>
 #include <unordered_map>
@@ -73,7 +73,8 @@ public:
     }
 
     template <typename Value>
-    void ReadMap(std::unordered_map<std::string, Value>& map, uint32_t size = 0) {
+    void ReadMap(std::unordered_map<std::string, Value>& map,
+                 uint32_t size = 0) {
         if (size == 0) ReadRaw<uint32_t>(size);
 
         for (uint32_t i = 0; i < size; i++) {
@@ -114,19 +115,43 @@ public:
 class BigEndianStreamReader : public StreamReader {
 public:
     using StreamReader::StreamReader;
-
     template <typename T>
     bool ReadRawBigEndian(T& type) {
         bool success = ReadRaw(type);
+
         if (success) {
             SwapEndian(&type, sizeof(T));
         }
+
         return success;
     }
 
-    template <typename T>
-    void ReadObject(T& obj) {
-        T::Deserialize(this, obj);
+    template <typename T, typename... Args>
+    void ReadObject(T& obj, Args&&... args) {
+        if constexpr (requires {
+                          T::Deserialize(this, obj,
+                                         std::forward<Args>(args)...);
+                      }) {
+            T::Deserialize(this, obj, std::forward<Args>(args)...);
+        } else if constexpr (requires {
+                                 obj.Deserialize(this,
+                                                 std::forward<Args>(args)...);
+                             }) {
+            obj.Deserialize(this, std::forward<Args>(args)...);
+        } else if constexpr (sizeof...(Args) > 0 &&
+                             requires { T::Deserialize(this, obj); }) {
+            T::Deserialize(this, obj);
+        } else if constexpr (sizeof...(Args) > 0 &&
+                             requires { obj.Deserialize(this); }) {
+            obj.Deserialize(this);
+        } else {
+            // The dependent false trait prevents this assert from firing unless
+            // this block is actually instantiated
+            static_assert(
+                !sizeof(T*),
+                "CRITICAL ERROR: No valid Deserialize method found for this "
+                "type! You must implement one to advance the stream.");
+        }
     }
 
     template <typename Key, typename Value>
@@ -135,17 +160,20 @@ public:
     }
 
     template <typename Key, typename Value>
-    void ReadMapBigEndian(std::unordered_map<Key, Value>& map, uint32_t size = 0) {
+    void ReadMapBigEndian(std::unordered_map<Key, Value>& map,
+                          uint32_t size = 0) {
         ReadMap(map, size);
     }
 
     template <typename Value>
-    void ReadMapBigEndian(std::unordered_map<std::string, Value>& map, uint32_t size = 0) {
+    void ReadMapBigEndian(std::unordered_map<std::string, Value>& map,
+                          uint32_t size = 0) {
         ReadMap(map, size);
     }
 
-    template <typename T>
-    void ReadArrayBigEndian(std::vector<T>& array, uint32_t size = 0) {
+    template <typename T, typename... Args>
+    void ReadArrayBigEndian(std::vector<T>& array, uint32_t size = 0,
+                            Args&&... args) {
         if (size == 0) {
             ReadRawBigEndian<uint32_t>(size);
         }
@@ -153,14 +181,17 @@ public:
         array.resize(size);
 
         for (uint32_t i = 0; i < size; i++) {
-            if constexpr (std::is_trivial<T>())
+            if constexpr (std::is_arithmetic_v<T> || std::is_enum_v<T>) {
                 ReadRawBigEndian<T>(array[i]);
-            else
-                ReadObject<T>(array[i]);
+            } else {
+                ReadObject(array[i], args...);
+            }
         }
     }
 
-    void ReadArrayBigEndian(std::vector<std::string>& array, uint32_t size) { ReadArray(array, size); }
+    void ReadArrayBigEndian(std::vector<std::string>& array, uint32_t size) {
+        ReadArray(array, size);
+    }
 
 private:
     template <typename T>
@@ -176,7 +207,8 @@ private:
 
 class MemoryStreamReader : public BigEndianStreamReader {
 public:
-    explicit MemoryStreamReader(const std::vector<uint8_t>& data) : m_Buffer(data), m_Position(0) {}
+    explicit MemoryStreamReader(const std::vector<uint8_t>& data)
+        : m_Buffer(data), m_Position(0) {}
 
     bool IsStreamGood() const override { return m_Position < m_Buffer.size(); }
 

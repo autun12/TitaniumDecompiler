@@ -5,6 +5,9 @@ cc_library(
     ],
     deps = [
         "//TitaniumDecompiler/src/TitaniumDecompiler/Decompiler:decompiler",
+        "//TitaniumDecompiler/src/Disassembler:jvm_disassembler_provider",
+        "//TitaniumDecompiler/src/FileFormats/JVM:jvm_format",
+        "//TitaniumDecompiler/src/Core:core",
     ],
     copts = [
         "-ITitaniumDecompiler/src",

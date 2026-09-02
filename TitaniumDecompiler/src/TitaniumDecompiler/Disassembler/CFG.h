@@ -7,8 +7,8 @@
 
 #include "BasicBlock.h"
 #include "ExceptionRangeCFG.h"
-#include "TitaniumDecompiler/Decompiler/SSA.h"
-#include "Platform/Linux/FileFormats/JVM/ClassFileParser.h"
+#include "FileFormats/JVM/ClassFileParser.h"
+// #include "TitaniumDecompiler/Decompiler/SSA.h"
 
 namespace TitaniumDecompiler {
 struct CFG {
@@ -16,12 +16,15 @@ public:
     CFG() = default;
     ~CFG() = default;
 
-    std::map<uint32_t, std::shared_ptr<BasicBlock>> CreateBasicBlocks(const InstrMap& instructions);
+    std::map<uint32_t, std::shared_ptr<BasicBlock>> CreateBasicBlocks(
+        const InstrMap& instructions);
 
-    // std::vector<std::shared_ptr<BasicBlock>> BuildBlocks(const InstrMap& instructions);
+    // std::vector<std::shared_ptr<BasicBlock>> BuildBlocks(const InstrMap&
+    // instructions);
 
     void BuildGraph();
-    void ConnectBasicBlocks(const std::map<uint32_t, std::shared_ptr<BasicBlock>>& mapOfBlocks);
+    void ConnectBasicBlocks(
+        const std::map<uint32_t, std::shared_ptr<BasicBlock>>& mapOfBlocks);
     void RemoveBlock(std::shared_ptr<BasicBlock> block);
     bool IsBranchInstruction(const Insn& insn);
     bool IsReturnInstruction(const Insn& insn);
@@ -30,17 +33,26 @@ public:
     bool IsUnconditionalJump(const Insn& insn);
     bool IsInvokeCall(const Insn& insn);
     void PrintBlock(const std::shared_ptr<BasicBlock>& block);
-    void PrintBasicBlocks(const std::vector<std::shared_ptr<BasicBlock>>& basicBlocks);
-    const Insn* FindInstructionByAddr(const InstrMap& instructions, uint64_t targetAddr);
-    std::tuple<std::vector<SSAInstruction>, std::vector<SSAVariable>, std::map<uint32_t, SSAVariable>> TranslateBytecodeInstruction(
-        const Insn& insn, std::vector<SSAVariable> stack, std::map<uint32_t, SSAVariable> localVarVersions);
+    void PrintBasicBlocks(
+        const std::vector<std::shared_ptr<BasicBlock>>& basicBlocks);
+    const Insn* FindInstructionByAddr(const InstrMap& instructions,
+                                      uint64_t targetAddr);
+    std::tuple<std::vector<SSAInstruction>, std::vector<SSAVariable>,
+               std::map<uint32_t, SSAVariable>>
+    TranslateBytecodeInstruction(
+        const Insn& insn, std::vector<SSAVariable> stack,
+        std::map<uint32_t, SSAVariable> localVarVersions);
 
     // std::set<size_t> FindBoundaries(const std::vector<Insn>& instructions);
     std::set<size_t> FindBoundaries(const InstrMap& instructions);
-    // std::map<uint32_t, std::shared_ptr<BasicBlock>> CreateBasicBlocks(std::vector<uint16_t> states, const std::vector<Insn>& instructions);
-    // static std::vector<uint16_t> FindStartInstructions(const std::vector<Insn>& instrs);
+    std::map<uint32_t, std::shared_ptr<BasicBlock>> CreateBasicBlocks(
+        std::vector<uint16_t> states, const std::vector<Insn>& instructions);
+    static std::vector<uint16_t> FindStartInstructions(
+        const std::vector<Insn>& instrs);
     size_t GetJumpTarget(const Insn& insn);
-    std::map<uint32_t, std::shared_ptr<BasicBlock>> GetMapOfBlocks() { return m_Blocks; }
+    std::map<uint32_t, std::shared_ptr<BasicBlock>> GetMapOfBlocks() {
+        return m_Blocks;
+    }
     std::shared_ptr<BasicBlock> GetBlockByInsn(const Insn& instruction);
 
 public:
@@ -56,10 +68,13 @@ public:
     void SetFirst(const std::shared_ptr<BasicBlock>& first) { m_First = first; }
     std::shared_ptr<BasicBlock> GetLast() { return m_Last; }
     void SetLast(const std::shared_ptr<BasicBlock>& last) { m_Last = last; }
-    std::vector<std::shared_ptr<ExceptionRangeCFG>> GetExceptions() { return m_Exceptions; }
+    std::vector<std::shared_ptr<ExceptionRangeCFG>> GetExceptions() {
+        return m_Exceptions;
+    }
 
     void SetCFGClassFile(ClassFile classFile) { m_ClassFile = classFile; }
     ClassFile GetCFGClassFile() { return m_ClassFile; }
+
 public:
     ClassFile m_ClassFile;
     std::shared_ptr<SSACFG> m_SsaCfg;

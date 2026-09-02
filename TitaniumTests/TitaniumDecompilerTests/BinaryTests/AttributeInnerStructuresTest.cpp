@@ -1,33 +1,34 @@
 #include <gtest/gtest.h>
-#include "Platform/Linux/FileFormats/JVM/AttributeInnerStructures.h"
-#include "Utils/StreamReader.h"
 
 #include <cstring>
+
+#include "FileFormats/JVM/AttributeInnerStructures.h"
+#include "Utils/StreamReader.h"
 
 using namespace TitaniumDecompiler;
 
 class MockStreamReader : public TitaniumDecompiler::BigEndianStreamReader {
-    public:
-        MockStreamReader(std::vector<uint8_t>& buffer)
-            : m_Buffer(buffer), m_Pos(0) {}
-    
-        bool IsStreamGood() const override { return m_Pos < m_Buffer.size(); }
-    
-        uint64_t GetStreamPosition() override { return m_Pos; }
-    
-        void SetStreamPosition(uint64_t position) override { m_Pos = position; }
-    
-        bool ReadData(char* destination, size_t size) override {
-            if (m_Pos + size > m_Buffer.size()) return false;
-            std::memcpy(destination, m_Buffer.data() + m_Pos, size);
-            m_Pos += size;
-            return true;
-        }
-    
-    private:
-        std::vector<uint8_t>& m_Buffer;
-        size_t m_Pos;
-    };
+public:
+    MockStreamReader(std::vector<uint8_t>& buffer)
+        : m_Buffer(buffer), m_Pos(0) {}
+
+    bool IsStreamGood() const override { return m_Pos < m_Buffer.size(); }
+
+    uint64_t GetStreamPosition() override { return m_Pos; }
+
+    void SetStreamPosition(uint64_t position) override { m_Pos = position; }
+
+    bool ReadData(char* destination, size_t size) override {
+        if (m_Pos + size > m_Buffer.size()) return false;
+        std::memcpy(destination, m_Buffer.data() + m_Pos, size);
+        m_Pos += size;
+        return true;
+    }
+
+private:
+    std::vector<uint8_t>& m_Buffer;
+    size_t m_Pos;
+};
 
 class AttributeInnerStructuresTest : public ::testing::Test {
 protected:
@@ -71,8 +72,8 @@ TEST_F(AttributeInnerStructuresTest, ClassesDeserialization) {
 
 TEST_F(AttributeInnerStructuresTest, BootstrapMethodsInnerDeserialization) {
     SetUpBuffer({
-        0x00, 0x02,  // bootstrapMethodRef
-        0x00, 0x02,  // numBootstrapArgs
+        0x00, 0x02,             // bootstrapMethodRef
+        0x00, 0x02,             // numBootstrapArgs
         0x00, 0x03, 0x00, 0x04  // bootstrapArgs[0]=3, [1]=4
     });
     BootstrapMethodsInner inner;
@@ -86,9 +87,12 @@ TEST_F(AttributeInnerStructuresTest, BootstrapMethodsInnerDeserialization) {
 
 TEST_F(AttributeInnerStructuresTest, ParameterAnnotationsDeserialization) {
     SetUpBuffer({
-        0x00, 0x01,              // numAnnotations = 1
-        0x00, 0x02,              // typeIdx
-        0x00, 0x00,              // numElemValPairs = 0
+        0x00,
+        0x01,  // numAnnotations = 1
+        0x00,
+        0x02,  // typeIdx
+        0x00,
+        0x00,  // numElemValPairs = 0
     });
     ParameterAnnotations paramAnno;
     ParameterAnnotations::Deserialize(reader.get(), paramAnno);

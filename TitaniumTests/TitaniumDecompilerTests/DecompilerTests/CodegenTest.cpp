@@ -1,30 +1,24 @@
 #include <gtest/gtest.h>
-#include "TitaniumDecompiler/Decompiler/Codegen.h"
-#include "TitaniumDecompiler/src/TitaniumDecompiler/Disassembler/Function.h"
-#include "TitaniumDecompiler/src/TitaniumDecompiler/Disassembler/CFG.h"
-#include "TitaniumDecompiler/src/Platform/Linux/FileFormats/JVM/Instruction.h"
-#include "TitaniumDecompiler/src/Platform/Linux/FileFormats/JVM/CodeConstants.h"
-#include "TitaniumDecompiler/src/Platform/Linux/FileFormats/JVM/ConstPoolInfo.h"
-#include "TitaniumDecompiler/src/Platform/Linux/FileFormats/JVM/ConstantPool.h"
+
 #include "TitaniumDecompiler/Decompiler/AST.h"
 #include "TitaniumDecompiler/Decompiler/ASTNodes.h"
+#include "TitaniumDecompiler/Decompiler/Codegen.h"
+#include "TitaniumDecompiler/src/FileFormats/JVM/CodeConstants.h"
+#include "TitaniumDecompiler/src/FileFormats/JVM/ConstPoolInfo.h"
+#include "TitaniumDecompiler/src/FileFormats/JVM/ConstantPool.h"
+#include "TitaniumDecompiler/src/FileFormats/JVM/Instruction.h"
+#include "TitaniumDecompiler/src/TitaniumDecompiler/Disassembler/CFG.h"
+#include "TitaniumDecompiler/src/TitaniumDecompiler/Disassembler/Function.h"
 
 using namespace TitaniumDecompiler;
 
 std::map<uint8_t, std::string> opcodes = {
-    {OPCODE_BIPUSH, "bipush"},
-    {OPCODE_ICONST_1, "iconst_1"},
-    {OPCODE_ICONST_2, "iconst_2"},
-    {OPCODE_IADD, "iadd"},
-    {OPCODE_IRETURN, "ireturn"},
-    {OPCODE_ISTORE_1, "istore_1"},
-    {OPCODE_FCONST_1, "fconst_1"},
-    {OPCODE_ILOAD_0, "iload_0"},
-    {OPCODE_ISTORE_0, "istore_0"},
-    {OPCODE_ISUB, "isub"},
-    {OPCODE_IF_ICMPEQ, "if_icmpeq"},
-    {OPCODE_INVOKESTATIC, "invokestatic"}
-};
+    {OPCODE_BIPUSH, "bipush"},       {OPCODE_ICONST_1, "iconst_1"},
+    {OPCODE_ICONST_2, "iconst_2"},   {OPCODE_IADD, "iadd"},
+    {OPCODE_IRETURN, "ireturn"},     {OPCODE_ISTORE_1, "istore_1"},
+    {OPCODE_FCONST_1, "fconst_1"},   {OPCODE_ILOAD_0, "iload_0"},
+    {OPCODE_ISTORE_0, "istore_0"},   {OPCODE_ISUB, "isub"},
+    {OPCODE_IF_ICMPEQ, "if_icmpeq"}, {OPCODE_INVOKESTATIC, "invokestatic"}};
 
 class CodegenTest : public ::testing::Test {
 protected:
@@ -33,9 +27,7 @@ protected:
     Codegen codegen;
 
     CodegenTest()
-        : function("mockMethod"),
-          classFile(),
-          codegen(classFile, {}) {}
+        : function("mockMethod"), classFile(), codegen(classFile, {}) {}
 
     void SetUp() override {
         function.SetFunctionClassFile(classFile);
@@ -64,7 +56,6 @@ protected:
         EXPECT_FALSE(ss.str().empty());
     }
 };
-
 
 TEST_F(CodegenTest, HandlesBIPUSH) {
     auto block = function.GetFunctionCFG()->GetBlocks().at(0);
@@ -99,7 +90,6 @@ TEST_F(CodegenTest, HandlesIRETURN) {
     auto ast = codegen.GenJavaCode(function);
     VisitAndAssertAST(ast);
 }
-
 
 TEST_F(CodegenTest, HandlesFCONST1) {
     auto block = function.GetFunctionCFG()->GetBlocks().at(0);
@@ -150,21 +140,31 @@ TEST_F(CodegenTest, HandlesISUB) {
 //     EXPECT_GE(ast.size(), 1);
 // }
 
-
-
 TEST_F(CodegenTest, HandlesINVOKESTATIC) {
     // Create mock constant pool
-    auto* methodRef = new MethodRefInfo(); methodRef->classIndex = 2; methodRef->nameAndTypeIndex = 3;
-    auto* classInfo = new ClassInfo(); classInfo->nameIndex = 4;
-    auto* nameAndType = new NameAndTypeInfo(); nameAndType->nameIndex = 5; nameAndType->descriptorIndex = 6;
-    auto* nameUtf = new UTF8Info(); nameUtf->length = 4; nameUtf->bytes = {'m','a','i','n'};
-    auto* descUtf = new UTF8Info(); descUtf->length = 3; descUtf->bytes = {'(',')','V'};
-    auto* classNameUtf = new UTF8Info(); classNameUtf->length = 4; classNameUtf->bytes = {'T','e','s','t'};
+    auto* methodRef = new MethodRefInfo();
+    methodRef->classIndex = 2;
+    methodRef->nameAndTypeIndex = 3;
+    auto* classInfo = new ClassInfo();
+    classInfo->nameIndex = 4;
+    auto* nameAndType = new NameAndTypeInfo();
+    nameAndType->nameIndex = 5;
+    nameAndType->descriptorIndex = 6;
+    auto* nameUtf = new UTF8Info();
+    nameUtf->length = 4;
+    nameUtf->bytes = {'m', 'a', 'i', 'n'};
+    auto* descUtf = new UTF8Info();
+    descUtf->length = 3;
+    descUtf->bytes = {'(', ')', 'V'};
+    auto* classNameUtf = new UTF8Info();
+    classNameUtf->length = 4;
+    classNameUtf->bytes = {'T', 'e', 's', 't'};
 
     classFile.m_ConstantPool.m_ConstPoolInfo.resize(6);
     classFile.m_ConstantPool.m_ConstPoolInfo[0] = {Tags::Method, methodRef};
     classFile.m_ConstantPool.m_ConstPoolInfo[1] = {Tags::Class, classInfo};
-    classFile.m_ConstantPool.m_ConstPoolInfo[2] = {Tags::NameAndType, nameAndType};
+    classFile.m_ConstantPool.m_ConstPoolInfo[2] = {Tags::NameAndType,
+                                                   nameAndType};
     classFile.m_ConstantPool.m_ConstPoolInfo[3] = {Tags::Utf8, classNameUtf};
     classFile.m_ConstantPool.m_ConstPoolInfo[4] = {Tags::Utf8, nameUtf};
     classFile.m_ConstantPool.m_ConstPoolInfo[5] = {Tags::Utf8, descUtf};
@@ -175,4 +175,3 @@ TEST_F(CodegenTest, HandlesINVOKESTATIC) {
     auto ast = codegen.GenJavaCode(function);
     VisitAndAssertAST(ast);
 }
-

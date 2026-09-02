@@ -1,5 +1,7 @@
 #include <gtest/gtest.h>
-#include "TitaniumDecompiler/src/Platform/Linux/FileFormats/JVM/Instruction.h"
+
+#include "TitaniumDecompiler/src/Disassembler/Providers/JVM/JVMDisassembler.h"
+#include "TitaniumDecompiler/src/FileFormats/JVM/Instruction.h"
 
 using namespace TitaniumDecompiler;
 
@@ -92,9 +94,13 @@ TEST(InstructionTest, BiPushInstructionReadsCorrectByte) {
 }
 // ---------- LoadDataConstantWide ----------
 TEST(InstructionTest, LoadDataConstantWideReadsCorrectValue) {
-    std::vector<uint8_t> bytes = {0x00, 0x01, 0x2A}; // index1 = 0x01, index2 = 0x2A → 298, but clipped to 42
+    std::vector<uint8_t> bytes = {
+        0x00, 0x01,
+        0x2A};  // index1 = 0x01, index2 = 0x2A → 298, but clipped to 42
     uint8_t val = LoadDataConstantWide(bytes, 0);
-    EXPECT_EQ(val, 42);  // because 298 gets clipped to 42 (0x2A) by uint8_t return type
+    EXPECT_EQ(
+        val,
+        42);  // because 298 gets clipped to 42 (0x2A) by uint8_t return type
 }
 
 TEST(InstructionTest, LoadDataConstantWideTooShortReturnsZero) {
@@ -125,11 +131,25 @@ TEST(InstructionTest, ReferencesInstructionTooShortReturnsZero) {
 // ---------- Tableswitch ----------
 TEST(InstructionTest, DecodeTableSwitchInstructionMinimalPadded) {
     std::vector<uint8_t> bytes = {
-        OPCODE_TABLESWITCH, 0x00, 0x00, // padding
-        0x00, 0x00, 0x00, 0x0A, // default
-        0x00, 0x00, 0x00, 0x01, // low
-        0x00, 0x00, 0x00, 0x01, // high
-        0x00, 0x00, 0x00, 0x01  // jump offset
+        OPCODE_TABLESWITCH,
+        0x00,
+        0x00,  // padding
+        0x00,
+        0x00,
+        0x00,
+        0x0A,  // default
+        0x00,
+        0x00,
+        0x00,
+        0x01,  // low
+        0x00,
+        0x00,
+        0x00,
+        0x01,  // high
+        0x00,
+        0x00,
+        0x00,
+        0x01  // jump offset
     };
     InstrMap instructions = ReadInstructions(bytes);
     ASSERT_EQ(instructions.size(), 1);
@@ -171,7 +191,7 @@ TEST(InstructionTest, DecodeNewArrayInstruction) {
 
 // ---------- LoadIndex helper ----------
 TEST(InstructionTest, LoadIndexAssignsAddressCorrectly) {
-    std::vector<uint8_t> bytes = {0x00, 0x42}; // dummy
+    std::vector<uint8_t> bytes = {0x00, 0x42};  // dummy
     Insn insn;
     bool result = LoadIndex(insn, bytes, 0);
     EXPECT_TRUE(result);

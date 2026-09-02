@@ -1,5 +1,6 @@
 #include "DecompilerViewerPanel.h"
 
+#include "TitaniumLogger/Logger/Log.h"
 #include "imgui.h"
 
 namespace TitaniumRenderer {

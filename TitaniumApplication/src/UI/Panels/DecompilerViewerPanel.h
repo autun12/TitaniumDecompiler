@@ -18,6 +18,7 @@ public:
         : IPanel("Decompiler View", defaultOpen) {
         m_TextRenderer = std::make_unique<ThirdPartyTextRenderer>();
     }
+
     virtual void OnImGuiRender() override;
     void SetDecompilerText(const std::string& dis);
     void SetCursorPositionToFunction(int lineNumber);

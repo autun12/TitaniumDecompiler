@@ -7,7 +7,6 @@
 #include <vector>
 
 #include "IPanel.h"
-#include "imgui.h"
 #include "imgui_memory_editor.h"
 
 namespace TitaniumRenderer {

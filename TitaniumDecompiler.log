@@ -1,5 +1,9 @@
-[10:22:37] [info] TitaniumRenderer: Creating window Titanium Decompiler (1280, 720)
-[10:22:37] [info] TitaniumRenderer: OpenGL Info:
-[10:22:37] [info] TitaniumRenderer:   Vendor: Intel
-[10:22:37] [info] TitaniumRenderer:   Renderer: Mesa Intel(R) Graphics (MTL)
-[10:22:37] [info] TitaniumRenderer:   Version: 4.6 (Core Profile) Mesa 26.1.4-arch1.1
+[19:38:28] [info] TitaniumRenderer: Creating window Titanium Decompiler (1280, 720)
+[19:38:28] [info] TitaniumRenderer: OpenGL Info:
+[19:38:28] [info] TitaniumRenderer:   Vendor: Intel
+[19:38:28] [info] TitaniumRenderer:   Renderer: Mesa Intel(R) Graphics (MTL)
+[19:38:28] [info] TitaniumRenderer:   Version: 4.6 (Core Profile) Mesa 26.1.6-arch1.1
+[19:38:34] [info] TitaniumDecompiler: JVM Class file fully read
+[19:38:34] [info] APP: section size = 5
+[19:38:34] [info] APP: section size = 31
+[19:38:34] [info] APP: HexViewer successfully cached 409 bytes from: ANewArrayExample.class

@@ -21,7 +21,8 @@ namespace TitaniumDecompiler {
  *
  */
 
-uint32_t Codegen::FindStartNodeId(const std::vector<std::shared_ptr<BasicBlock>>& blocks) {
+uint32_t Codegen::FindStartNodeId(
+    const std::vector<std::shared_ptr<BasicBlock>>& blocks) {
     for (const auto& block : blocks) {
         if (block->GetPreds().empty()) {
             return block->m_ID;
@@ -47,27 +48,32 @@ uint32_t Codegen::FindStartNodeId(const std::vector<std::shared_ptr<BasicBlock>>
 //     }
 
 //     // 2. Calculate Dominators
-//     uint32_t startNodeId = FindStartNodeId(cfg->GetBlocks()); // Assuming 0 is the start node ID.  **CRITICAL:  Make sure this is correct for your CFG!**
-//     std::map<uint32_t, uint32_t> dominators = lengauerTarjan(cfg->m_Blocks, startNodeId);
-//     DominatorTree domTree(dominators, cfg->m_Blocks, startNodeId);
+//     uint32_t startNodeId = FindStartNodeId(cfg->GetBlocks()); // Assuming 0
+//     is the start node ID.  **CRITICAL:  Make sure this is correct for your
+//     CFG!** std::map<uint32_t, uint32_t> dominators =
+//     lengauerTarjan(cfg->m_Blocks, startNodeId); DominatorTree
+//     domTree(dominators, cfg->m_Blocks, startNodeId);
 
 //     // 3. Convert CFG to AST, starting from the entry block
-//     //    This is the core change:  Instead of processing instructions linearly,
+//     //    This is the core change:  Instead of processing instructions
+//     linearly,
 //     //    we start at the entry block of the CFG and use convertCFGToAST to
 //     //    recursively build the AST.
-//     if (cfgBlocks.find(startNodeId) != cfgBlocks.end()) { // Ensure the start node exists
-//         ASTPtr rootAST = ConvertCFGToAST(cfgBlocks[startNodeId], cfgBlocks, dominators);
-//         if (rootAST) {
+//     if (cfgBlocks.find(startNodeId) != cfgBlocks.end()) { // Ensure the start
+//     node exists
+//         ASTPtr rootAST = ConvertCFGToAST(cfgBlocks[startNodeId], cfgBlocks,
+//         dominators); if (rootAST) {
 //              std::vector<ASTPtr> rootStatements;
 //              rootStatements.push_back(rootAST);
-//             //  ast_.push_back(std::move(*rootAST)); //  This is wrong.  The function returns a vector.
-//             for(auto& statement : rootStatements){
+//             //  ast_.push_back(std::move(*rootAST)); //  This is wrong.  The
+//             function returns a vector. for(auto& statement : rootStatements){
 //                  ast_.push_back(std::move(*statement));
 //             }
 //         }
 //     }
 //     else{
-//         std::cerr << "Error: Start node not found in CFG blocks." << std::endl;
+//         std::cerr << "Error: Start node not found in CFG blocks." <<
+//         std::endl;
 //     }
 
 //     return std::move(ast_);
@@ -79,14 +85,18 @@ std::vector<AST> Codegen::GenJavaCode(const Function& function) {
     // Collect all instructions from all blocks
     for (auto& block : funct.GetFunctionCFG()->GetBlocks()) {
         auto instr = block->GetInstructions();
-        funcInstructions.insert(funcInstructions.end(), instr.begin(), instr.end());
+        funcInstructions.insert(funcInstructions.end(), instr.begin(),
+                                instr.end());
     }
 
     uint32_t startNodeId = 0;
-    std::map<uint32_t, uint32_t> dominators = lengauerTarjan(funct.GetFunctionCFG()->m_Blocks, startNodeId);
-    DominatorTree domTree(dominators, funct.GetFunctionCFG()->m_Blocks, startNodeId);
+    std::map<uint32_t, uint32_t> dominators =
+        lengauerTarjan(funct.GetFunctionCFG()->m_Blocks, startNodeId);
+    DominatorTree domTree(dominators, funct.GetFunctionCFG()->m_Blocks,
+                          startNodeId);
 
-    std::vector<std::set<uint32_t>> loops = FindLoops(*funct.GetFunctionCFG(), domTree);
+    std::vector<std::set<uint32_t>> loops =
+        FindLoops(*funct.GetFunctionCFG(), domTree);
 
     // TD_DECOMP_INFO("Found {0} loops:", loops.size());
     // for (size_t i = 0; i < loops.size(); ++i) {
@@ -113,42 +123,59 @@ std::vector<AST> Codegen::GenJavaCode(const Function& function) {
     return std::move(ast_);
 }
 
-ASTPtr Codegen::CreateForLoop(std::shared_ptr<BasicBlock> loopHeader, const std::map<int, std::shared_ptr<BasicBlock>>& cfgBlocks,
-                              const std::map<uint32_t, uint32_t>& dominators) {
-    std::cerr << "constructForLoop called for block " << loopHeader->m_ID << std::endl;
+ASTPtr Codegen::CreateForLoop(
+    std::shared_ptr<BasicBlock> loopHeader,
+    const std::map<int, std::shared_ptr<BasicBlock>>& cfgBlocks,
+    const std::map<uint32_t, uint32_t>& dominators) {
+    std::cerr << "constructForLoop called for block " << loopHeader->m_ID
+              << std::endl;
 
     // 1. Identify Potential Loop Header (using dominance)
-    //    The loopHeader *dominates* all blocks in the loop.  We've already got the loopHeader.
+    //    The loopHeader *dominates* all blocks in the loop.  We've already got
+    //    the loopHeader.
 
     // 2. Find Loop Blocks (using dominance)
     std::set<int> loopBlockIds;
     std::vector<int> queue;
     queue.push_back(loopHeader->m_ID);
     loopBlockIds.insert(loopHeader->m_ID);
-    std::cerr << "  Starting loop block identification from header: " << loopHeader->m_ID << std::endl;
+    std::cerr << "  Starting loop block identification from header: "
+              << loopHeader->m_ID << std::endl;
 
     while (!queue.empty()) {
         int currentBlockId = queue.front();
         queue.erase(queue.begin());
         std::cerr << "    Processing block: " << currentBlockId << std::endl;
         if (cfgBlocks.find(currentBlockId) == cfgBlocks.end()) {
-            std::cerr << "      Error: cfgBlocks doesn't contain block " << currentBlockId << std::endl;
+            std::cerr << "      Error: cfgBlocks doesn't contain block "
+                      << currentBlockId << std::endl;
             continue;
         }
-        for (const auto& successor : cfgBlocks.at(currentBlockId)->GetSuccessor()) {  // Corrected: GetSuccessors()
-            std::cerr << "      Successor of " << currentBlockId << ": " << successor->m_ID << std::endl;
+        for (const auto& successor :
+             cfgBlocks.at(currentBlockId)
+                 ->GetSuccessor()) {  // Corrected: GetSuccessors()
+            std::cerr << "      Successor of " << currentBlockId << ": "
+                      << successor->m_ID << std::endl;
             if (dominators.count(successor->m_ID) == 0) {
-                std::cerr << "        Warning: Dominator information not found for block " << successor->m_ID << std::endl;
+                std::cerr << "        Warning: Dominator information not found "
+                             "for block "
+                          << successor->m_ID << std::endl;
                 continue;
             }
-            if (dominators.at(successor->m_ID) == loopHeader->m_ID && loopBlockIds.find(successor->m_ID) == loopBlockIds.end()) {
-                std::cerr << "        Adding block " << successor->m_ID << " to loop blocks." << std::endl;
+            if (dominators.at(successor->m_ID) == loopHeader->m_ID &&
+                loopBlockIds.find(successor->m_ID) == loopBlockIds.end()) {
+                std::cerr << "        Adding block " << successor->m_ID
+                          << " to loop blocks." << std::endl;
                 queue.push_back(successor->m_ID);
                 loopBlockIds.insert(successor->m_ID);
-            } else if (loopBlockIds.find(successor->m_ID) != loopBlockIds.end()) {
-                std::cerr << "        Block " << successor->m_ID << " already in loop blocks." << std::endl;
+            } else if (loopBlockIds.find(successor->m_ID) !=
+                       loopBlockIds.end()) {
+                std::cerr << "        Block " << successor->m_ID
+                          << " already in loop blocks." << std::endl;
             } else {
-                std::cerr << "        Block " << successor->m_ID << " is not dominated by header or already in loop." << std::endl;
+                std::cerr << "        Block " << successor->m_ID
+                          << " is not dominated by header or already in loop."
+                          << std::endl;
             }
         }
     }
@@ -160,7 +187,8 @@ ASTPtr Codegen::CreateForLoop(std::shared_ptr<BasicBlock> loopHeader, const std:
         if (cfgBlocks.count(blockId)) {
             loopBlocks.push_back(cfgBlocks.at(blockId));
         } else {
-            std::cerr << "Error: cfgBlocks doesn't contain loop block " << blockId << std::endl;
+            std::cerr << "Error: cfgBlocks doesn't contain loop block "
+                      << blockId << std::endl;
         }
     }
     std::cerr << std::endl;
@@ -169,15 +197,20 @@ ASTPtr Codegen::CreateForLoop(std::shared_ptr<BasicBlock> loopHeader, const std:
     std::shared_ptr<BasicBlock> backEdgeSource = nullptr;
     std::cerr << "  Searching for back edge..." << std::endl;
     for (const auto& loopBlock : loopBlocks) {
-        std::cerr << "    Checking block " << loopBlock->m_ID << " for back edge." << std::endl;
+        std::cerr << "    Checking block " << loopBlock->m_ID
+                  << " for back edge." << std::endl;
         if (loopBlock->m_ID == loopHeader->m_ID) {
             std::cerr << "      Skipping loop header." << std::endl;
             continue;
         }
         for (const auto& successor : loopBlock->GetSuccessor()) {
-            std::cerr << "      Successor of " << loopBlock->m_ID << ": " << successor->m_ID << std::endl;
-            if (successor->m_ID == loopHeader->m_ID && loopBlockIds.count(loopBlock->m_ID)) {
-                std::cerr << "      Found back edge from block " << loopBlock->m_ID << " to header " << loopHeader->m_ID << std::endl;
+            std::cerr << "      Successor of " << loopBlock->m_ID << ": "
+                      << successor->m_ID << std::endl;
+            if (successor->m_ID == loopHeader->m_ID &&
+                loopBlockIds.count(loopBlock->m_ID)) {
+                std::cerr << "      Found back edge from block "
+                          << loopBlock->m_ID << " to header "
+                          << loopHeader->m_ID << std::endl;
                 backEdgeSource = loopBlock;
                 break;
             }
@@ -186,19 +219,24 @@ ASTPtr Codegen::CreateForLoop(std::shared_ptr<BasicBlock> loopHeader, const std:
     }
 
     if (!backEdgeSource) {
-        std::cerr << "  No back edge found within loop blocks. Not a loop." << std::endl;
+        std::cerr << "  No back edge found within loop blocks. Not a loop."
+                  << std::endl;
         return nullptr;  // Not a loop
     }
 
-    std::cerr << "  Back edge found from block " << backEdgeSource->m_ID << std::endl;
+    std::cerr << "  Back edge found from block " << backEdgeSource->m_ID
+              << std::endl;
 
     // 4. Identify Condition (in loop header) - as before
     ASTPtr condition = nullptr;
-    std::cerr << "  Searching for condition in loop header " << loopHeader->m_ID << std::endl;
+    std::cerr << "  Searching for condition in loop header " << loopHeader->m_ID
+              << std::endl;
     for (const auto& insn : loopHeader->GetInstructions()) {
         const Insn& instruction = insn;
-        std::cerr << "    Instruction in header: " << instruction.opcode << std::endl;
-        if (instruction.opcode >= OPCODE_IFEQ && instruction.opcode <= OPCODE_IFNONNULL) {
+        std::cerr << "    Instruction in header: " << instruction.opcode
+                  << std::endl;
+        if (instruction.opcode >= OPCODE_IFEQ &&
+            instruction.opcode <= OPCODE_IFNONNULL) {
             std::vector<StackEntry> stack;
             condition = ConvertConditionToAST(instruction, stack);
             std::cerr << "      Condition found." << std::endl;
@@ -206,18 +244,25 @@ ASTPtr Codegen::CreateForLoop(std::shared_ptr<BasicBlock> loopHeader, const std:
         }
     }
     if (!condition) {
-        std::cerr << "  No condition found in loop header. Returning nullptr." << std::endl;
+        std::cerr << "  No condition found in loop header. Returning nullptr."
+                  << std::endl;
         return nullptr;
     }
 
     // 5. Find Update (in back edge source) - as before
     ASTPtr update = nullptr;
-    std::cerr << "  Searching for update in back edge source " << backEdgeSource->m_ID << std::endl;
+    std::cerr << "  Searching for update in back edge source "
+              << backEdgeSource->m_ID << std::endl;
     for (const auto& insn : backEdgeSource->GetInstructions()) {
         const Insn& instruction = insn;
-        std::cerr << "    Instruction in back edge source: " << instruction.opcode << std::endl;
-        if (instruction.opcode == OPCODE_IINC || instruction.opcode == OPCODE_ASTORE || instruction.opcode == OPCODE_ISTORE ||
-            instruction.opcode == OPCODE_FSTORE || instruction.opcode == OPCODE_DSTORE || instruction.opcode == OPCODE_LSTORE) {
+        std::cerr << "    Instruction in back edge source: "
+                  << instruction.opcode << std::endl;
+        if (instruction.opcode == OPCODE_IINC ||
+            instruction.opcode == OPCODE_ASTORE ||
+            instruction.opcode == OPCODE_ISTORE ||
+            instruction.opcode == OPCODE_FSTORE ||
+            instruction.opcode == OPCODE_DSTORE ||
+            instruction.opcode == OPCODE_LSTORE) {
             update = ConvertUpdateToAST(instruction);
             std::cerr << "      Update found." << std::endl;
             break;
@@ -230,10 +275,13 @@ ASTPtr Codegen::CreateForLoop(std::shared_ptr<BasicBlock> loopHeader, const std:
     for (int blockId : loopBlockIds) {
         std::cerr << blockId << " ";
         if (blockId != loopHeader->m_ID && blockId != backEdgeSource->m_ID) {
-            std::cerr << "    Converting block " << blockId << " to loop body AST." << std::endl;
-            loopBody.push_back(ConvertCFGToAST(cfgBlocks.at(blockId), cfgBlocks, dominators));
+            std::cerr << "    Converting block " << blockId
+                      << " to loop body AST." << std::endl;
+            loopBody.push_back(
+                ConvertCFGToAST(cfgBlocks.at(blockId), cfgBlocks, dominators));
         } else {
-            std::cerr << "    Skipping header or back edge source: " << blockId << std::endl;
+            std::cerr << "    Skipping header or back edge source: " << blockId
+                      << std::endl;
         }
     }
     std::cerr << std::endl;
@@ -243,7 +291,8 @@ ASTPtr Codegen::CreateForLoop(std::shared_ptr<BasicBlock> loopHeader, const std:
     return std::make_shared<AST>(forLoop);
 }
 
-std::optional<AST> Codegen::ReadInstruction(const Function& function, const Insn& instruction) {
+std::optional<AST> Codegen::ReadInstruction(const Function& function,
+                                            const Insn& instruction) {
     Function funct = function;
     auto block = funct.GetFunctionCFG()->GetBlockByInsn(instruction);
     switch (instruction.opcode) {
@@ -259,11 +308,15 @@ std::optional<AST> Codegen::ReadInstruction(const Function& function, const Insn
         }
         case OPCODE_LDC:  // Load constant
         case OPCODE_LDC_W: {
-            ConstPoolInfo cpi = m_ClassFile.m_ConstantPool.m_ConstPoolInfo.at(instruction.Op1.value - 1);
+            ConstPoolInfo cpi = m_ClassFile.m_ConstantPool.m_ConstPoolInfo.at(
+                instruction.Op1.value - 1);
             if (cpi.Tag == Tags::String) {
-                // If constant is a string, retrieve the actual String and push it onto m_Stack
-                auto str = static_cast<StringInfo*>(cpi.Info.get());
-                std::string constStr = GetConstantUTF8FromClass(m_ClassFile, str->stringIndex);
+                // If constant is a string, retrieve the actual String and push
+                // it onto m_Stack
+                auto str = cpi.GetAs<StringInfo>();
+                // static_cast<StringInfo*>(cpi.Info.get());
+                std::string constStr =
+                    GetConstantUTF8FromClass(m_ClassFile, str->stringIndex);
                 m_Stack.emplace_back(StackEntry::String{constStr});
             } else if (cpi.Tag == Tags::Int) {
                 int32_t value = static_cast<int32_t>(instruction.Op1.value);
@@ -343,7 +396,9 @@ std::optional<AST> Codegen::ReadInstruction(const Function& function, const Insn
         case OPCODE_DLOAD:
         case OPCODE_ILOAD:
         case OPCODE_LLOAD: {
-            Load(instruction.Op1.addr - 1);  // Op1.value is variable index in the function's local variable array
+            Load(instruction.Op1.addr -
+                 1);  // Op1.value is variable index in the function's local
+                      // variable array
             break;
         }
         case OPCODE_ALOAD_0:
@@ -423,17 +478,22 @@ std::optional<AST> Codegen::ReadInstruction(const Function& function, const Insn
             if (array.isArray()) {
                 StackEntry::Array arr = array.getArrayValue();
                 arr.elements.emplace_back(val);
-                m_Stack.emplace_back(StackEntry::Array{arr.type, arr.length, arr.elements});
+                m_Stack.emplace_back(
+                    StackEntry::Array{arr.type, arr.length, arr.elements});
             } else {
-                // if array is not explicitly an array, assume it is an object array.
+                // if array is not explicitly an array, assume it is an object
+                // array.
                 auto entry = ConvertStackEntryToAST(array);
-                AST::ArrayIndex arrIndex{entry, ConvertStackEntryToAST(index), array.ty()};
-                AST::ReAssignment reAssign{std::make_shared<AST>(arrIndex), ConvertStackEntryToAST(val)};
+                AST::ArrayIndex arrIndex{entry, ConvertStackEntryToAST(index),
+                                         array.ty()};
+                AST::ReAssignment reAssign{std::make_shared<AST>(arrIndex),
+                                           ConvertStackEntryToAST(val)};
                 return reAssign;
             }
             break;
         }
-        // arithmetic operations opcodes, pushes the respective operation onto the stack
+        // arithmetic operations opcodes, pushes the respective operation onto
+        // the stack
         case OPCODE_IADD:
         case OPCODE_FADD:
         case OPCODE_DADD:
@@ -506,15 +566,21 @@ std::optional<AST> Codegen::ReadInstruction(const Function& function, const Insn
         case OPCODE_DNEG:
         case OPCODE_LNEG: {
             StackEntry val = PopStack();
-            m_Stack.emplace_back(StackEntry::UnaryOperation{UnaryOp::Neg, std::make_unique<StackEntry>(std::move(val))});
+            m_Stack.emplace_back(StackEntry::UnaryOperation{
+                UnaryOp::Neg, std::make_unique<StackEntry>(std::move(val))});
             break;
         }
         // Process opcode for type checking
         case OPCODE_INSTANCEOF: {
-            StackEntry obj1 = PopStack();                                                      // pop object reference
-            std::string obj2 = GetConstantClassFromClass(m_ClassFile, instruction.Op1.value);  // Retrieve class name from constant pool
+            StackEntry obj1 = PopStack();  // pop object reference
+            std::string obj2 = GetConstantClassFromClass(
+                m_ClassFile,
+                instruction.Op1
+                    .value);  // Retrieve class name from constant pool
             StackEntry::Class obj2Class{obj2};
-            StackEntry::BinaryOperation binOp{std::make_shared<StackEntry>(obj1), BinaryOp::InstanceOf, std::make_shared<StackEntry>(obj2Class)};
+            StackEntry::BinaryOperation binOp{
+                std::make_shared<StackEntry>(obj1), BinaryOp::InstanceOf,
+                std::make_shared<StackEntry>(obj2Class)};
             m_Stack.emplace_back(binOp);
             break;
         }
@@ -535,9 +601,11 @@ std::optional<AST> Codegen::ReadInstruction(const Function& function, const Insn
         }
         // Process opcode for dynamic method calls
         case OPCODE_INVOKEDYNAMIC: {
-            auto methStack = GetDynamicInvokeRefFromIndex(m_ClassFile, instruction.Op1.value);
+            auto methStack = GetDynamicInvokeRefFromIndex(
+                m_ClassFile, instruction.Op1.value);
 
-            if (methStack.m_Class == "StringConcatFactory" && methStack.m_Name == "makeConcatWithConstants") {
+            if (methStack.m_Class == "StringConcatFactory" &&
+                methStack.m_Name == "makeConcatWithConstants") {
                 auto args = methStack.unparsed_args;
                 StringConcatFactory(args);
                 // return nullptr;
@@ -556,13 +624,15 @@ std::optional<AST> Codegen::ReadInstruction(const Function& function, const Insn
 
             std::string name = methStack.m_Class + "." + methStack.m_Name;
 
-            StackEntry::Function func{getLastClassNamePart(name), args, methStack.desc.returnType};
+            StackEntry::Function func{getLastClassNamePart(name), args,
+                                      methStack.desc.returnType};
             m_Stack.emplace_back(func);
             break;
         }
         // Process opcodes for interface method calls
         case OPCODE_INVOKEINTERFACE: {
-            auto methStack = GetMethodRefFromIndex(m_ClassFile, instruction.Op1.value);
+            auto methStack =
+                GetMethodRefFromIndex(m_ClassFile, instruction.Op1.value);
 
             if (methStack.desc.args.empty()) {
                 break;
@@ -576,13 +646,15 @@ std::optional<AST> Codegen::ReadInstruction(const Function& function, const Insn
 
             std::string name = methStack.m_Class + "." + methStack.m_Name;
 
-            StackEntry::Function func{getLastClassNamePart(name), args, methStack.desc.returnType};
+            StackEntry::Function func{getLastClassNamePart(name), args,
+                                      methStack.desc.returnType};
             m_Stack.emplace_back(func);
             break;
         }
         // Process opcode for constructors and private method calls
         case OPCODE_INVOKESPECIAL: {
-            MethodRefStack methStack = GetMethodRefFromIndex(m_ClassFile, instruction.Op1.value);
+            MethodRefStack methStack =
+                GetMethodRefFromIndex(m_ClassFile, instruction.Op1.value);
             std::vector<StackEntry> args;
             for (auto& descArgs : methStack.desc.args) {
                 args.emplace_back(PopStack());
@@ -591,30 +663,35 @@ std::optional<AST> Codegen::ReadInstruction(const Function& function, const Insn
             auto obj = PopStack();
             std::string name = "";
 
-            if (methStack.m_Name == "<init>" || methStack.m_Name == "<clinit>") {
+            if (methStack.m_Name == "<init>" ||
+                methStack.m_Name == "<clinit>") {
                 if (obj.isClass()) {
                     name = obj.getClassValue().m_ClassName;
                 }
             } else {
                 if (obj.isClass()) {
-                    name = obj.getClassValue().m_ClassName + "." + methStack.m_Name;
+                    name = obj.getClassValue().m_ClassName + "." +
+                           methStack.m_Name;
                 }
             }
 
-            StackEntry::Function func{name, args, Type::ClassNameType(methStack.m_Class)};
+            StackEntry::Function func{name, args,
+                                      Type::ClassNameType(methStack.m_Class)};
             m_Stack.emplace_back(func);
             break;
         }
         // Process opcode for static method calls
         case OPCODE_INVOKESTATIC: {
-            MethodRefStack methStack = GetMethodRefFromIndex(m_ClassFile, instruction.Op1.value);
+            MethodRefStack methStack =
+                GetMethodRefFromIndex(m_ClassFile, instruction.Op1.value);
             std::vector<StackEntry> args;
             for (auto& descArgs : methStack.desc.args) {
                 args.emplace_back(PopStack());
             }
 
             std::string funcName = methStack.m_Class + "." + methStack.m_Name;
-            StackEntry::Function func{funcName, args, methStack.desc.returnType};
+            StackEntry::Function func{funcName, args,
+                                      methStack.desc.returnType};
 
             if (methStack.desc.returnType.kind == Type::Void) {
                 AST::Object object{methStack.m_Class};
@@ -622,8 +699,10 @@ std::optional<AST> Codegen::ReadInstruction(const Function& function, const Insn
                 for (auto& stacks : args) {
                     astArgs.emplace_back(ConvertStackEntryToAST(stacks));
                 }
-                AST::FunctionCall funcCall{methStack.m_Name, astArgs, methStack.desc.returnType};
-                AST::MethodCall call{std::make_shared<AST>(object), std::make_shared<AST>(funcCall)};
+                AST::FunctionCall funcCall{methStack.m_Name, astArgs,
+                                           methStack.desc.returnType};
+                AST::MethodCall call{std::make_shared<AST>(object),
+                                     std::make_shared<AST>(funcCall)};
                 return call;
             }
             m_Stack.emplace_back(func);
@@ -631,7 +710,8 @@ std::optional<AST> Codegen::ReadInstruction(const Function& function, const Insn
         }
         // Process opcode for virtual method calls
         case OPCODE_INVOKEVIRTUAL: {
-            MethodRefStack methStack = GetMethodRefFromIndex(m_ClassFile, instruction.Op1.value);
+            MethodRefStack methStack =
+                GetMethodRefFromIndex(m_ClassFile, instruction.Op1.value);
             std::vector<StackEntry> args;
             for (auto& descArgs : methStack.desc.args) {
                 args.emplace_back(PopStack());
@@ -646,34 +726,43 @@ std::optional<AST> Codegen::ReadInstruction(const Function& function, const Insn
             }
 
             std::string funcName = name + "." + methStack.m_Name;
-            StackEntry::Function func{funcName, args, methStack.desc.returnType};
+            StackEntry::Function func{funcName, args,
+                                      methStack.desc.returnType};
             if (methStack.desc.returnType.kind == Type::Void) {
                 auto obj = ConvertStackEntryToAST(object);
                 std::vector<ASTPtr> astArgs;
                 for (auto& stacks : args) {
                     astArgs.emplace_back(ConvertStackEntryToAST(stacks));
                 }
-                AST::FunctionCall funcCall{methStack.m_Name, astArgs, methStack.desc.returnType};
-                AST::MethodCall call{std::make_shared<AST>(obj), std::make_shared<AST>(funcCall)};
+                AST::FunctionCall funcCall{methStack.m_Name, astArgs,
+                                           methStack.desc.returnType};
+                AST::MethodCall call{std::make_shared<AST>(obj),
+                                     std::make_shared<AST>(funcCall)};
                 return call;
             }
             m_Stack.emplace_back(func);
             break;
         }
-        // Getters and setters for static and instance fields. I.e. obj.field = value;
+        // Getters and setters for static and instance fields. I.e. obj.field =
+        // value;
         case OPCODE_GETSTATIC: {
-            auto fieldRefStack = GetFieldRefFromIndex(m_ClassFile, instruction.Op1.value);
+            auto fieldRefStack =
+                GetFieldRefFromIndex(m_ClassFile, instruction.Op1.value);
             StackEntry::Class classStack{fieldRefStack.m_Class};
 
-            StackEntry::Field field{std::make_shared<StackEntry>(classStack), fieldRefStack.m_Name, fieldRefStack.m_type};
+            StackEntry::Field field{std::make_shared<StackEntry>(classStack),
+                                    fieldRefStack.m_Name, fieldRefStack.m_type};
             m_Stack.emplace_back(field);
             break;
         }
         case OPCODE_GETFIELD: {
-            auto fieldRefStack = GetFieldRefFromIndex(m_ClassFile, instruction.Op1.value);
+            auto fieldRefStack =
+                GetFieldRefFromIndex(m_ClassFile, instruction.Op1.value);
             auto obj = PopStack();
             if (obj.isIdentifier()) {
-                StackEntry::Field field{std::make_shared<StackEntry>(obj), fieldRefStack.m_Name, fieldRefStack.m_type};
+                StackEntry::Field field{std::make_shared<StackEntry>(obj),
+                                        fieldRefStack.m_Name,
+                                        fieldRefStack.m_type};
                 m_Stack.emplace_back(field);
             }
             break;
@@ -681,21 +770,27 @@ std::optional<AST> Codegen::ReadInstruction(const Function& function, const Insn
 
         case OPCODE_PUTSTATIC: {
             auto val = PopStack();
-            FieldRefStack fieldRefStack = GetFieldRefFromIndex(m_ClassFile, instruction.Op1.value);
+            FieldRefStack fieldRefStack =
+                GetFieldRefFromIndex(m_ClassFile, instruction.Op1.value);
             AST::Object obj{fieldRefStack.m_Class};
-            AST::FieldAssignment fieldAssign{std::make_shared<AST>(obj), fieldRefStack.m_Name, fieldRefStack.m_type, ConvertStackEntryToAST(val)};
+            AST::FieldAssignment fieldAssign{
+                std::make_shared<AST>(obj), fieldRefStack.m_Name,
+                fieldRefStack.m_type, ConvertStackEntryToAST(val)};
             return fieldAssign;
         }
         case OPCODE_PUTFIELD: {
             auto val = PopStack();
             auto obj = PopStack();
-            FieldRefStack fieldRefStack = GetFieldRefFromIndex(m_ClassFile, instruction.Op1.value);
+            FieldRefStack fieldRefStack =
+                GetFieldRefFromIndex(m_ClassFile, instruction.Op1.value);
 
             if (m_InsideInit) {
                 // m_Fie
             }
             // AST::Object obj{fieldRefStack.m_Class};
-            AST::FieldAssignment fieldAssign{ConvertStackEntryToAST(obj), fieldRefStack.m_Name, fieldRefStack.m_type, ConvertStackEntryToAST(val)};
+            AST::FieldAssignment fieldAssign{
+                ConvertStackEntryToAST(obj), fieldRefStack.m_Name,
+                fieldRefStack.m_type, ConvertStackEntryToAST(val)};
             return fieldAssign;
         }
         // Process opcodes for Array operations
@@ -711,7 +806,10 @@ std::optional<AST> Codegen::ReadInstruction(const Function& function, const Insn
         }
         // Process opcode for object arrays
         case OPCODE_ANEWARRAY: {
-            auto ty = FieldDescriptor::newDescriptor(GetConstantClassFromClass(m_ClassFile, instruction.Op1.value)).m_Ty;
+            auto ty = FieldDescriptor::newDescriptor(
+                          GetConstantClassFromClass(m_ClassFile,
+                                                    instruction.Op1.value))
+                          .m_Ty;
             auto count = std::make_shared<StackEntry>(PopStack());
             std::vector<StackEntry> arr;
             m_Stack.emplace_back(StackEntry::Array{ty, count, arr});
@@ -722,7 +820,8 @@ std::optional<AST> Codegen::ReadInstruction(const Function& function, const Insn
         }
         case OPCODE_ARRAYLENGTH: {
             StackEntry val = PopStack();
-            StackEntry::UnaryOperation unaryOp{UnaryOp::ArrayLength, std::make_shared<StackEntry>(val)};
+            StackEntry::UnaryOperation unaryOp{
+                UnaryOp::ArrayLength, std::make_shared<StackEntry>(val)};
             m_Stack.emplace_back(unaryOp);
             break;
         }
@@ -739,7 +838,8 @@ std::optional<AST> Codegen::ReadInstruction(const Function& function, const Insn
         // pop 2 values from stack
         case OPCODE_POP2: {
             auto val1 = PopStack();
-            if (val1.ty().kind == Type::Long || val1.ty().kind == Type::Double) {
+            if (val1.ty().kind == Type::Long ||
+                val1.ty().kind == Type::Double) {
             } else {
                 return ConvertStackEntryToAST(PopStack());
             }
@@ -747,41 +847,48 @@ std::optional<AST> Codegen::ReadInstruction(const Function& function, const Insn
         }
         // Process opcode for incrementing variable
         case OPCODE_IINC: {
-            if(m_LocalVariables.size() <= 0) {
+            if (m_LocalVariables.size() <= 0) {
                 break;
             } else {
                 TD_DECOMP_ERROR("localvar size: {0}", m_LocalVariables.size());
-            int localIdx = ((instruction.Op2.value >> 8) & 0xFF);
-            int32_t amount = instruction.Op2.value & 0xFF;
-            TD_DECOMP_ERROR("localIdx {0}", localIdx);
-            
-            if(localIdx > m_LocalVariables.size()) {
-                break;
-            } else {
-                StackEntry val = m_LocalVariables.at(localIdx);
+                int localIdx = ((instruction.Op2.value >> 8) & 0xFF);
+                int32_t amount = instruction.Op2.value & 0xFF;
+                TD_DECOMP_ERROR("localIdx {0}", localIdx);
 
-                if (!val.isInteger()) {
-                    val = StackEntry(-1);
-                }
-    
-                if (val.isInteger()) {
-                    val = StackEntry(amount);
-                }
-    
-                if (val.isIdentifier()) {
-                    if (amount == 1) {
-                        AST::UnaryOperation unaryOp{UnaryOp::PlusPlus, ConvertStackEntryToAST(val)};
-                        ASTPtr variable = std::make_unique<AST>(std::move(unaryOp));  // Identifier AST
-                        return variable;
-                    } else {
-                        ASTPtr variable = ConvertStackEntryToAST(std::move(val));
-                        AST::BinaryOperation binaryOp{std::move(variable), BinaryOp::Add, std::make_unique<AST>(amount)};
-                        AST::ReAssignment reAssign{std::move(variable), std::make_unique<AST>(std::move(binaryOp))};
-                        return reAssign;
+                if (localIdx > m_LocalVariables.size()) {
+                    break;
+                } else {
+                    StackEntry val = m_LocalVariables.at(localIdx);
+
+                    if (!val.isInteger()) {
+                        val = StackEntry(-1);
+                    }
+
+                    if (val.isInteger()) {
+                        val = StackEntry(amount);
+                    }
+
+                    if (val.isIdentifier()) {
+                        if (amount == 1) {
+                            AST::UnaryOperation unaryOp{
+                                UnaryOp::PlusPlus, ConvertStackEntryToAST(val)};
+                            ASTPtr variable = std::make_unique<AST>(
+                                std::move(unaryOp));  // Identifier AST
+                            return variable;
+                        } else {
+                            ASTPtr variable =
+                                ConvertStackEntryToAST(std::move(val));
+                            AST::BinaryOperation binaryOp{
+                                std::move(variable), BinaryOp::Add,
+                                std::make_unique<AST>(amount)};
+                            AST::ReAssignment reAssign{
+                                std::move(variable),
+                                std::make_unique<AST>(std::move(binaryOp))};
+                            return reAssign;
+                        }
                     }
                 }
             }
-        }
         }
         // Process opcode for branch if reference are equal
         case OPCODE_IF_ACMPEQ: {
@@ -817,14 +924,17 @@ std::optional<AST> Codegen::ReadInstruction(const Function& function, const Insn
             }
 
             if (then.size() == 1) {
-                if (then[0]->isIfStatement()) {  // Check if AST is an If condition
+                if (then[0]
+                        ->isIfStatement()) {  // Check if AST is an If condition
                     auto ifAst = then[0]->getIfNode();
                     auto this_cond = ifAst.cond;
                     auto this_then = ifAst.then;
                     then = this_then;
-                    AST::BinaryOperation binOp{cond, BinaryOp::LogicalAnd, this_cond};
+                    AST::BinaryOperation binOp{cond, BinaryOp::LogicalAnd,
+                                               this_cond};
                     cond = std::make_shared<AST>(binOp);
-                    // cond = std::make_shared<AST>(AST::BinaryOperation(cond, BinaryOp::LogicalAnd, ifAst->cond));
+                    // cond = std::make_shared<AST>(AST::BinaryOperation(cond,
+                    // BinaryOp::LogicalAnd, ifAst->cond));
                 }
             }
             AST::If ifStatement{cond, then};
@@ -874,17 +984,21 @@ std::optional<AST> Codegen::ReadInstruction(const Function& function, const Insn
 
             ASTPtr cond;
             if (then.size() != 1) {
-                AST::UnaryOperation unOp{UnaryOp::Negate, ConvertStackEntryToAST(raw_cond)};
+                AST::UnaryOperation unOp{UnaryOp::Negate,
+                                         ConvertStackEntryToAST(raw_cond)};
                 cond = std::make_shared<AST>(unOp);
             } else {
                 AST first_then = then[0];
                 if (first_then.isIfStatement()) {
                     auto this_if = first_then.getIfNode();
                     then = this_if.then;
-                    AST::BinaryOperation binOp{ConvertStackEntryToAST(raw_cond), BinaryOp::LogicalOr, std::move(this_if.cond)};
+                    AST::BinaryOperation binOp{ConvertStackEntryToAST(raw_cond),
+                                               BinaryOp::LogicalOr,
+                                               std::move(this_if.cond)};
                     cond = std::make_unique<AST>(binOp);
                 } else {
-                    AST::UnaryOperation unOp{UnaryOp::Negate, ConvertStackEntryToAST(raw_cond)};
+                    AST::UnaryOperation unOp{UnaryOp::Negate,
+                                             ConvertStackEntryToAST(raw_cond)};
                     cond = std::make_unique<AST>(unOp);
                 }
             }
@@ -895,7 +1009,9 @@ std::optional<AST> Codegen::ReadInstruction(const Function& function, const Insn
         case OPCODE_IF_ICMPEQ: {
             StackEntry val2 = PopStack();
             StackEntry val1 = PopStack();
-            AST::BinaryOperation binaryOp{ConvertStackEntryToAST(val1), BinaryOp::NotEqual, ConvertStackEntryToAST(val2)};
+            AST::BinaryOperation binaryOp{ConvertStackEntryToAST(val1),
+                                          BinaryOp::NotEqual,
+                                          ConvertStackEntryToAST(val2)};
             ASTPtr cond = std::make_shared<AST>(binaryOp);
             int64_t pos = m_CurrentPos + instruction.Op1.addr;
             std::vector<ASTPtr> then;
@@ -918,12 +1034,14 @@ std::optional<AST> Codegen::ReadInstruction(const Function& function, const Insn
             }
 
             if (then.size() == 1) {
-                if (then[0]->isIfStatement()) {  // Check if AST is an If condition
+                if (then[0]
+                        ->isIfStatement()) {  // Check if AST is an If condition
                     auto ifAst = then[0]->getIfNode();
                     auto this_cond = ifAst.cond;
                     auto this_then = ifAst.then;
                     then = this_then;
-                    AST::BinaryOperation binOp{cond, BinaryOp::LogicalAnd, this_cond};
+                    AST::BinaryOperation binOp{cond, BinaryOp::LogicalAnd,
+                                               this_cond};
                     cond = std::make_shared<AST>(binOp);
                 }
             }
@@ -935,7 +1053,9 @@ std::optional<AST> Codegen::ReadInstruction(const Function& function, const Insn
         case OPCODE_IF_ICMPNE: {
             StackEntry val2 = PopStack();
             StackEntry val1 = PopStack();
-            AST::BinaryOperation binaryOp{ConvertStackEntryToAST(val1), BinaryOp::Equal, ConvertStackEntryToAST(val2)};
+            AST::BinaryOperation binaryOp{ConvertStackEntryToAST(val1),
+                                          BinaryOp::Equal,
+                                          ConvertStackEntryToAST(val2)};
             ASTPtr cond = std::make_shared<AST>(binaryOp);
             int64_t pos = m_CurrentPos + instruction.Op1.addr;
             std::vector<ASTPtr> then;
@@ -958,12 +1078,14 @@ std::optional<AST> Codegen::ReadInstruction(const Function& function, const Insn
             }
 
             if (then.size() == 1) {
-                if (then[0]->isIfStatement()) {  // Check if AST is an If condition
+                if (then[0]
+                        ->isIfStatement()) {  // Check if AST is an If condition
                     auto ifAst = then[0]->getIfNode();
                     auto this_cond = ifAst.cond;
                     auto this_then = ifAst.then;
                     then = this_then;
-                    AST::BinaryOperation binOp{cond, BinaryOp::LogicalAnd, this_cond};
+                    AST::BinaryOperation binOp{cond, BinaryOp::LogicalAnd,
+                                               this_cond};
                     cond = std::make_shared<AST>(binOp);
                 }
             }
@@ -1004,12 +1126,13 @@ std::optional<AST> Codegen::ReadInstruction(const Function& function, const Insn
         // Process opcode for branch always instrucion
         case OPCODE_GOTO: {
             int targetBlockID = instruction.Op1.addr;
-            auto main_block = funct.GetFunctionCFG()->GetBlockByInsn(instruction);
-            if(main_block == nullptr) {
+            auto main_block =
+                funct.GetFunctionCFG()->GetBlockByInsn(instruction);
+            if (main_block == nullptr) {
                 break;
             }
             size_t currentBlockID = main_block->m_ID;
-            if(IsBackEdge(instruction, m_Dominators, currentBlockID)) {
+            if (IsBackEdge(instruction, m_Dominators, currentBlockID)) {
                 std::cout << "IS BACK EDGE" << std::endl;
                 // auto loopNode = BuildLoopAST(insn, domTree);
             } else {
@@ -1083,7 +1206,8 @@ std::optional<AST> Codegen::ReadInstruction(const Function& function, const Insn
         }
         // Process opcode for creating new objects
         case OPCODE_NEW: {
-            auto obj = GetConstantClassFromClass(m_ClassFile, instruction.Op1.value);
+            auto obj =
+                GetConstantClassFromClass(m_ClassFile, instruction.Op1.value);
             StackEntry::New newObj{obj};
             m_Stack.emplace_back(StackEntry(newObj));
             break;
@@ -1099,7 +1223,8 @@ std::optional<AST> Codegen::ReadInstruction(const Function& function, const Insn
             }
             break;
         }
-        // Process opcode for duplicating the top value and inserting it below the second value
+        // Process opcode for duplicating the top value and inserting it below
+        // the second value
         case OPCODE_DUP_X1: {
             StackEntry val1 = PopStack();
             StackEntry val2 = PopStack();
@@ -1108,7 +1233,8 @@ std::optional<AST> Codegen::ReadInstruction(const Function& function, const Insn
             m_Stack.emplace_back(StackEntry(val1));
             break;
         }
-        // Process opcode for Duplicating the top value and inserting it below the third value
+        // Process opcode for Duplicating the top value and inserting it below
+        // the third value
         case OPCODE_DUP_X2: {
             StackEntry val1 = PopStack();
             StackEntry val2 = PopStack();
@@ -1129,7 +1255,8 @@ std::optional<AST> Codegen::ReadInstruction(const Function& function, const Insn
             m_Stack.emplace_back(StackEntry(val1));
             break;
         }
-        // Process opcode for duplicating the top two values and inserting them below the third value
+        // Process opcode for duplicating the top two values and inserting them
+        // below the third value
         case OPCODE_DUP2_X1: {
             StackEntry val1 = PopStack();
             StackEntry val2 = PopStack();
@@ -1173,8 +1300,10 @@ std::optional<AST> Codegen::ReadInstruction(const Function& function, const Insn
     return std::nullopt;
 }
 
-ASTPtr Codegen::ConvertCFGToAST(std::shared_ptr<BasicBlock> block, const std::map<int, std::shared_ptr<BasicBlock>>& cfgBlocks,
-                                const std::map<uint32_t, uint32_t>& dominators) {
+ASTPtr Codegen::ConvertCFGToAST(
+    std::shared_ptr<BasicBlock> block,
+    const std::map<int, std::shared_ptr<BasicBlock>>& cfgBlocks,
+    const std::map<uint32_t, uint32_t>& dominators) {
     ASTPtr forLoop = CreateForLoop(block, cfgBlocks, dominators);
     if (forLoop) {
         // ASTPtr astPtr = std::make_shared<AST>(std::move(forLoop));
@@ -1183,14 +1312,16 @@ ASTPtr Codegen::ConvertCFGToAST(std::shared_ptr<BasicBlock> block, const std::ma
         // If it's not a for loop, convert the current block's instructions
         std::vector<ASTPtr> instructions;
         for (const auto& insn : block->GetInstructions()) {
-            instructions.push_back(ConvertInstructionToAST(insn));  // You'll need a function like this
+            instructions.push_back(ConvertInstructionToAST(
+                insn));  // You'll need a function like this
         }
         if (instructions.empty()) {
             return nullptr;  // Or some representation of an empty block
         } else if (instructions.size() == 1) {
             return instructions[0];
         } else {
-            return std::make_shared<AST>(AST::StatementList{instructions});  // Assuming you have an AST::Block type
+            return std::make_shared<AST>(AST::StatementList{
+                instructions});  // Assuming you have an AST::Block type
         }
     }
 }
@@ -1209,11 +1340,15 @@ ASTPtr Codegen::ConvertInstructionToAST(const Insn& instruction) {
         }
         case OPCODE_LDC:  // Load constant
         case OPCODE_LDC_W: {
-            ConstPoolInfo cpi = m_ClassFile.m_ConstantPool.m_ConstPoolInfo.at(instruction.Op1.value - 1);
+            ConstPoolInfo cpi = m_ClassFile.m_ConstantPool.m_ConstPoolInfo.at(
+                instruction.Op1.value - 1);
             if (cpi.Tag == Tags::String) {
-                // If constant is a string, retrieve the actual String and push it onto m_Stack
-                auto str = static_cast<StringInfo*>(cpi.Info.get());
-                std::string constStr = GetConstantUTF8FromClass(m_ClassFile, str->stringIndex);
+                // If constant is a string, retrieve the actual String and push
+                // it onto m_Stack
+                auto str = cpi.GetAs<StringInfo>();
+                // static_cast<StringInfo*>(cpi.Info.get());
+                std::string constStr =
+                    GetConstantUTF8FromClass(m_ClassFile, str->stringIndex);
                 m_Stack.emplace_back(StackEntry::String{constStr});
             } else if (cpi.Tag == Tags::Int) {
                 int32_t value = static_cast<int32_t>(instruction.Op1.value);
@@ -1294,7 +1429,9 @@ ASTPtr Codegen::ConvertInstructionToAST(const Insn& instruction) {
         case OPCODE_DLOAD:
         case OPCODE_ILOAD:
         case OPCODE_LLOAD: {
-            return LoadLocalAST(instruction.Op1.value);  // Op1.value is variable index in the function's local variable array
+            return LoadLocalAST(
+                instruction.Op1.value);  // Op1.value is variable index in the
+                                         // function's local variable array
         }
         case OPCODE_ALOAD_0:
         case OPCODE_FLOAD_0:
@@ -1329,7 +1466,8 @@ ASTPtr Codegen::ConvertInstructionToAST(const Insn& instruction) {
         case OPCODE_DSTORE:
         case OPCODE_LSTORE:
         case OPCODE_FSTORE: {
-            ASTPtr store = std::make_shared<AST>(std::move(Store(instruction.Op1.value).value()));
+            ASTPtr store = std::make_shared<AST>(
+                std::move(Store(instruction.Op1.value).value()));
             return store;
         }
         case OPCODE_ISTORE_0:
@@ -1379,18 +1517,24 @@ ASTPtr Codegen::ConvertInstructionToAST(const Insn& instruction) {
             if (array.isArray()) {
                 StackEntry::Array arr = array.getArrayValue();
                 arr.elements.emplace_back(val);
-                m_Stack.emplace_back(StackEntry::Array{arr.type, arr.length, arr.elements});
+                m_Stack.emplace_back(
+                    StackEntry::Array{arr.type, arr.length, arr.elements});
             } else {
-                // if array is not explicitly an array, assume it is an object array.
+                // if array is not explicitly an array, assume it is an object
+                // array.
                 auto entry = ConvertStackEntryToAST(array);
-                AST::ArrayIndex arrIndex{entry, ConvertStackEntryToAST(index), array.ty()};
-                AST::ReAssignment reAssign{std::make_shared<AST>(arrIndex), ConvertStackEntryToAST(val)};
-                ASTPtr reAssignment = std::make_shared<AST>(std::move(reAssign));
+                AST::ArrayIndex arrIndex{entry, ConvertStackEntryToAST(index),
+                                         array.ty()};
+                AST::ReAssignment reAssign{std::make_shared<AST>(arrIndex),
+                                           ConvertStackEntryToAST(val)};
+                ASTPtr reAssignment =
+                    std::make_shared<AST>(std::move(reAssign));
                 return reAssignment;
             }
             break;
         }
-        // arithmetic operations opcodes, pushes the respective operation onto the stack
+        // arithmetic operations opcodes, pushes the respective operation onto
+        // the stack
         case OPCODE_IADD:
         case OPCODE_FADD:
         case OPCODE_DADD:
@@ -1463,15 +1607,21 @@ ASTPtr Codegen::ConvertInstructionToAST(const Insn& instruction) {
         case OPCODE_DNEG:
         case OPCODE_LNEG: {
             StackEntry val = PopStack();
-            m_Stack.emplace_back(StackEntry::UnaryOperation{UnaryOp::Neg, std::make_unique<StackEntry>(std::move(val))});
+            m_Stack.emplace_back(StackEntry::UnaryOperation{
+                UnaryOp::Neg, std::make_unique<StackEntry>(std::move(val))});
             break;
         }
         // Process opcode for type checking
         case OPCODE_INSTANCEOF: {
-            StackEntry obj1 = PopStack();                                                      // pop object reference
-            std::string obj2 = GetConstantClassFromClass(m_ClassFile, instruction.Op1.value);  // Retrieve class name from constant pool
+            StackEntry obj1 = PopStack();  // pop object reference
+            std::string obj2 = GetConstantClassFromClass(
+                m_ClassFile,
+                instruction.Op1
+                    .value);  // Retrieve class name from constant pool
             StackEntry::Class obj2Class{obj2};
-            StackEntry::BinaryOperation binOp{std::make_shared<StackEntry>(obj1), BinaryOp::InstanceOf, std::make_shared<StackEntry>(obj2Class)};
+            StackEntry::BinaryOperation binOp{
+                std::make_shared<StackEntry>(obj1), BinaryOp::InstanceOf,
+                std::make_shared<StackEntry>(obj2Class)};
             m_Stack.emplace_back(binOp);
             break;
         }
@@ -1497,9 +1647,11 @@ ASTPtr Codegen::ConvertInstructionToAST(const Insn& instruction) {
         }
         // Process opcode for dynamic method calls
         case OPCODE_INVOKEDYNAMIC: {
-            auto methStack = GetDynamicInvokeRefFromIndex(m_ClassFile, instruction.Op1.value);
+            auto methStack = GetDynamicInvokeRefFromIndex(
+                m_ClassFile, instruction.Op1.value);
 
-            if (methStack.m_Class == "StringConcatFactory" && methStack.m_Name == "makeConcatWithConstants") {
+            if (methStack.m_Class == "StringConcatFactory" &&
+                methStack.m_Name == "makeConcatWithConstants") {
                 auto args = methStack.unparsed_args;
                 StringConcatFactory(args);
                 // return nullptr;
@@ -1518,13 +1670,15 @@ ASTPtr Codegen::ConvertInstructionToAST(const Insn& instruction) {
 
             std::string name = methStack.m_Class + "." + methStack.m_Name;
 
-            StackEntry::Function func{getLastClassNamePart(name), args, methStack.desc.returnType};
+            StackEntry::Function func{getLastClassNamePart(name), args,
+                                      methStack.desc.returnType};
             m_Stack.emplace_back(func);
             break;
         }
         // Process opcodes for interface method calls
         case OPCODE_INVOKEINTERFACE: {
-            auto methStack = GetMethodRefFromIndex(m_ClassFile, instruction.Op1.value);
+            auto methStack =
+                GetMethodRefFromIndex(m_ClassFile, instruction.Op1.value);
 
             if (methStack.desc.args.empty()) {
                 break;
@@ -1538,13 +1692,15 @@ ASTPtr Codegen::ConvertInstructionToAST(const Insn& instruction) {
 
             std::string name = methStack.m_Class + "." + methStack.m_Name;
 
-            StackEntry::Function func{getLastClassNamePart(name), args, methStack.desc.returnType};
+            StackEntry::Function func{getLastClassNamePart(name), args,
+                                      methStack.desc.returnType};
             m_Stack.emplace_back(func);
             break;
         }
         // Process opcode for constructors and private method calls
         case OPCODE_INVOKESPECIAL: {
-            MethodRefStack methStack = GetMethodRefFromIndex(m_ClassFile, instruction.Op1.value);
+            MethodRefStack methStack =
+                GetMethodRefFromIndex(m_ClassFile, instruction.Op1.value);
             std::vector<StackEntry> argsStack;
             std::vector<ASTPtr> argsAST;
             for (auto& descArgs : methStack.desc.args) {
@@ -1557,43 +1713,62 @@ ASTPtr Codegen::ConvertInstructionToAST(const Insn& instruction) {
             std::string methodName = "";
             Type returnType = Type::Void;  // Default return type
 
-            if (methStack.m_Name == "<init>" || methStack.m_Name == "<clinit>") {
+            if (methStack.m_Name == "<init>" ||
+                methStack.m_Name == "<clinit>") {
                 if (objStackEntry.isClass()) {
                     methodName = objStackEntry.getClassValue().m_ClassName;
-                    returnType = Type::ClassNameType(methStack.m_Class);    // Constructor returns the object type
-                    return std::make_shared<AST>(AST::Object{methodName});  // Represent constructor call as object creation? This depends on your semantics
+                    returnType = Type::ClassNameType(
+                        methStack
+                            .m_Class);  // Constructor returns the object type
+                    return std::make_shared<AST>(
+                        AST::Object{methodName});  // Represent constructor call
+                                                   // as object creation? This
+                                                   // depends on your semantics
                 } else if (objStackEntry.isIdentifier()) {
                     methodName = objStackEntry.getIdentifierValue().name;
-                    returnType = Type::ClassNameType(methStack.m_Class);  // Constructor returns the object type
-                    // return std::make_shared<AST>(AST::Object{methodName}); // Represent constructor call as object creation? This depends on your semantics
+                    returnType = Type::ClassNameType(
+                        methStack
+                            .m_Class);  // Constructor returns the object type
+                    // return std::make_shared<AST>(AST::Object{methodName}); //
+                    // Represent constructor call as object creation? This
+                    // depends on your semantics
                 }
             } else {
                 if (objStackEntry.isClass()) {
-                    methodName = objStackEntry.getClassValue().m_ClassName + "." + methStack.m_Name;
-                    returnType =
-                        Type::ClassNameType(methStack.m_Class);  // Assuming method returns the class type for now - adjust based on methStack.desc.return_type
+                    methodName = objStackEntry.getClassValue().m_ClassName +
+                                 "." + methStack.m_Name;
+                    returnType = Type::ClassNameType(
+                        methStack
+                            .m_Class);  // Assuming method returns the class
+                                        // type for now - adjust based on
+                                        // methStack.desc.return_type
                 }
             }
 
             if (!methodName.empty()) {
-                return std::make_shared<AST>(AST::FunctionCall{methodName, argsAST, returnType});
+                return std::make_shared<AST>(
+                    AST::FunctionCall{methodName, argsAST, returnType});
             } else {
                 // Handle cases where method name couldn't be determined
-                std::cerr << "Warning: Could not determine method name for INVOKESPECIAL" << std::endl;
+                std::cerr << "Warning: Could not determine method name for "
+                             "INVOKESPECIAL"
+                          << std::endl;
                 return nullptr;  // Or some other appropriate error handling
             }
             break;
         }
         // Process opcode for static method calls
         case OPCODE_INVOKESTATIC: {
-            MethodRefStack methStack = GetMethodRefFromIndex(m_ClassFile, instruction.Op1.value);
+            MethodRefStack methStack =
+                GetMethodRefFromIndex(m_ClassFile, instruction.Op1.value);
             std::vector<StackEntry> args;
             for (auto& descArgs : methStack.desc.args) {
                 args.emplace_back(PopStack());
             }
 
             std::string funcName = methStack.m_Class + "." + methStack.m_Name;
-            StackEntry::Function func{funcName, args, methStack.desc.returnType};
+            StackEntry::Function func{funcName, args,
+                                      methStack.desc.returnType};
 
             if (methStack.desc.returnType.kind == Type::Void) {
                 AST::Object object{methStack.m_Class};
@@ -1601,8 +1776,10 @@ ASTPtr Codegen::ConvertInstructionToAST(const Insn& instruction) {
                 for (auto& stacks : args) {
                     astArgs.emplace_back(ConvertStackEntryToAST(stacks));
                 }
-                AST::FunctionCall funcCall{methStack.m_Name, astArgs, methStack.desc.returnType};
-                AST::MethodCall call{std::make_shared<AST>(object), std::make_shared<AST>(funcCall)};
+                AST::FunctionCall funcCall{methStack.m_Name, astArgs,
+                                           methStack.desc.returnType};
+                AST::MethodCall call{std::make_shared<AST>(object),
+                                     std::make_shared<AST>(funcCall)};
                 ASTPtr methodCall = std::make_shared<AST>(std::move(call));
                 return methodCall;
             }
@@ -1611,7 +1788,8 @@ ASTPtr Codegen::ConvertInstructionToAST(const Insn& instruction) {
         }
         // Process opcode for virtual method calls
         case OPCODE_INVOKEVIRTUAL: {
-            MethodRefStack methStack = GetMethodRefFromIndex(m_ClassFile, instruction.Op1.value);
+            MethodRefStack methStack =
+                GetMethodRefFromIndex(m_ClassFile, instruction.Op1.value);
             std::vector<StackEntry> args;
             for (auto& descArgs : methStack.desc.args) {
                 args.emplace_back(PopStack());
@@ -1626,15 +1804,18 @@ ASTPtr Codegen::ConvertInstructionToAST(const Insn& instruction) {
             }
 
             std::string funcName = name + "." + methStack.m_Name;
-            StackEntry::Function func{funcName, args, methStack.desc.returnType};
+            StackEntry::Function func{funcName, args,
+                                      methStack.desc.returnType};
             if (methStack.desc.returnType.kind == Type::Void) {
                 auto obj = ConvertStackEntryToAST(object);
                 std::vector<ASTPtr> astArgs;
                 for (auto& stacks : args) {
                     astArgs.emplace_back(ConvertStackEntryToAST(stacks));
                 }
-                AST::FunctionCall funcCall{methStack.m_Name, astArgs, methStack.desc.returnType};
-                AST::MethodCall call{std::make_shared<AST>(obj), std::make_shared<AST>(funcCall)};
+                AST::FunctionCall funcCall{methStack.m_Name, astArgs,
+                                           methStack.desc.returnType};
+                AST::MethodCall call{std::make_shared<AST>(obj),
+                                     std::make_shared<AST>(funcCall)};
                 ASTPtr methodCall = std::make_shared<AST>(std::move(call));
 
                 return methodCall;
@@ -1642,20 +1823,26 @@ ASTPtr Codegen::ConvertInstructionToAST(const Insn& instruction) {
             m_Stack.emplace_back(func);
             break;
         }
-        // Getters and setters for static and instance fields. I.e. obj.field = value;
+        // Getters and setters for static and instance fields. I.e. obj.field =
+        // value;
         case OPCODE_GETSTATIC: {
-            auto fieldRefStack = GetFieldRefFromIndex(m_ClassFile, instruction.Op1.value);
+            auto fieldRefStack =
+                GetFieldRefFromIndex(m_ClassFile, instruction.Op1.value);
             StackEntry::Class classStack{fieldRefStack.m_Class};
 
-            StackEntry::Field field{std::make_shared<StackEntry>(classStack), fieldRefStack.m_Name, fieldRefStack.m_type};
+            StackEntry::Field field{std::make_shared<StackEntry>(classStack),
+                                    fieldRefStack.m_Name, fieldRefStack.m_type};
             m_Stack.emplace_back(field);
             break;
         }
         case OPCODE_GETFIELD: {
-            auto fieldRefStack = GetFieldRefFromIndex(m_ClassFile, instruction.Op1.value);
+            auto fieldRefStack =
+                GetFieldRefFromIndex(m_ClassFile, instruction.Op1.value);
             auto obj = PopStack();
             if (obj.isIdentifier()) {
-                StackEntry::Field field{std::make_shared<StackEntry>(obj), fieldRefStack.m_Name, fieldRefStack.m_type};
+                StackEntry::Field field{std::make_shared<StackEntry>(obj),
+                                        fieldRefStack.m_Name,
+                                        fieldRefStack.m_type};
                 m_Stack.emplace_back(field);
             }
             break;
@@ -1663,23 +1850,31 @@ ASTPtr Codegen::ConvertInstructionToAST(const Insn& instruction) {
 
         case OPCODE_PUTSTATIC: {
             auto val = PopStack();
-            FieldRefStack fieldRefStack = GetFieldRefFromIndex(m_ClassFile, instruction.Op1.value);
+            FieldRefStack fieldRefStack =
+                GetFieldRefFromIndex(m_ClassFile, instruction.Op1.value);
             AST::Object obj{fieldRefStack.m_Class};
-            AST::FieldAssignment fieldAssign{std::make_shared<AST>(obj), fieldRefStack.m_Name, fieldRefStack.m_type, ConvertStackEntryToAST(val)};
-            ASTPtr fieldAssignment = std::make_shared<AST>(std::move(fieldAssign));
+            AST::FieldAssignment fieldAssign{
+                std::make_shared<AST>(obj), fieldRefStack.m_Name,
+                fieldRefStack.m_type, ConvertStackEntryToAST(val)};
+            ASTPtr fieldAssignment =
+                std::make_shared<AST>(std::move(fieldAssign));
             return fieldAssignment;
         }
         case OPCODE_PUTFIELD: {
             auto val = PopStack();
             auto obj = PopStack();
-            FieldRefStack fieldRefStack = GetFieldRefFromIndex(m_ClassFile, instruction.Op1.value);
+            FieldRefStack fieldRefStack =
+                GetFieldRefFromIndex(m_ClassFile, instruction.Op1.value);
 
             if (m_InsideInit) {
                 // m_Fie
             }
             // AST::Object obj{fieldRefStack.m_Class};
-            AST::FieldAssignment fieldAssign{ConvertStackEntryToAST(obj), fieldRefStack.m_Name, fieldRefStack.m_type, ConvertStackEntryToAST(val)};
-            ASTPtr fieldAssignment = std::make_shared<AST>(std::move(fieldAssign));
+            AST::FieldAssignment fieldAssign{
+                ConvertStackEntryToAST(obj), fieldRefStack.m_Name,
+                fieldRefStack.m_type, ConvertStackEntryToAST(val)};
+            ASTPtr fieldAssignment =
+                std::make_shared<AST>(std::move(fieldAssign));
             return fieldAssignment;
         }
         // Process opcodes for Array operations
@@ -1695,7 +1890,10 @@ ASTPtr Codegen::ConvertInstructionToAST(const Insn& instruction) {
         }
         // Process opcode for object arrays
         case OPCODE_ANEWARRAY: {
-            auto ty = FieldDescriptor::newDescriptor(GetConstantClassFromClass(m_ClassFile, instruction.Op1.value)).m_Ty;
+            auto ty = FieldDescriptor::newDescriptor(
+                          GetConstantClassFromClass(m_ClassFile,
+                                                    instruction.Op1.value))
+                          .m_Ty;
             auto count = std::make_shared<StackEntry>(PopStack());
             std::vector<StackEntry> arr;
             m_Stack.emplace_back(StackEntry::Array{ty, count, arr});
@@ -1706,7 +1904,8 @@ ASTPtr Codegen::ConvertInstructionToAST(const Insn& instruction) {
         }
         case OPCODE_ARRAYLENGTH: {
             StackEntry val = PopStack();
-            StackEntry::UnaryOperation unaryOp{UnaryOp::ArrayLength, std::make_shared<StackEntry>(val)};
+            StackEntry::UnaryOperation unaryOp{
+                UnaryOp::ArrayLength, std::make_shared<StackEntry>(val)};
             m_Stack.emplace_back(unaryOp);
             break;
         }
@@ -1723,7 +1922,8 @@ ASTPtr Codegen::ConvertInstructionToAST(const Insn& instruction) {
         // pop 2 values from stack
         case OPCODE_POP2: {
             auto val1 = PopStack();
-            if (val1.ty().kind == Type::Long || val1.ty().kind == Type::Double) {
+            if (val1.ty().kind == Type::Long ||
+                val1.ty().kind == Type::Double) {
             } else {
                 return ConvertStackEntryToAST(PopStack());
             }
@@ -1748,14 +1948,21 @@ ASTPtr Codegen::ConvertInstructionToAST(const Insn& instruction) {
             if (val.isIdentifier()) {
                 TD_DECOMP_INFO("IDENTIFIER");
                 if (amount == 1) {
-                    AST::UnaryOperation unaryOp{UnaryOp::PlusPlus, ConvertStackEntryToAST(val)};
-                    ASTPtr variable = std::make_unique<AST>(std::move(unaryOp));  // Identifier AST
+                    AST::UnaryOperation unaryOp{UnaryOp::PlusPlus,
+                                                ConvertStackEntryToAST(val)};
+                    ASTPtr variable = std::make_unique<AST>(
+                        std::move(unaryOp));  // Identifier AST
                     return variable;
                 } else {
                     ASTPtr variable = ConvertStackEntryToAST(std::move(val));
-                    AST::BinaryOperation binaryOp{std::move(variable), BinaryOp::Add, std::make_unique<AST>(amount)};
-                    AST::ReAssignment reAssign{std::move(variable), std::make_unique<AST>(std::move(binaryOp))};
-                    ASTPtr reAssignment = std::make_unique<AST>(std::move(reAssign));
+                    AST::BinaryOperation binaryOp{
+                        std::move(variable), BinaryOp::Add,
+                        std::make_unique<AST>(amount)};
+                    AST::ReAssignment reAssign{
+                        std::move(variable),
+                        std::make_unique<AST>(std::move(binaryOp))};
+                    ASTPtr reAssignment =
+                        std::make_unique<AST>(std::move(reAssign));
                     return reAssignment;
                 }
             }
@@ -1794,14 +2001,17 @@ ASTPtr Codegen::ConvertInstructionToAST(const Insn& instruction) {
             }
 
             if (then.size() == 1) {
-                if (then[0]->isIfStatement()) {  // Check if AST is an If condition
+                if (then[0]
+                        ->isIfStatement()) {  // Check if AST is an If condition
                     auto ifAst = then[0]->getIfNode();
                     auto this_cond = ifAst.cond;
                     auto this_then = ifAst.then;
                     then = this_then;
-                    AST::BinaryOperation binOp{cond, BinaryOp::LogicalAnd, this_cond};
+                    AST::BinaryOperation binOp{cond, BinaryOp::LogicalAnd,
+                                               this_cond};
                     cond = std::make_shared<AST>(binOp);
-                    // cond = std::make_shared<AST>(AST::BinaryOperation(cond, BinaryOp::LogicalAnd, ifAst->cond));
+                    // cond = std::make_shared<AST>(AST::BinaryOperation(cond,
+                    // BinaryOp::LogicalAnd, ifAst->cond));
                 }
             }
             AST::If ifStatement{cond, then};
@@ -1831,14 +2041,17 @@ ASTPtr Codegen::ConvertInstructionToAST(const Insn& instruction) {
             }
 
             if (then.size() == 1) {
-                if (then[0]->isIfStatement()) {  // Check if AST is an If condition
+                if (then[0]
+                        ->isIfStatement()) {  // Check if AST is an If condition
                     auto ifAst = then[0]->getIfNode();
                     auto this_cond = ifAst.cond;
                     auto this_then = ifAst.then;
                     then = this_then;
-                    AST::BinaryOperation binOp{cond, BinaryOp::GreaterEqualThan, this_cond};
+                    AST::BinaryOperation binOp{cond, BinaryOp::GreaterEqualThan,
+                                               this_cond};
                     cond = std::make_shared<AST>(binOp);
-                    // cond = std::make_shared<AST>(AST::BinaryOperation(cond, BinaryOp::LogicalAnd, ifAst->cond));
+                    // cond = std::make_shared<AST>(AST::BinaryOperation(cond,
+                    // BinaryOp::LogicalAnd, ifAst->cond));
                 }
             }
             AST::If ifStatement{cond, then};
@@ -1883,17 +2096,21 @@ ASTPtr Codegen::ConvertInstructionToAST(const Insn& instruction) {
 
             ASTPtr cond;
             if (then.size() != 1) {
-                AST::UnaryOperation unOp{UnaryOp::Negate, ConvertStackEntryToAST(raw_cond)};
+                AST::UnaryOperation unOp{UnaryOp::Negate,
+                                         ConvertStackEntryToAST(raw_cond)};
                 cond = std::make_shared<AST>(unOp);
             } else {
                 AST first_then = then[0];
                 if (first_then.isIfStatement()) {
                     auto this_if = first_then.getIfNode();
                     then = this_if.then;
-                    AST::BinaryOperation binOp{ConvertStackEntryToAST(raw_cond), BinaryOp::LogicalOr, std::move(this_if.cond)};
+                    AST::BinaryOperation binOp{ConvertStackEntryToAST(raw_cond),
+                                               BinaryOp::LogicalOr,
+                                               std::move(this_if.cond)};
                     cond = std::make_unique<AST>(binOp);
                 } else {
-                    AST::UnaryOperation unOp{UnaryOp::Negate, ConvertStackEntryToAST(raw_cond)};
+                    AST::UnaryOperation unOp{UnaryOp::Negate,
+                                             ConvertStackEntryToAST(raw_cond)};
                     cond = std::make_unique<AST>(unOp);
                 }
             }
@@ -1904,7 +2121,9 @@ ASTPtr Codegen::ConvertInstructionToAST(const Insn& instruction) {
         case OPCODE_IF_ICMPEQ: {
             StackEntry val2 = PopStack();
             StackEntry val1 = PopStack();
-            AST::BinaryOperation binaryOp{ConvertStackEntryToAST(val1), BinaryOp::NotEqual, ConvertStackEntryToAST(val2)};
+            AST::BinaryOperation binaryOp{ConvertStackEntryToAST(val1),
+                                          BinaryOp::NotEqual,
+                                          ConvertStackEntryToAST(val2)};
             ASTPtr cond = std::make_shared<AST>(binaryOp);
             int64_t pos = m_CurrentPos + instruction.Op1.addr;
             std::vector<ASTPtr> then;
@@ -1927,12 +2146,14 @@ ASTPtr Codegen::ConvertInstructionToAST(const Insn& instruction) {
             }
 
             if (then.size() == 1) {
-                if (then[0]->isIfStatement()) {  // Check if AST is an If condition
+                if (then[0]
+                        ->isIfStatement()) {  // Check if AST is an If condition
                     auto ifAst = then[0]->getIfNode();
                     auto this_cond = ifAst.cond;
                     auto this_then = ifAst.then;
                     then = this_then;
-                    AST::BinaryOperation binOp{cond, BinaryOp::LogicalAnd, this_cond};
+                    AST::BinaryOperation binOp{cond, BinaryOp::LogicalAnd,
+                                               this_cond};
                     cond = std::make_shared<AST>(binOp);
                 }
             }
@@ -1944,7 +2165,9 @@ ASTPtr Codegen::ConvertInstructionToAST(const Insn& instruction) {
         case OPCODE_IF_ICMPNE: {
             StackEntry val2 = PopStack();
             StackEntry val1 = PopStack();
-            AST::BinaryOperation binaryOp{ConvertStackEntryToAST(val1), BinaryOp::Equal, ConvertStackEntryToAST(val2)};
+            AST::BinaryOperation binaryOp{ConvertStackEntryToAST(val1),
+                                          BinaryOp::Equal,
+                                          ConvertStackEntryToAST(val2)};
             ASTPtr cond = std::make_shared<AST>(binaryOp);
             int64_t pos = m_CurrentPos + instruction.Op1.addr;
             std::vector<ASTPtr> then;
@@ -1967,12 +2190,14 @@ ASTPtr Codegen::ConvertInstructionToAST(const Insn& instruction) {
             }
 
             if (then.size() == 1) {
-                if (then[0]->isIfStatement()) {  // Check if AST is an If condition
+                if (then[0]
+                        ->isIfStatement()) {  // Check if AST is an If condition
                     auto ifAst = then[0]->getIfNode();
                     auto this_cond = ifAst.cond;
                     auto this_then = ifAst.then;
                     then = this_then;
-                    AST::BinaryOperation binOp{cond, BinaryOp::LogicalAnd, this_cond};
+                    AST::BinaryOperation binOp{cond, BinaryOp::LogicalAnd,
+                                               this_cond};
                     cond = std::make_shared<AST>(binOp);
                 }
             }
@@ -2089,7 +2314,8 @@ ASTPtr Codegen::ConvertInstructionToAST(const Insn& instruction) {
         }
         // Process opcode for creating new objects
         case OPCODE_NEW: {
-            auto obj = GetConstantClassFromClass(m_ClassFile, instruction.Op1.value);
+            auto obj =
+                GetConstantClassFromClass(m_ClassFile, instruction.Op1.value);
             StackEntry::New newObj{obj};
             m_Stack.emplace_back(StackEntry(newObj));
             break;
@@ -2105,7 +2331,8 @@ ASTPtr Codegen::ConvertInstructionToAST(const Insn& instruction) {
             }
             break;
         }
-        // Process opcode for duplicating the top value and inserting it below the second value
+        // Process opcode for duplicating the top value and inserting it below
+        // the second value
         case OPCODE_DUP_X1: {
             StackEntry val1 = PopStack();
             StackEntry val2 = PopStack();
@@ -2114,7 +2341,8 @@ ASTPtr Codegen::ConvertInstructionToAST(const Insn& instruction) {
             m_Stack.emplace_back(StackEntry(val1));
             break;
         }
-        // Process opcode for Duplicating the top value and inserting it below the third value
+        // Process opcode for Duplicating the top value and inserting it below
+        // the third value
         case OPCODE_DUP_X2: {
             StackEntry val1 = PopStack();
             StackEntry val2 = PopStack();
@@ -2135,7 +2363,8 @@ ASTPtr Codegen::ConvertInstructionToAST(const Insn& instruction) {
             m_Stack.emplace_back(StackEntry(val1));
             break;
         }
-        // Process opcode for duplicating the top two values and inserting them below the third value
+        // Process opcode for duplicating the top two values and inserting them
+        // below the third value
         case OPCODE_DUP2_X1: {
             StackEntry val1 = PopStack();
             StackEntry val2 = PopStack();
@@ -2178,8 +2407,8 @@ ASTPtr Codegen::ConvertInstructionToAST(const Insn& instruction) {
 }
 
 /**
- * Store function. Pops value from the stack, determines the variable type, stores the value in
- * m_LocalVariables, then generates an AST node.
+ * Store function. Pops value from the stack, determines the variable type,
+ * stores the value in m_LocalVariables, then generates an AST node.
  *
  * @param idx uint8_t index of m_LocalVariables where the value will be stored
  */
@@ -2283,45 +2512,55 @@ ASTPtr Codegen::ConvertStackEntryToAST(StackEntry entry) {
         for (auto& args : function.arguments) {
             arguments.emplace_back(ConvertStackEntryToAST(args));
         }
-        AST::FunctionCall functionAst{function.name, arguments, function.return_type};
+        AST::FunctionCall functionAst{function.name, arguments,
+                                      function.return_type};
         return std::make_shared<AST>(functionAst);
     } else if (entry.isArray()) {
         auto arrayStack = entry.getArrayValue();
         std::vector<ASTPtr> elements;
 
         for (auto it : arrayStack.elements) {
-            elements.emplace_back(std::make_shared<AST>(ConvertStackEntryToAST(it)));
+            elements.emplace_back(
+                std::make_shared<AST>(ConvertStackEntryToAST(it)));
         }
 
-        AST::Array arr{arrayStack.type, ConvertStackEntryToAST(*arrayStack.length.get()), elements};
+        AST::Array arr{arrayStack.type,
+                       ConvertStackEntryToAST(*arrayStack.length.get()),
+                       elements};
         return std::make_shared<AST>(arr);
     } else if (entry.isBinaryOp()) {
         auto binOp = entry.getBinaryOpValue();
 
-        AST::BinaryOperation bin{ConvertStackEntryToAST(*binOp.lhs), binOp.op, ConvertStackEntryToAST(*binOp.rhs)};
+        AST::BinaryOperation bin{ConvertStackEntryToAST(*binOp.lhs), binOp.op,
+                                 ConvertStackEntryToAST(*binOp.rhs)};
         return std::make_shared<AST>(bin);
     } else if (entry.isUnaryOp()) {
         auto unaryOp = entry.getUnaryOpValue();
 
-        AST::UnaryOperation unary{unaryOp.op, ConvertStackEntryToAST(*unaryOp.value)};
+        AST::UnaryOperation unary{unaryOp.op,
+                                  ConvertStackEntryToAST(*unaryOp.value)};
         return std::make_shared<AST>(unary);
     } else if (entry.isCast()) {
         auto castOp = entry.getCastValue();
-        AST::Cast cast{castOp.target_type, ConvertStackEntryToAST(*castOp.value)};
+        AST::Cast cast{castOp.target_type,
+                       ConvertStackEntryToAST(*castOp.value)};
         return std::make_shared<AST>(cast);
     }
     // Handle additional cases based on `StackEntry` types
     throw std::runtime_error("Unsupported StackEntry type");
 }
 
-bool Codegen::IsBackEdge(const Insn& instruction, const std::map<size_t, std::set<size_t>>& dominatorTree, size_t currentBlockID) {
+bool Codegen::IsBackEdge(
+    const Insn& instruction,
+    const std::map<size_t, std::set<size_t>>& dominatorTree,
+    size_t currentBlockID) {
     // Assuming `instruction` has a target block in `Op1`
     size_t targetBlockID = instruction.Op1.value;
 
     auto it = dominatorTree.find(currentBlockID);
-    if(it != dominatorTree.end()) {
+    if (it != dominatorTree.end()) {
         const auto& dominatorSet = it->second;
-        if(dominatorSet.find(targetBlockID) != dominatorSet.end()) {
+        if (dominatorSet.find(targetBlockID) != dominatorSet.end()) {
             return true;
         }
     }
@@ -2333,7 +2572,8 @@ bool Codegen::IsBackEdge(const Insn& instruction, const std::map<size_t, std::se
     //     const auto& dominatorSet = entry.second;
 
     //     if (dominatorSet.find(targetBlockID) != dominatorSet.end()) {
-    //         // If the target block is in the dominator set of the current block,
+    //         // If the target block is in the dominator set of the current
+    //         block,
     //         // it indicates a back edge (loop).
     //         return true;
     //     }
@@ -2348,9 +2588,11 @@ bool Codegen::IsBackEdge(const Insn& instruction, const std::map<size_t, std::se
  */
 void Codegen::Cast(const Type& ty) {
     if (m_Stack.empty()) throw std::runtime_error("Empty stack");
-    StackEntry val = PopStack();                                              // Get value to be converted
-    StackEntry::Cast cast{ty, std::make_shared<StackEntry>(std::move(val))};  // Convert the value to the given type
-    m_Stack.push_back(StackEntry(cast));                                      // Return converted value to the stack
+    StackEntry val = PopStack();  // Get value to be converted
+    StackEntry::Cast cast{
+        ty, std::make_shared<StackEntry>(
+                std::move(val))};         // Convert the value to the given type
+    m_Stack.push_back(StackEntry(cast));  // Return converted value to the stack
 }
 
 // Function to process load bytecode instructions
@@ -2361,7 +2603,8 @@ void Codegen::Load(uint8_t idx) {
     }
     auto it = m_LocalVariables.find(index);
     if (it == m_LocalVariables.end()) {
-        throw std::runtime_error("Local variable not found at index: " + std::to_string(index));
+        throw std::runtime_error("Local variable not found at index: " +
+                                 std::to_string(index));
     }
     m_Stack.push_back(StackEntry(it->second));
 }
@@ -2369,7 +2612,9 @@ void Codegen::Load(uint8_t idx) {
 ASTPtr Codegen::LoadLocalAST(uint8_t idx) {
     int index = static_cast<int>(idx);
     auto it = m_LocalVariables.find(index);
-    if (it == m_LocalVariables.end()) throw std::runtime_error("Local variable not found at index: " + std::to_string(index));
+    if (it == m_LocalVariables.end())
+        throw std::runtime_error("Local variable not found at index: " +
+                                 std::to_string(index));
 
     m_Stack.push_back(StackEntry(it->second));
     return ConvertStackEntryToAST(it->second);
@@ -2377,10 +2622,13 @@ ASTPtr Codegen::LoadLocalAST(uint8_t idx) {
 
 // Function to process binary operator bytecode instructions
 void Codegen::BinaryOper(BinaryOp op) {
-    if (m_Stack.size() < 2) throw std::runtime_error("Not enough values on the stack");
+    if (m_Stack.size() < 2)
+        throw std::runtime_error("Not enough values on the stack");
     StackEntry val2 = PopStack();
     StackEntry val1 = PopStack();
-    StackEntry::BinaryOperation binOp{std::make_shared<StackEntry>(std::move(val1)), op, std::make_shared<StackEntry>(std::move(val2))};
+    StackEntry::BinaryOperation binOp{
+        std::make_shared<StackEntry>(std::move(val1)), op,
+        std::make_shared<StackEntry>(std::move(val2))};
     m_Stack.push_back(StackEntry(binOp));
 }
 
@@ -2403,7 +2651,7 @@ std::string GetConstantUTF8FromClass(const ClassFile& classFile, int idx) {
     int constantIdx = idx - 1;
 
     auto cpInfo = classFile.m_ConstantPool.m_ConstPoolInfo.at(constantIdx);
-    auto* utf8Info = cpInfo.asUTF8Info();
+    auto* utf8Info = cpInfo.GetAs<UTF8Info>();
 
     std::stringstream s;
     for (int i = 0; i < utf8Info->length; i++) {
@@ -2414,9 +2662,9 @@ std::string GetConstantUTF8FromClass(const ClassFile& classFile, int idx) {
 }
 
 /**
- * Retrieves a fully qualified class name from the Java class file constant pool.
- * This function extracts a CONSTANT_Class entry, resolves the associated UTF-8
- * string, and returns it as a std::string.
+ * Retrieves a fully qualified class name from the Java class file constant
+ * pool. This function extracts a CONSTANT_Class entry, resolves the associated
+ * UTF-8 string, and returns it as a std::string.
  *
  * @param classFile Reference to the parsed Java class file structure.
  * @param idx Index of the CONSTANT_Class entry in the constant pool.
@@ -2425,92 +2673,122 @@ std::string GetConstantUTF8FromClass(const ClassFile& classFile, int idx) {
 std::string GetConstantClassFromClass(const ClassFile& classFile, int idx) {
     int constantIdx = idx - 1;
     auto cpInfo = classFile.m_ConstantPool.m_ConstPoolInfo.at(constantIdx);
-    auto* classInfo = cpInfo.asClassInfo();
-    std::string className = GetConstantUTF8FromClass(classFile, classInfo->nameIndex);
+    auto* classInfo = cpInfo.GetAs<ClassInfo>();
+    std::string className =
+        GetConstantUTF8FromClass(classFile, classInfo->nameIndex);
     return className;
 }
 
 /**
- * Retrieves the name and type of a field or method from the Java class file constant pool.
- * This function extracts a CONSTANT_NameAndType entry, resolves its UTF-8 name and descriptor,
- * and returns a structured PoolKindTypeNameField object.
+ * Retrieves the name and type of a field or method from the Java class file
+ * constant pool. This function extracts a CONSTANT_NameAndType entry, resolves
+ * its UTF-8 name and descriptor, and returns a structured PoolKindTypeNameField
+ * object.
  *
  * @param classFile Reference to the parsed Java class file structure.
  * @param idx Index of the CONSTANT_NameAndType entry in the constant pool.
- * @return typeName A PoolKindTypeNameField struct containing the field/method name and its type.
+ * @return typeName A PoolKindTypeNameField struct containing the field/method
+ * name and its type.
  */
-PoolKindTypeNameField GetNameAndTypeFromClassField(const ClassFile& classFile, int idx) {
+PoolKindTypeNameField GetNameAndTypeFromClassField(const ClassFile& classFile,
+                                                   int idx) {
     int constantIdx = idx - 1;
     auto cpInfo = classFile.m_ConstantPool.m_ConstPoolInfo.at(constantIdx);
-    auto* nameAndTypeInfo = cpInfo.asNameAndType();
-    std::string name = GetConstantUTF8FromClass(classFile, nameAndTypeInfo->nameIndex);
-    std::string desc = GetConstantUTF8FromClass(classFile, nameAndTypeInfo->descriptorIndex);
-    PoolKindTypeNameField typeName{name, FieldDescriptor::newDescriptor(desc).m_Ty};
+    auto* nameAndTypeInfo = cpInfo.GetAs<NameAndTypeInfo>();
+    std::string name =
+        GetConstantUTF8FromClass(classFile, nameAndTypeInfo->nameIndex);
+    std::string desc =
+        GetConstantUTF8FromClass(classFile, nameAndTypeInfo->descriptorIndex);
+    PoolKindTypeNameField typeName{name,
+                                   FieldDescriptor::newDescriptor(desc).m_Ty};
     return typeName;
 }
 
 /**
- * Retrieves the name and type (descriptor) of a method from the Java class file constant pool.
- * This function extracts a CONSTANT_NameAndType entry, resolves its UTF-8 method name and
- * descriptor, and returns a structured PoolKindTypeNameMethod object.
+ * Retrieves the name and type (descriptor) of a method from the Java class file
+ * constant pool. This function extracts a CONSTANT_NameAndType entry, resolves
+ * its UTF-8 method name and descriptor, and returns a structured
+ * PoolKindTypeNameMethod object.
  *
  * @param classFile Reference to the parsed Java class file structure.
  * @param idx Index of the CONSTANT_NameAndType entry in the constant pool.
- * @return typeName A PoolKindTypeNameMethod struct containing the method name and its descriptor.
+ * @return typeName A PoolKindTypeNameMethod struct containing the method name
+ * and its descriptor.
  */
-PoolKindTypeNameMethod GetNameAndTypeFromClassMethod(const ClassFile& classFile, int idx) {
+PoolKindTypeNameMethod GetNameAndTypeFromClassMethod(const ClassFile& classFile,
+                                                     int idx) {
     int constantIdx = idx - 1;
     auto cpInfo = classFile.m_ConstantPool.m_ConstPoolInfo.at(constantIdx);
-    auto* nameAndTypeInfo = cpInfo.asNameAndType();
-    std::string name = GetConstantUTF8FromClass(classFile, nameAndTypeInfo->nameIndex);
-    std::string desc = GetConstantUTF8FromClass(classFile, nameAndTypeInfo->descriptorIndex);
-    PoolKindTypeNameMethod typeName{name, MethodDescriptor::newDescriptor(desc)};
+    auto* nameAndTypeInfo = cpInfo.GetAs<NameAndTypeInfo>();
+    // cpInfo.asNameAndType();
+    std::string name =
+        GetConstantUTF8FromClass(classFile, nameAndTypeInfo->nameIndex);
+    std::string desc =
+        GetConstantUTF8FromClass(classFile, nameAndTypeInfo->descriptorIndex);
+    PoolKindTypeNameMethod typeName{name,
+                                    MethodDescriptor::newDescriptor(desc)};
     return typeName;
 }
 
 /**
  * Retrieves field reference information from the Java class file constant pool.
- * This function extracts a CONSTANT_Fieldref entry, resolves the associated class name
- * and field name/type information, and returns a structured FieldRefStack object.
+ * This function extracts a CONSTANT_Fieldref entry, resolves the associated
+ * class name and field name/type information, and returns a structured
+ * FieldRefStack object.
  *
  * @param classFile Reference to the parsed Java class file structure.
  * @param idx Index of the CONSTANT_Fieldref entry in the constant pool.
- * @return FieldRefStack A FieldRefStack struct containing the class name, field name, and field type.
+ * @return FieldRefStack A FieldRefStack struct containing the class name, field
+ * name, and field type.
  */
 FieldRefStack GetFieldRefFromIndex(const ClassFile& classFile, int idx) {
     ConstPoolInfo info = classFile.m_ConstantPool.m_ConstPoolInfo.at(idx - 1);
     if (info.Tag == Tags::Field) {
-        auto field = static_cast<FieldRefInfo*>(info.Info.get());
-        std::string classInf = GetConstantClassFromClass(classFile, field->classIndex);
-        PoolKindTypeNameField nameInf = GetNameAndTypeFromClassField(classFile, field->nameAndTypeIndex);
-        return FieldRefStack{getLastClassNamePart(classInf), nameInf.m_Name, nameInf.m_Type};
+        auto field = info.GetAs<FieldRefInfo>();
+        // static_cast<FieldRefInfo*>(info.Info.get());
+        std::string classInf =
+            GetConstantClassFromClass(classFile, field->classIndex);
+        PoolKindTypeNameField nameInf =
+            GetNameAndTypeFromClassField(classFile, field->nameAndTypeIndex);
+        return FieldRefStack{getLastClassNamePart(classInf), nameInf.m_Name,
+                             nameInf.m_Type};
     }
 }
 
 MethodRefStack GetMethodRefFromIndex(const ClassFile& classFile, int idx) {
     ConstPoolInfo info = classFile.m_ConstantPool.m_ConstPoolInfo.at(idx - 1);
     if (info.Tag == Tags::Method) {
-        auto method = static_cast<MethodRefInfo*>(info.Info.get());
-        std::string classInf = GetConstantClassFromClass(classFile, method->classIndex);
-        PoolKindTypeNameMethod methPool = GetNameAndTypeFromClassMethod(classFile, method->nameAndTypeIndex);
-        return MethodRefStack{getLastClassNamePart(classInf), methPool.m_Name, methPool.m_Type};
+        auto method = info.GetAs<MethodRefInfo>();
+        // static_cast<MethodRefInfo*>(info.Info.get());
+        std::string classInf =
+            GetConstantClassFromClass(classFile, method->classIndex);
+        PoolKindTypeNameMethod methPool =
+            GetNameAndTypeFromClassMethod(classFile, method->nameAndTypeIndex);
+        return MethodRefStack{getLastClassNamePart(classInf), methPool.m_Name,
+                              methPool.m_Type};
     } else if (info.Tag == Tags::InterfaceMethod) {
-        auto methodInner = static_cast<InterfaceMethodRef*>(info.Info.get());
-        std::string classInf = GetConstantClassFromClass(classFile, methodInner->classIndex);
-        PoolKindTypeNameMethod methPool = GetNameAndTypeFromClassMethod(classFile, methodInner->nameAndTypeIndex);
-        return MethodRefStack{getLastClassNamePart(classInf), methPool.m_Name, methPool.m_Type};
+        auto methodInner = info.GetAs<InterfaceMethodRef>();
+        // static_cast<InterfaceMethodRef*>(info.Info.get());
+        std::string classInf =
+            GetConstantClassFromClass(classFile, methodInner->classIndex);
+        PoolKindTypeNameMethod methPool = GetNameAndTypeFromClassMethod(
+            classFile, methodInner->nameAndTypeIndex);
+        return MethodRefStack{getLastClassNamePart(classInf), methPool.m_Name,
+                              methPool.m_Type};
     }
 }
 
 /**
- * Retrieves method reference information from the Java class file constant pool.
- * This function extracts a CONSTANT_Methodref or CONSTANT_InterfaceMethodref entry,
- * resolves the associated class name, method name, and method descriptor,
- * and returns a structured MethodRefStack object.
+ * Retrieves method reference information from the Java class file constant
+ * pool. This function extracts a CONSTANT_Methodref or
+ * CONSTANT_InterfaceMethodref entry, resolves the associated class name, method
+ * name, and method descriptor, and returns a structured MethodRefStack object.
  *
  * @param classFile Reference to the parsed Java class file structure.
- * @param idx The 1-based index of the method reference entry in the constant pool.
- * @return *bm A MethodRefStack struct containing the class name, method name, and method descriptor.
+ * @param idx The 1-based index of the method reference entry in the constant
+ * pool.
+ * @return *bm A MethodRefStack struct containing the class name, method name,
+ * and method descriptor.
  */
 BootstrapMethods GetBootstrapMethod(const ClassFile& classFile) {
     for (auto& attr : classFile.m_Attributes.m_Attributes) {
@@ -2526,60 +2804,81 @@ BootstrapMethods GetBootstrapMethod(const ClassFile& classFile) {
 }
 
 /**
- * Retrieves dynamic method invocation reference information from the Java class file constant pool.
- * This function extracts a CONSTANT_InvokeDynamic entry, resolves its associated bootstrap method,
- * method name, and method descriptor, and returns a structured DynamicInvokeRefStack object.
+ * Retrieves dynamic method invocation reference information from the Java class
+ * file constant pool. This function extracts a CONSTANT_InvokeDynamic entry,
+ * resolves its associated bootstrap method, method name, and method descriptor,
+ * and returns a structured DynamicInvokeRefStack object.
  *
  * @param classFile Reference to the parsed Java class file structure.
- * @param idx The 1-based index of the CONSTANT_InvokeDynamic entry in the constant pool.
- * @return DynamicInvokeRefStack struct containing the class name, method name, method descriptor,
- *         and bootstrap method arguments.
+ * @param idx The 1-based index of the CONSTANT_InvokeDynamic entry in the
+ * constant pool.
+ * @return DynamicInvokeRefStack struct containing the class name, method name,
+ * method descriptor, and bootstrap method arguments.
  */
-DynamicInvokeRefStack GetDynamicInvokeRefFromIndex(const ClassFile& classFile, int idx) {
+DynamicInvokeRefStack GetDynamicInvokeRefFromIndex(const ClassFile& classFile,
+                                                   int idx) {
     ConstPoolInfo info = classFile.m_ConstantPool.m_ConstPoolInfo.at(idx - 1);
     if (info.Tag == Tags::InvokeDynamic) {
-        auto method = static_cast<InvokeDynamicInfo*>(info.Info.get());
-        PoolKindTypeNameMethod methPool = GetNameAndTypeFromClassMethod(classFile, method->nameAndTypeIndex);
-        BootstrapMethodsInner bootstrapMethod = GetBootstrapMethod(classFile).bootstrapsMethods.at(method->bootstrapMethodAttrIndex);
-        auto cpi = classFile.m_ConstantPool.m_ConstPoolInfo.at(bootstrapMethod.bootstrapMethodRef);
+        auto method = info.GetAs<InvokeDynamicInfo>();
+        // static_cast<InvokeDynamicInfo*>(info.Info.get());
+        PoolKindTypeNameMethod methPool =
+            GetNameAndTypeFromClassMethod(classFile, method->nameAndTypeIndex);
+        BootstrapMethodsInner bootstrapMethod =
+            GetBootstrapMethod(classFile).bootstrapsMethods.at(
+                method->bootstrapMethodAttrIndex);
+        auto cpi = classFile.m_ConstantPool.m_ConstPoolInfo.at(
+            bootstrapMethod.bootstrapMethodRef);
         if (cpi.Tag == Tags::Method) {
-            auto methodInner = static_cast<MethodRefInfo*>(cpi.Info.get());
-            PoolKindTypeNameMethod methodPool = GetNameAndTypeFromClassMethod(classFile, method->nameAndTypeIndex);
-            std::string classInf = GetConstantClassFromClass(classFile, methodInner->classIndex);
-            BootstrapMethodsInner bootstrapMethod = GetBootstrapMethod(classFile).bootstrapsMethods.at(method->bootstrapMethodAttrIndex);
-            return DynamicInvokeRefStack{getLastClassNamePart(classInf), methPool.m_Name, methPool.m_Type, bootstrapMethod.bootstrapArgs};
+            auto methodInner = cpi.GetAs<MethodRefInfo>();
+            // static_cast<MethodRefInfo*>(cpi.Info.get());
+            PoolKindTypeNameMethod methodPool = GetNameAndTypeFromClassMethod(
+                classFile, method->nameAndTypeIndex);
+            std::string classInf =
+                GetConstantClassFromClass(classFile, methodInner->classIndex);
+            BootstrapMethodsInner bootstrapMethod =
+                GetBootstrapMethod(classFile).bootstrapsMethods.at(
+                    method->bootstrapMethodAttrIndex);
+            return DynamicInvokeRefStack{getLastClassNamePart(classInf),
+                                         methPool.m_Name, methPool.m_Type,
+                                         bootstrapMethod.bootstrapArgs};
         }
     }
 }
 
 /**
  * Retrieves a string from the Java class file constant pool.
- * This function extracts a CONSTANT_String entry, resolves its associated UTF-8 value,
- * and returns it as a std::string.
+ * This function extracts a CONSTANT_String entry, resolves its associated UTF-8
+ * value, and returns it as a std::string.
  *
  * @param classFile Reference to the parsed Java class file structure.
- * @param idx The 1-based index of the CONSTANT_String entry in the constant pool.
+ * @param idx The 1-based index of the CONSTANT_String entry in the constant
+ * pool.
  * @return stringName The extracted string as a std::string.
  */
 std::string GetStringFromIndex(const ClassFile& classFile, int idx) {
     int constantIdx = idx - 1;
     auto cpInfo = classFile.m_ConstantPool.m_ConstPoolInfo.at(constantIdx);
-    auto* classInfo = cpInfo.asStringInfo();
-    std::string stringName = GetConstantUTF8FromClass(classFile, classInfo->stringIndex);
+    auto* classInfo = cpInfo.GetAs<StringInfo>();
+    // cpInfo.asStringInfo();
+    std::string stringName =
+        GetConstantUTF8FromClass(classFile, classInfo->stringIndex);
     return stringName;
 }
 
 /**
- * Handles dynamic string concatenation via `StringConcatFactory` in Java's `InvokeDynamic`.
- * This function processes string concatenation arguments, extracting constant strings from
- * the constant pool and combining them into a sequence of `BinaryOperation` nodes representing
- * `+` operations. The final concatenated result is pushed onto the operand stack.
+ * Handles dynamic string concatenation via `StringConcatFactory` in Java's
+ * `InvokeDynamic`. This function processes string concatenation arguments,
+ * extracting constant strings from the constant pool and combining them into a
+ * sequence of `BinaryOperation` nodes representing
+ * `+` operations. The final concatenated result is pushed onto the operand
+ * stack.
  *
- * @param unparsedArgs A vector of constant pool indices representing the string parts
- *                     involved in the concatenation.
+ * @param unparsedArgs A vector of constant pool indices representing the string
+ * parts involved in the concatenation.
  */
 void Codegen::StringConcatFactory(const std::vector<uint16_t>& unparsedArgs) {
-    std::vector<StackEntry> args;  // Store parsed string arguments and dynamic operands for concatenation.
+    std::vector<StackEntry> args;  // Store parsed string arguments and dynamic
+                                   // operands for concatenation.
     // Iterate over each constant pool index provided in unparsedArgs.
     for (auto arg : unparsedArgs) {
         std::string s = GetStringFromIndex(m_ClassFile, arg);
@@ -2587,7 +2886,8 @@ void Codegen::StringConcatFactory(const std::vector<uint16_t>& unparsedArgs) {
 
         while (auto kindOpt = parser.next()) {
             auto kind = kindOpt.value();
-            // If the argument comes from the constant pool, store it as a string.
+            // If the argument comes from the constant pool, store it as a
+            // string.
             if (kind.type == InvokeDynamicArgs::ArgType::Pool) {
                 args.emplace_back(StackEntry::String{s});
             } else {
@@ -2596,12 +2896,16 @@ void Codegen::StringConcatFactory(const std::vector<uint16_t>& unparsedArgs) {
         }
     }
     // Construct the initial binary operation from the last two arguments.
-    StackEntry::BinaryOperation entry{std::make_shared<StackEntry>(args.back()), BinaryOp::Add, std::make_shared<StackEntry>(args[args.size() - 2])};
+    StackEntry::BinaryOperation entry{
+        std::make_shared<StackEntry>(args.back()), BinaryOp::Add,
+        std::make_shared<StackEntry>(args[args.size() - 2])};
     args.pop_back();
     args.pop_back();
     // Chain remaining arguments into a sequence of binary additions.
     while (!args.empty()) {
-        StackEntry::BinaryOperation binOp{std::make_shared<StackEntry>(entry), BinaryOp::Add, std::make_shared<StackEntry>(args.back())};
+        StackEntry::BinaryOperation binOp{
+            std::make_shared<StackEntry>(entry), BinaryOp::Add,
+            std::make_shared<StackEntry>(args.back())};
         entry = binOp;
         args.pop_back();
     }
@@ -2609,9 +2913,11 @@ void Codegen::StringConcatFactory(const std::vector<uint16_t>& unparsedArgs) {
     m_Stack.emplace_back(entry);
 }
 
-ASTPtr Codegen::ConvertConditionToAST(const Insn& instruction, std::vector<StackEntry>& stack) {
+ASTPtr Codegen::ConvertConditionToAST(const Insn& instruction,
+                                      std::vector<StackEntry>& stack) {
     ASTPtr cond;
-    if (instruction.opcode >= OPCODE_IF_ICMPEQ && instruction.opcode <= OPCODE_IF_ICMPLE) {
+    if (instruction.opcode >= OPCODE_IF_ICMPEQ &&
+        instruction.opcode <= OPCODE_IF_ICMPLE) {
         if (stack.size() >= 2) {
             StackEntry val2 = stack.back();
             stack.pop_back();
@@ -2640,10 +2946,12 @@ ASTPtr Codegen::ConvertConditionToAST(const Insn& instruction, std::vector<Stack
                     break;
             }
 
-            AST::BinaryOperation binOp{ConvertStackEntryToAST(val1), op, ConvertStackEntryToAST(val2)};
+            AST::BinaryOperation binOp{ConvertStackEntryToAST(val1), op,
+                                       ConvertStackEntryToAST(val2)};
             cond = std::make_shared<AST>(binOp);
         }
-    } else if (instruction.opcode >= OPCODE_IFEQ && instruction.opcode <= OPCODE_IFLE) {
+    } else if (instruction.opcode >= OPCODE_IFEQ &&
+               instruction.opcode <= OPCODE_IFLE) {
         if (!stack.empty()) {
             StackEntry val = stack.back();
             stack.pop_back();
@@ -2669,21 +2977,24 @@ ASTPtr Codegen::ConvertConditionToAST(const Insn& instruction, std::vector<Stack
                     break;
             }
             ASTPtr zero = std::make_shared<AST>(0);
-            cond = std::make_shared<AST>(AST::BinaryOperation{ConvertStackEntryToAST(val), op, zero});
+            cond = std::make_shared<AST>(
+                AST::BinaryOperation{ConvertStackEntryToAST(val), op, zero});
         }
     } else if (instruction.opcode == OPCODE_IFNULL) {
         if (!stack.empty()) {
             StackEntry val = stack.back();
             stack.pop_back();
             ASTPtr null_val = std::make_shared<AST>(std::string("null"));
-            cond = std::make_shared<AST>(AST::BinaryOperation{ConvertStackEntryToAST(val), BinaryOp::Equal, null_val});
+            cond = std::make_shared<AST>(AST::BinaryOperation{
+                ConvertStackEntryToAST(val), BinaryOp::Equal, null_val});
         }
     } else if (instruction.opcode == OPCODE_IFNONNULL) {
         if (!stack.empty()) {
             StackEntry val = stack.back();
             stack.pop_back();
             ASTPtr null_val = std::make_shared<AST>(std::string("null"));
-            cond = std::make_shared<AST>(AST::BinaryOperation{ConvertStackEntryToAST(val), BinaryOp::NotEqual, null_val});
+            cond = std::make_shared<AST>(AST::BinaryOperation{
+                ConvertStackEntryToAST(val), BinaryOp::NotEqual, null_val});
         }
     }
     return cond;
@@ -2706,28 +3017,38 @@ ASTPtr Codegen::ConvertUpdateToAST(const Insn& instruction) {
         // if(val.isIdentifier()) {
         //     std::cout << "IDENTIFIER" << std::endl;
         //     if(amount == 1) {
-        //         AST::UnaryOperation unaryOp{UnaryOp::PlusPlus, ConvertStackEntryToAST(val)};
-        //         ASTPtr variable = std::make_unique<AST>(std::move(unaryOp)); // Identifier AST
+        //         AST::UnaryOperation unaryOp{UnaryOp::PlusPlus,
+        //         ConvertStackEntryToAST(val)}; ASTPtr variable =
+        //         std::make_unique<AST>(std::move(unaryOp)); // Identifier AST
         //         return variable;
         //     } else {
         //         ASTPtr variable = ConvertStackEntryToAST(std::move(val));
-        //         AST::BinaryOperation binaryOp{std::move(variable), BinaryOp::Add, std::make_unique<AST>(amount)};
-        //         AST::ReAssignment reAssign{std::move(variable), std::make_unique<AST>(std::move(binaryOp))};
-        //         return reAssign;
+        //         AST::BinaryOperation binaryOp{std::move(variable),
+        //         BinaryOp::Add, std::make_unique<AST>(amount)};
+        //         AST::ReAssignment reAssign{std::move(variable),
+        //         std::make_unique<AST>(std::move(binaryOp))}; return reAssign;
         //     }
         // }
-        // std::string varName = "local" + std::to_string(instruction.Op1.value);
-        // ASTPtr var = std::make_shared<AST>(AST::Identifier{varName, Type()});
-        // ASTPtr const_val = std::make_shared<AST>(static_cast<int32_t>(instruction.Op2.value));
+        // std::string varName = "local" +
+        // std::to_string(instruction.Op1.value); ASTPtr var =
+        // std::make_shared<AST>(AST::Identifier{varName, Type()}); ASTPtr
+        // const_val =
+        // std::make_shared<AST>(static_cast<int32_t>(instruction.Op2.value));
         ASTPtr variable = ConvertStackEntryToAST(std::move(val));
-        return std::make_shared<AST>(AST::BinaryOperation{std::move(variable), BinaryOp::Add, std::make_unique<AST>(amount)});
-    } else if (instruction.opcode == OPCODE_ASTORE || instruction.opcode == OPCODE_ISTORE || instruction.opcode == OPCODE_FSTORE ||
-               instruction.opcode == OPCODE_DSTORE || instruction.opcode == OPCODE_LSTORE) {
+        return std::make_shared<AST>(AST::BinaryOperation{
+            std::move(variable), BinaryOp::Add, std::make_unique<AST>(amount)});
+    } else if (instruction.opcode == OPCODE_ASTORE ||
+               instruction.opcode == OPCODE_ISTORE ||
+               instruction.opcode == OPCODE_FSTORE ||
+               instruction.opcode == OPCODE_DSTORE ||
+               instruction.opcode == OPCODE_LSTORE) {
         return Store(instruction.Op1.value).value();
-        // std::string varName = "local" + std::to_string(instruction.Op1.value);
-        // ASTPtr var = std::make_shared<AST>(AST::Identifier{varName, Type()});
-        // ASTPtr val = std::make_shared<AST>(AST::Identifier{"stack1", Type()}); //get from the stack.  This is a problem.
-        // return std::make_shared<AST>(AST::ReAssignment{var, val});
+        // std::string varName = "local" +
+        // std::to_string(instruction.Op1.value); ASTPtr var =
+        // std::make_shared<AST>(AST::Identifier{varName, Type()}); ASTPtr val =
+        // std::make_shared<AST>(AST::Identifier{"stack1", Type()}); //get from
+        // the stack.  This is a problem. return
+        // std::make_shared<AST>(AST::ReAssignment{var, val});
     }
     return nullptr;
 }

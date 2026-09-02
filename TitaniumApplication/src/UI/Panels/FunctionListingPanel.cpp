@@ -110,6 +110,6 @@ void FunctionListingPanel::PopulateFunctionLineMapping() {
 
 void FunctionListingPanel::OnProjectLoaded(
     const TitaniumRenderer::ProjectContext& context) {
-    m_ClassMap = context.GetClassesMap();
+    // m_ClassMap = context.GetClassesMap();
 }
 }  // namespace TitaniumRenderer

@@ -1,11 +1,13 @@
 // FunctionTest.cpp
 
 #include <gtest/gtest.h>
-#include "TitaniumDecompiler/src/TitaniumDecompiler/Disassembler/Function.h"
-#include "TitaniumDecompiler/src/Platform/Linux/FileFormats/JVM/Methods.h"
-#include <memory>
+
 #include <map>
+#include <memory>
 #include <string>
+
+#include "FileFormats/JVM/Methods.h"
+#include "TitaniumDecompiler/src/TitaniumDecompiler/Disassembler/Function.h"
 
 // Test default initialization of a Function
 TEST(FunctionTest, DefaultInitialization) {
@@ -28,7 +30,8 @@ TEST(FunctionTest, UpdateFunctionName) {
 TEST(FunctionTest, SetAndGetCFG) {
     TitaniumDecompiler::Function func("TestFunction");
     // Create a dummy CFG instance.
-    std::shared_ptr<TitaniumDecompiler::CFG> dummyCFG = std::make_shared<TitaniumDecompiler::CFG>();
+    std::shared_ptr<TitaniumDecompiler::CFG> dummyCFG =
+        std::make_shared<TitaniumDecompiler::CFG>();
     func.SetFunctionCFG(dummyCFG);
     EXPECT_EQ(func.GetFunctionCFG(), dummyCFG);
 }
@@ -41,7 +44,7 @@ TEST(FunctionTest, SetAndGetMethodProperties) {
     method.m_AccessFlags = 0x0010;
     method.m_NameIndex = 42;
     method.m_DescIndex = 84;
-    
+
     func.SetMethod(method);
     func.SetMethodDesc("()V");
     func.SetMethodAccessFlags("public");

@@ -6,7 +6,7 @@
 #include "AST.h"
 #include "Codegen.h"
 #include "DomHelper.h"
-#include "Platform/Linux/FileFormats/JVM/Instruction.h"
+#include "FileFormats/JVM/Instruction.h"
 #include "SSA.h"
 #include "TitaniumDecompiler/CFGReducer/DeadCodeRemover.h"
 #include "TitaniumDecompiler/Disassembler/Function.h"
@@ -24,7 +24,8 @@ public:
 
 private:
     std::string GenerateJavaCode();
-    std::string ConvertFunctionToJava(const Function& insn, std::unordered_map<int, StackEntry>& localVars);
+    std::string ConvertFunctionToJava(
+        const Function& insn, std::unordered_map<int, StackEntry>& localVars);
 
     std::string GetConstantUTF8FromClass(const ClassFile& classFile, int idx);
 

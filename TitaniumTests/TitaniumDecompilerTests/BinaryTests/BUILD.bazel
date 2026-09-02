@@ -23,7 +23,8 @@ cc_test(
     deps = [
         "//TitaniumDecompiler/src:TitaniumDecompiler",
         "//TitaniumDecompiler/src/TitaniumDecompiler/Disassembler:disassembler_test",
-        "//TitaniumDecompiler/src/Platform/Linux/FileFormats/JVM:platform_jvm_test",
+        "//TitaniumDecompiler/src/Disassembler:disassembler_core",
+        "//TitaniumDecompiler/src/FileFormats/JVM:platform_jvm_test",
         "@googletest//:gtest",
         "@googletest//:gtest_main",
     ],
@@ -41,7 +42,7 @@ cc_test(
     deps = [
         "//TitaniumDecompiler/src:TitaniumDecompiler",
         "//TitaniumDecompiler/src/TitaniumDecompiler/Disassembler:disassembler_test",
-        "//TitaniumDecompiler/src/Platform/Linux/FileFormats/JVM:platform_jvm_test",
+        "//TitaniumDecompiler/src/FileFormats/JVM:platform_jvm_test",
         "@googletest//:gtest",
         "@googletest//:gtest_main",
     ],
@@ -127,7 +128,7 @@ cc_test(
     deps = [
         "//TitaniumDecompiler/src:TitaniumDecompiler",
         "//TitaniumDecompiler/src/TitaniumDecompiler/Disassembler:disassembler_test",
-        "//TitaniumDecompiler/src/Platform/Linux/FileFormats/JVM:platform_jvm_test",
+        "//TitaniumDecompiler/src/FileFormats/JVM:platform_jvm_test",
         "@googletest//:gtest",
         "@googletest//:gtest_main",
     ],
@@ -145,7 +146,7 @@ cc_test(
     deps = [
         "//TitaniumDecompiler/src:TitaniumDecompiler",
         "//TitaniumDecompiler/src/TitaniumDecompiler/Disassembler:disassembler_test",
-        "//TitaniumDecompiler/src/Platform/Linux/FileFormats/JVM:platform_jvm_test",
+        "//TitaniumDecompiler/src/FileFormats/JVM:platform_jvm_test",
         "@googletest//:gtest",
         "@googletest//:gtest_main",
     ],
@@ -163,7 +164,7 @@ cc_test(
     deps = [
         "//TitaniumDecompiler/src:TitaniumDecompiler",
         "//TitaniumDecompiler/src/TitaniumDecompiler/Disassembler:disassembler_test",
-        "//TitaniumDecompiler/src/Platform/Linux/FileFormats/JVM:platform_jvm_test",
+        "//TitaniumDecompiler/src/FileFormats/JVM:platform_jvm_test",
         "@googletest//:gtest",
         "@googletest//:gtest_main",
     ],
@@ -181,7 +182,7 @@ cc_test(
     deps = [
         "//TitaniumDecompiler/src:TitaniumDecompiler",
         "//TitaniumDecompiler/src/TitaniumDecompiler/Disassembler:disassembler_test",
-        "//TitaniumDecompiler/src/Platform/Linux/FileFormats/JVM:platform_jvm_test",
+        "//TitaniumDecompiler/src/FileFormats/JVM:platform_jvm_test",
         "@googletest//:gtest",
         "@googletest//:gtest_main",
     ],
@@ -199,7 +200,7 @@ cc_test(
     deps = [
         "//TitaniumDecompiler/src:TitaniumDecompiler",
         "//TitaniumDecompiler/src/TitaniumDecompiler/Disassembler:disassembler_test",
-        "//TitaniumDecompiler/src/Platform/Linux/FileFormats/JVM:platform_jvm_test",
+        "//TitaniumDecompiler/src/FileFormats/JVM:platform_jvm_test",
         "@googletest//:gtest",
         "@googletest//:gtest_main",
     ],

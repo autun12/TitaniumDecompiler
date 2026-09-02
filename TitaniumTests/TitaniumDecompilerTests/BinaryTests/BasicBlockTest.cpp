@@ -1,6 +1,7 @@
 #include <gtest/gtest.h>
+
+#include "FileFormats/JVM/Instruction.h"
 #include "TitaniumDecompiler/src/TitaniumDecompiler/Disassembler/BasicBlock.h"
-#include "TitaniumDecompiler/src/Platform/Linux/FileFormats/JVM/Instruction.h"
 
 using namespace TitaniumDecompiler;
 
@@ -8,14 +9,10 @@ class BasicBlockTest : public ::testing::Test {
 protected:
     std::shared_ptr<BasicBlock> block;
 
-    void SetUp() override {
-        block = std::make_shared<BasicBlock>();
-    }
+    void SetUp() override { block = std::make_shared<BasicBlock>(); }
 };
 
-TEST_F(BasicBlockTest, DefaultIDIsZero) {
-    EXPECT_EQ(block->m_ID, 0);
-}
+TEST_F(BasicBlockTest, DefaultIDIsZero) { EXPECT_EQ(block->m_ID, 0); }
 
 TEST_F(BasicBlockTest, CanSetAndGetID) {
     block->m_ID = 42;
@@ -122,8 +119,10 @@ TEST_F(BasicBlockTest, RemovePredecessorExceptionWorks) {
 }
 
 TEST_F(BasicBlockTest, GetLastInstructionReturnsCorrectInsn) {
-    Insn insn1; insn1.opcodeName = "iconst_0";
-    Insn insn2; insn2.opcodeName = "iconst_1";
+    Insn insn1;
+    insn1.opcodeName = "iconst_0";
+    Insn insn2;
+    insn2.opcodeName = "iconst_1";
     block->AddInstruction(insn1);
     block->AddInstruction(insn2);
     Insn last = block->GetLastInstruction();

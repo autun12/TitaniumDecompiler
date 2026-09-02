@@ -3,8 +3,8 @@
 #include <filesystem>
 #include <string>
 
-#include "TitaniumDecompiler/src/Platform/Linux/FileFormats/JVM/ClassFileParser.h"
-#include "TitaniumDecompiler/src/Platform/Linux/FileFormats/JVM/JarFile.h"
+#include "FileFormats/JVM/ClassFileParser.h"
+#include "FileFormats/JVM/JarFile.h"
 
 namespace TitaniumDecompiler {
 struct Loader {

@@ -216,12 +216,12 @@ void GraphViewPanel::CreateGraphDataFromCFG(TitaniumDecompiler::CFG& cfg) {
 }
 
 void GraphViewPanel::OnProjectLoaded(const ProjectContext& context) {
-    for (auto& classPair : context.GetClassesToFunctions()) {
-        for (auto& function : classPair.second) {
-            if (function.GetFunctionCFG()) {
-                CreateGraphDataFromCFG(*function.GetFunctionCFG());
-            }
-        }
-    }
+    // for (auto& classPair : context.GetClassesToFunctions()) {
+    //     for (auto& function : classPair.second) {
+    //         if (function.GetFunctionCFG()) {
+    //             CreateGraphDataFromCFG(*function.GetFunctionCFG());
+    //         }
+    //     }
+    // }
 }
 }  // namespace TitaniumRenderer
