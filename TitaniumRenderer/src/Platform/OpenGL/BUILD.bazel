@@ -2,28 +2,30 @@ cc_library(
     name = "titanium_renderer_platform_opengl",
     srcs = [
         "OpenGLContext.cpp",
+        "OpenGLImGuiRenderer.cpp",
         "OpenGLRendererAPI.cpp",
-    ],
-    defines = [
-        "GLFW_INCLUDE_NONE",
-    ],
-    deps = [
-        ":headers",
-        "//TitaniumRenderer/src/TitaniumRenderer/Core:headers",
-        "//TitaniumRenderer/src/TitaniumRenderer/Renderer:headers",
-        "@GLAD//:glad",
-        "@GLFW//:glfw",
-        "//TitaniumLogger/src/TitaniumLogger/Logger:titanium_logger",
-        # "//TitaniumLogger/src:TitaniumLogger",
-        "@spdloglib//:spdlog",
     ],
     copts = [
         "-ITitaniumRenderer/src",
         "-ITitaniumLogger/src",
     ],
+    defines = [
+        "GLFW_INCLUDE_NONE",
+    ],
     # strip_include_prefix = "//TitaniumRenderer/src",
     visibility = [
         "//TitaniumRenderer/src:__subpackages__",
+    ],
+    deps = [
+        ":headers",
+        "//TitaniumRenderer/src/TitaniumRenderer/Core:headers",
+        "//TitaniumRenderer/src/TitaniumRenderer/Renderer:headers",
+        "@imguilib//:imgui",
+        "@GLAD//:glad",
+        "@GLFW//:glfw",
+        "//TitaniumLogger/src/TitaniumLogger/Logger:titanium_logger",
+        # "//TitaniumLogger/src:TitaniumLogger",
+        "@spdloglib//:spdlog",
     ],
 )
 
@@ -31,17 +33,18 @@ cc_library(
     name = "headers",
     hdrs = [
         "OpenGLContext.h",
-        "OpenGLRendererAPI.h"
-    ],
-    deps = [
-        # "//TitaniumRenderer/src/TitaniumRenderer/Core:headers",
-        # "//TitaniumRenderer/src/TitaniumRenderer/Renderer:headers",
+        "OpenGLImGuiRenderer.h",
+        "OpenGLRendererAPI.h",
     ],
     copts = [
-        "-ITitaniumRenderer/src"
+        "-ITitaniumRenderer/src",
     ],
     # strip_include_prefix = "//TitaniumRenderer/src",
     visibility = [
         "//TitaniumRenderer/src:__subpackages__",
+    ],
+    deps = [
+        # "//TitaniumRenderer/src/TitaniumRenderer/Core:headers",
+        # "//TitaniumRenderer/src/TitaniumRenderer/Renderer:headers",
     ],
 )

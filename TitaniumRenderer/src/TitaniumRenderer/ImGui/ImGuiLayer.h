@@ -4,6 +4,7 @@
 #include "TitaniumRenderer/Events/ApplicationEvent.h"
 #include "TitaniumRenderer/Events/KeyEvent.h"
 #include "TitaniumRenderer/Events/MouseEvent.h"
+#include "TitaniumRenderer/ImGui/ImGuiRenderer.h"
 
 namespace TitaniumRenderer {
 
@@ -26,6 +27,7 @@ public:
 private:
     bool m_BlockEvents = true;
     float m_Time = 0.0f;
+    Scope<ImGuiRenderer> m_ImGuiRenderer;
 };
 
 }  // namespace TitaniumRenderer

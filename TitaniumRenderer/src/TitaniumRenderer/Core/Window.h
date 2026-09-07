@@ -1,11 +1,12 @@
 #pragma once
 
-#include <sstream>
 #include <stdint.h>
+
+#include <sstream>
 
 #include "TitaniumRenderer/Core/Base.h"
 #include "TitaniumRenderer/Events/Event.h"
-
+#include "TitaniumRenderer/Renderer/GraphicsContext.h"
 
 namespace TitaniumRenderer {
 
@@ -37,6 +38,7 @@ public:
     virtual bool IsVSync() const = 0;
 
     virtual void* GetNativeWindow() const = 0;
+    virtual GraphicsContext& GetContext() const = 0;
 
     static Scope<Window> Create(const WindowProps& props = WindowProps());
 };

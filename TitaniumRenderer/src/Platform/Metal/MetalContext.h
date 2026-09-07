@@ -6,11 +6,16 @@ struct GLFWwindow;
 
 namespace MTL {
 class Device;
-}
+class RenderPassDescriptor;
+class CommandBuffer;
+class RenderCommandEncoder;
+class CommandQueue;
+}  // namespace MTL
 
 namespace CA {
 class MetalLayer;
-}
+class MetalDrawable;
+}  // namespace CA
 
 namespace TitaniumRenderer {
 
@@ -23,12 +28,24 @@ public:
     virtual void SwapBuffers() override;
 
     inline MTL::Device* GetDevice() const { return m_Device; }
+    inline MTL::RenderPassDescriptor* GetCurrentRenderPassDescriptor() const {
+        return m_RenderPassDescriptor;
+    }
+    MTL::RenderCommandEncoder* GetCommandEncoder();
+    MTL::CommandBuffer* GetCommandBuffer() const { return m_CommandBuffer; }
+
     virtual void SetVSync(bool enabled) override;
     virtual bool IsVSync() const override { return m_VSync; }
 
 private:
     GLFWwindow* m_WindowHandle;
     MTL::Device* m_Device = nullptr;
+
+    MTL::CommandQueue* m_CommandQueue = nullptr;
+    MTL::RenderPassDescriptor* m_RenderPassDescriptor = nullptr;
+    CA::MetalDrawable* m_CurrentDrawable = nullptr;
+    MTL::CommandBuffer* m_CommandBuffer = nullptr;
+    MTL::RenderCommandEncoder* m_CommandEncoder = nullptr;
     CA::MetalLayer* m_MetalLayer = nullptr;
     bool m_VSync;
 };

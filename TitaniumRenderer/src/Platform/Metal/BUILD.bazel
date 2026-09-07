@@ -16,7 +16,7 @@ cc_library(
         "//TitaniumLogger/src/TitaniumLogger/Logger:titanium_logger",
         "@spdloglib//:spdlog",
         "@imguilib//:imgui",
-        "@metal//:metal",
+        "@Metal//:metal",
     ],
     copts = [
         "-ITitaniumRenderer/src",

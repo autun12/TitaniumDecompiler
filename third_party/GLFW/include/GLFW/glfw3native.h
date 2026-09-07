@@ -33,7 +33,6 @@
 extern "C" {
 #endif
 
-
 /*************************************************************************
  * Doxygen documentation
  *************************************************************************/
@@ -86,77 +85,75 @@ extern "C" {
  *  @endcode
  */
 
-
 /*************************************************************************
  * System headers and types
  *************************************************************************/
 
 #if !defined(GLFW_NATIVE_INCLUDE_NONE)
 
- #if defined(GLFW_EXPOSE_NATIVE_WIN32) || defined(GLFW_EXPOSE_NATIVE_WGL)
-  /* This is a workaround for the fact that glfw3.h needs to export APIENTRY (for
-   * example to allow applications to correctly declare a GL_KHR_debug callback)
-   * but windows.h assumes no one will define APIENTRY before it does
-   */
-  #if defined(GLFW_APIENTRY_DEFINED)
-   #undef APIENTRY
-   #undef GLFW_APIENTRY_DEFINED
-  #endif
-  #include <windows.h>
- #endif
+#if defined(GLFW_EXPOSE_NATIVE_WIN32) || defined(GLFW_EXPOSE_NATIVE_WGL)
+/* This is a workaround for the fact that glfw3.h needs to export APIENTRY (for
+ * example to allow applications to correctly declare a GL_KHR_debug callback)
+ * but windows.h assumes no one will define APIENTRY before it does
+ */
+#if defined(GLFW_APIENTRY_DEFINED)
+#undef APIENTRY
+#undef GLFW_APIENTRY_DEFINED
+#endif
+#include <windows.h>
+#endif
 
- #if defined(GLFW_EXPOSE_NATIVE_COCOA) || defined(GLFW_EXPOSE_NATIVE_NSGL)
-  #if defined(__OBJC__)
-   #import <Cocoa/Cocoa.h>
-  #else
-   #include <ApplicationServices/ApplicationServices.h>
-   #include <objc/objc.h>
-  #endif
- #endif
+#if defined(GLFW_EXPOSE_NATIVE_COCOA) || defined(GLFW_EXPOSE_NATIVE_NSGL)
+#if defined(__OBJC__)
+#import <Cocoa/Cocoa.h>
+#else
+#include <ApplicationServices/ApplicationServices.h>
+#include <objc/objc.h>
+#endif
+#endif
 
- #if defined(GLFW_EXPOSE_NATIVE_X11) || defined(GLFW_EXPOSE_NATIVE_GLX)
-  #include <X11/Xlib.h>
-  #include <X11/extensions/Xrandr.h>
- #endif
+#if defined(GLFW_EXPOSE_NATIVE_X11) || defined(GLFW_EXPOSE_NATIVE_GLX)
+#include <X11/Xlib.h>
+#include <X11/extensions/Xrandr.h>
+#endif
 
- #if defined(GLFW_EXPOSE_NATIVE_WAYLAND)
-  #include <wayland-client.h>
- #endif
+#if defined(GLFW_EXPOSE_NATIVE_WAYLAND)
+#include <wayland-client.h>
+#endif
 
- #if defined(GLFW_EXPOSE_NATIVE_WGL)
-  /* WGL is declared by windows.h */
- #endif
- #if defined(GLFW_EXPOSE_NATIVE_NSGL)
-  /* NSGL is declared by Cocoa.h */
- #endif
- #if defined(GLFW_EXPOSE_NATIVE_GLX)
-  /* This is a workaround for the fact that glfw3.h defines GLAPIENTRY because by
-   * default it also acts as an OpenGL header
-   * However, glx.h will include gl.h, which will define it unconditionally
-   */
-  #if defined(GLFW_GLAPIENTRY_DEFINED)
-   #undef GLAPIENTRY
-   #undef GLFW_GLAPIENTRY_DEFINED
-  #endif
-  #include <GL/glx.h>
- #endif
- #if defined(GLFW_EXPOSE_NATIVE_EGL)
-  #include <EGL/egl.h>
- #endif
- #if defined(GLFW_EXPOSE_NATIVE_OSMESA)
-  /* This is a workaround for the fact that glfw3.h defines GLAPIENTRY because by
-   * default it also acts as an OpenGL header
-   * However, osmesa.h will include gl.h, which will define it unconditionally
-   */
-  #if defined(GLFW_GLAPIENTRY_DEFINED)
-   #undef GLAPIENTRY
-   #undef GLFW_GLAPIENTRY_DEFINED
-  #endif
-  #include <GL/osmesa.h>
- #endif
+#if defined(GLFW_EXPOSE_NATIVE_WGL)
+/* WGL is declared by windows.h */
+#endif
+#if defined(GLFW_EXPOSE_NATIVE_NSGL)
+/* NSGL is declared by Cocoa.h */
+#endif
+#if defined(GLFW_EXPOSE_NATIVE_GLX)
+/* This is a workaround for the fact that glfw3.h defines GLAPIENTRY because by
+ * default it also acts as an OpenGL header
+ * However, glx.h will include gl.h, which will define it unconditionally
+ */
+#if defined(GLFW_GLAPIENTRY_DEFINED)
+#undef GLAPIENTRY
+#undef GLFW_GLAPIENTRY_DEFINED
+#endif
+#include <GL/glx.h>
+#endif
+#if defined(GLFW_EXPOSE_NATIVE_EGL)
+#include <EGL/egl.h>
+#endif
+#if defined(GLFW_EXPOSE_NATIVE_OSMESA)
+/* This is a workaround for the fact that glfw3.h defines GLAPIENTRY because by
+ * default it also acts as an OpenGL header
+ * However, osmesa.h will include gl.h, which will define it unconditionally
+ */
+#if defined(GLFW_GLAPIENTRY_DEFINED)
+#undef GLAPIENTRY
+#undef GLFW_GLAPIENTRY_DEFINED
+#endif
+#include <GL/osmesa.h>
+#endif
 
 #endif /*GLFW_NATIVE_INCLUDE_NONE*/
-
 
 /*************************************************************************
  * Functions
@@ -268,7 +265,7 @@ GLFWAPI HGLRC glfwGetWGLContext(GLFWwindow* window);
  *
  *  @ingroup native
  */
-GLFWAPI CGDirectDisplayID glfwGetCocoaMonitor(GLFWmonitor* monitor);
+GLFWAPI uint32_t glfwGetCocoaMonitor(GLFWmonitor* monitor);
 
 /*! @brief Returns the `NSWindow` of the specified window.
  *
@@ -482,7 +479,8 @@ GLFWAPI GLXWindow glfwGetGLXWindow(GLFWwindow* window);
 /*! @brief Retrieves the `GLXFBConfig` of the specified window's `GLXWindow`.
  *
  *  @param[in] window The window whose `GLXWindow` to query.
- *  @param[out] config The `GLXFBConfig` of the window `GLXWindow`, if available.
+ *  @param[out] config The `GLXFBConfig` of the window `GLXWindow`, if
+ * available.
  *  @return `GLFW_TRUE` if successful, or `GLFW_FALSE` if an
  *  [error](@ref error_handling) occurred.
  *
@@ -657,7 +655,8 @@ GLFWAPI int glfwGetEGLConfig(GLFWwindow* window, EGLConfig* config);
  *
  *  @ingroup native
  */
-GLFWAPI int glfwGetOSMesaColorBuffer(GLFWwindow* window, int* width, int* height, int* format, void** buffer);
+GLFWAPI int glfwGetOSMesaColorBuffer(GLFWwindow* window, int* width,
+                                     int* height, int* format, void** buffer);
 
 /*! @brief Retrieves the depth buffer associated with the specified window.
  *
@@ -681,7 +680,9 @@ GLFWAPI int glfwGetOSMesaColorBuffer(GLFWwindow* window, int* width, int* height
  *
  *  @ingroup native
  */
-GLFWAPI int glfwGetOSMesaDepthBuffer(GLFWwindow* window, int* width, int* height, int* bytesPerValue, void** buffer);
+GLFWAPI int glfwGetOSMesaDepthBuffer(GLFWwindow* window, int* width,
+                                     int* height, int* bytesPerValue,
+                                     void** buffer);
 
 /*! @brief Returns the `OSMesaContext` of the specified window.
  *
@@ -706,4 +707,3 @@ GLFWAPI OSMesaContext glfwGetOSMesaContext(GLFWwindow* window);
 #endif
 
 #endif /* _glfw3_native_h_ */
-

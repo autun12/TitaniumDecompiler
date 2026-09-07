@@ -1,4 +1,3 @@
-// TitaniumRenderer/UI/ImGuiRenderer.cpp
 #include "TitaniumRenderer/ImGui/ImGuiRenderer.h"
 
 #ifdef TD_PLATFORM_MACOS

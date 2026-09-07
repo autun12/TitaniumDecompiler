@@ -3,6 +3,19 @@ cc_library(
     srcs = [
         "ImGuiBuild.cpp",
         "ImGuiLayer.cpp",
+        "ImGuiRenderer.cpp",
+    ],
+    copts = [
+        "-ITitaniumRenderer/src",
+    ],
+    defines = select({
+        "@platforms//os:macos": [
+            "TD_PLATFORM_MACOS",
+        ],
+        "//conditions:default": [],
+    }),
+    visibility = [
+        "//TitaniumRenderer/src:__subpackages__",
     ],
     deps = [
         ":headers",
@@ -13,25 +26,14 @@ cc_library(
         "@imguilib//:imgui",
         "@spdloglib//:spdlog",
     ] + select({
-      "@platforms//os:macos": [
-
-      ],
-      "//conditions:default": [
-        "@GLAD//:glad",
-      ],
+        "@platforms//os:macos": [
+            "//TitaniumRenderer/src/Platform/Metal:titanium_renderer_platform_metal",
+        ],
+        "//conditions:default": [
+            "//TitaniumRenderer/src/Platform/OpenGL:titanium_renderer_platform_opengl",
+            "@GLAD//:glad",
+        ],
     }),
-    defines = select({
-      "@platforms//os:macos": [
-        "TD_PLATFORM_MACOS"
-      ],
-      "//conditions:default": [],
-    }),
-    copts = [
-        "-ITitaniumRenderer/src"
-    ],
-    visibility = [
-        "//TitaniumRenderer/src:__subpackages__",
-    ],
 )
 
 cc_library(
@@ -40,14 +42,14 @@ cc_library(
         "ImGuiLayer.h",
         "ImGuiRenderer.h",
     ],
-    deps = [
-        # "//TitaniumRenderer/src/TitaniumRenderer/Core:headers",
-    ],
     copts = [
-        "-ITitaniumRenderer/src"
+        "-ITitaniumRenderer/src",
     ],
     # strip_include_prefix = "//TitaniumRenderer/src",
     visibility = [
         "//TitaniumRenderer/src:__subpackages__",
+    ],
+    deps = [
+        # "//TitaniumRenderer/src/TitaniumRenderer/Core:headers",
     ],
 )

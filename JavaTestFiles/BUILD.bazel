@@ -10,11 +10,17 @@ filegroup(
     visibility = ["//visibility:public"],
 )
 
-exports_files([
-"TestJarFile/TestJarFile.jar",
-"Test.class",
-"Test.java",
-],
- visibility = ["//visibility:public"],)
+exports_files(
+    [
+        "TestJarFile/TestJarFile.jar",
+        "Test.class",
+        "Test.java",
+    ],
+    visibility = ["//visibility:public"],
+)
 
-exports_files(["TestJarFile/TestJarFile.jar"], visibility = ["//visibility:public"])
+exports_files(
+    ["TestJarFile/TestJarFile.jar"],
+    visibility = ["//visibility:public"],
+)
+
