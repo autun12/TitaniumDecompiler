@@ -96,10 +96,11 @@ int main(void)
     if (!glfwInit())
         exit(EXIT_FAILURE);
 
-    glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE);
-
     for (i = 0;  i < count;  i++)
     {
+        glfwWindowHint(GLFW_POSITION_X, 200 + 250 * i);
+        glfwWindowHint(GLFW_POSITION_Y, 200);
+
         threads[i].window = glfwCreateWindow(200, 200,
                                              threads[i].title,
                                              NULL, NULL);
@@ -110,9 +111,6 @@ int main(void)
         }
 
         glfwSetKeyCallback(threads[i].window, key_callback);
-
-        glfwSetWindowPos(threads[i].window, 200 + 250 * i, 200);
-        glfwShowWindow(threads[i].window);
     }
 
     glfwMakeContextCurrent(threads[0].window);
@@ -148,6 +146,10 @@ int main(void)
     for (i = 0;  i < count;  i++)
         thrd_join(threads[i].id, &result);
 
+    for (i = 0;  i < count;  i++)
+        glfwDestroyWindow(threads[i].window);
+
+    glfwTerminate();
     exit(EXIT_SUCCESS);
 }
 

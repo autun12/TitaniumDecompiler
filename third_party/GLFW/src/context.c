@@ -1,5 +1,5 @@
 //========================================================================
-// GLFW 3.4 - www.glfw.org
+// GLFW 3.6 - www.glfw.org
 //------------------------------------------------------------------------
 // Copyright (c) 2002-2006 Marcus Geelnard
 // Copyright (c) 2006-2016 Camilla Löwy <elmindreda@glfw.org>
@@ -24,8 +24,6 @@
 //    distribution.
 //
 //========================================================================
-// Please use C89 style variable declarations in this file because VS 2010
-//========================================================================
 
 #include "internal.h"
 
@@ -48,16 +46,6 @@
 //
 GLFWbool _glfwIsValidContextConfig(const _GLFWctxconfig* ctxconfig)
 {
-    if (ctxconfig->share)
-    {
-        if (ctxconfig->client == GLFW_NO_API ||
-            ctxconfig->share->context.client == GLFW_NO_API)
-        {
-            _glfwInputError(GLFW_NO_WINDOW_CONTEXT, NULL);
-            return GLFW_FALSE;
-        }
-    }
-
     if (ctxconfig->source != GLFW_NATIVE_CONTEXT_API &&
         ctxconfig->source != GLFW_EGL_CONTEXT_API &&
         ctxconfig->source != GLFW_OSMESA_CONTEXT_API)
@@ -76,6 +64,23 @@ GLFWbool _glfwIsValidContextConfig(const _GLFWctxconfig* ctxconfig)
                         "Invalid client API 0x%08X",
                         ctxconfig->client);
         return GLFW_FALSE;
+    }
+
+    if (ctxconfig->share)
+    {
+        if (ctxconfig->client == GLFW_NO_API ||
+            ctxconfig->share->context.client == GLFW_NO_API)
+        {
+            _glfwInputError(GLFW_NO_WINDOW_CONTEXT, NULL);
+            return GLFW_FALSE;
+        }
+
+        if (ctxconfig->source != ctxconfig->share->context.source)
+        {
+            _glfwInputError(GLFW_INVALID_ENUM,
+                            "Context creation APIs do not match between contexts");
+            return GLFW_FALSE;
+        }
     }
 
     if (ctxconfig->client == GLFW_OPENGL_API)
@@ -190,7 +195,7 @@ const _GLFWfbconfig* _glfwChooseFBConfig(const _GLFWfbconfig* desired,
     {
         current = alternatives + i;
 
-        if (desired->stereo > 0 && current->stereo == 0)
+        if (desired->stereo && !current->stereo)
         {
             // Stereo is a hard constraint
             continue;
@@ -356,12 +361,19 @@ GLFWbool _glfwRefreshContextAttribs(_GLFWwindow* window,
 
     previous = _glfwPlatformGetTls(&_glfw.contextSlot);
     glfwMakeContextCurrent((GLFWwindow*) window);
+    if (_glfwPlatformGetTls(&_glfw.contextSlot) != window)
+        return GLFW_FALSE;
 
     window->context.GetIntegerv = (PFNGLGETINTEGERVPROC)
         window->context.getProcAddress("glGetIntegerv");
     window->context.GetString = (PFNGLGETSTRINGPROC)
         window->context.getProcAddress("glGetString");
-    if (!window->context.GetIntegerv || !window->context.GetString)
+    window->context.Flush = (PFNGLFLUSHPROC)
+        window->context.getProcAddress("glFlush");
+
+    if (!window->context.GetIntegerv ||
+        !window->context.GetString ||
+        !window->context.Flush)
     {
         _glfwInputError(GLFW_PLATFORM_ERROR, "Entry point retrieval is broken");
         glfwMakeContextCurrent((GLFWwindow*) previous);
@@ -608,10 +620,12 @@ GLFWbool _glfwStringInExtensionString(const char* string, const char* extensions
 
 GLFWAPI void glfwMakeContextCurrent(GLFWwindow* handle)
 {
-    _GLFWwindow* window = (_GLFWwindow*) handle;
-    _GLFWwindow* previous = _glfwPlatformGetTls(&_glfw.contextSlot);
-
     _GLFW_REQUIRE_INIT();
+
+    _GLFWwindow* window = (_GLFWwindow*) handle;
+    _GLFWwindow* previous;
+
+    previous = _glfwPlatformGetTls(&_glfw.contextSlot);
 
     if (window && window->context.client == GLFW_NO_API)
     {
@@ -638,10 +652,10 @@ GLFWAPI GLFWwindow* glfwGetCurrentContext(void)
 
 GLFWAPI void glfwSwapBuffers(GLFWwindow* handle)
 {
+    _GLFW_REQUIRE_INIT();
+
     _GLFWwindow* window = (_GLFWwindow*) handle;
     assert(window != NULL);
-
-    _GLFW_REQUIRE_INIT();
 
     if (window->context.client == GLFW_NO_API)
     {

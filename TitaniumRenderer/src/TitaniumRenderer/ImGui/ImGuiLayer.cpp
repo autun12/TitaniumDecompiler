@@ -1,7 +1,11 @@
 #include "TitaniumRenderer/ImGui/ImGuiLayer.h"
 
 #include <backends/imgui_impl_glfw.h>
+#ifdef TD_PLATFORM_MACOS
+#include <backends/imgui_impl_metal.h>
+#else
 #include <backends/imgui_impl_opengl3.h>
+#endif
 #include <imgui.h>
 
 #include "TitaniumRenderer/Core/Application.h"
@@ -35,12 +39,22 @@ void ImGuiLayer::OnAttach() {
         static_cast<GLFWwindow*>(app.GetWindow().GetNativeWindow());
 
     // Setup Platform/Renderer bindings
+#ifndef TD_PLATFORM_MACOS
     ImGui_ImplGlfw_InitForOpenGL(window, true);
     ImGui_ImplOpenGL3_Init("#version 450");
+#else
+    ImGui_ImplGlfw_InitForOther(window, true);
+    // ImGui_ImplMetal_Init();
+    // ImGui_ImplMetal_Init();
+#endif
 }
 
 void ImGuiLayer::OnDetach() {
+#ifndef TD_PLATFORM_MACOS
     ImGui_ImplOpenGL3_Shutdown();
+#else
+    ImGui_ImplMetal_Shutdown();
+#endif
     ImGui_ImplGlfw_Shutdown();
     ImGui::DestroyContext();
 }
@@ -55,7 +69,11 @@ void ImGuiLayer::OnEvent(Event& e) {
 }
 
 void ImGuiLayer::Begin() {
+#ifndef TD_PLATFORM_MACOS
     ImGui_ImplOpenGL3_NewFrame();
+#else
+    // ImGui_ImplMetal_NewFrame();
+#endif
     ImGui_ImplGlfw_NewFrame();
     ImGui::NewFrame();
 }
@@ -68,7 +86,13 @@ void ImGuiLayer::End() {
 
     // Rendering
     ImGui::Render();
+
+#ifndef TD_PLATFORM_MACOS
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+#else
+    // ImGui_ImplMetal_RenderDrawData(ImGui::GetDrawData(), id<MTLCommandBuffer>
+    // commandBuffer, id<MTLRenderCommandEncoder> commandEncoder)
+#endif
 
     if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable) {
         GLFWwindow* backup_current_context = glfwGetCurrentContext();

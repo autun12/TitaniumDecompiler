@@ -1,0 +1,23 @@
+// TitaniumRenderer/UI/ImGuiRenderer.h
+#pragma once
+
+#include "TitaniumRenderer/Core/Base.h"
+
+struct ImDrawData;
+struct GLFWwindow;
+
+namespace TitaniumRenderer {
+
+class ImGuiRenderer {
+public:
+    virtual ~ImGuiRenderer() = default;
+
+    virtual void Init(GLFWwindow* windowHandle) = 0;
+    virtual void Shutdown() = 0;
+    virtual void NewFrame() = 0;
+    virtual void RenderDrawData(ImDrawData* drawData) = 0;
+
+    static Scope<ImGuiRenderer> Create();
+};
+
+}  // namespace TitaniumRenderer

@@ -10,9 +10,14 @@ cc_library(
     deps = [
         ":headers",
         "@spdloglib//:spdlog",
-        "//TitaniumRenderer/src/Platform/OpenGL:titanium_renderer_platform_opengl",
-
-    ],
+    ] + select({
+      "@platforms//os:macos": [
+        "//TitaniumRenderer/src/Platform/Metal:titanium_renderer_platform_metal"        
+      ],
+      "//conditions:default": [
+          "//TitaniumRenderer/src/Platform/OpenGL:titanium_renderer_platform_opengl",
+      ]
+    }),
     copts = [
         "-ITitaniumRenderer/src"
     ],
@@ -33,7 +38,7 @@ cc_library(
     ],
     deps = [
         "//TitaniumRenderer/src/TitaniumRenderer/Core:headers",
-        "//TitaniumRenderer/src/Platform/OpenGL:headers",
+        # "//TitaniumRenderer/src/Platform/OpenGL:headers",
     ],
     copts = [
         "-ITitaniumRenderer/src"

@@ -1,5 +1,5 @@
 //========================================================================
-// GLFW 3.4 X11 - www.glfw.org
+// GLFW 3.6 X11 - www.glfw.org
 //------------------------------------------------------------------------
 // Copyright (c) 2002-2006 Marcus Geelnard
 // Copyright (c) 2006-2019 Camilla Löwy <elmindreda@glfw.org>
@@ -452,8 +452,6 @@ typedef VkBool32 (APIENTRY *PFN_vkGetPhysicalDeviceXlibPresentationSupportKHR)(V
 typedef VkResult (APIENTRY *PFN_vkCreateXcbSurfaceKHR)(VkInstance,const VkXcbSurfaceCreateInfoKHR*,const VkAllocationCallbacks*,VkSurfaceKHR*);
 typedef VkBool32 (APIENTRY *PFN_vkGetPhysicalDeviceXcbPresentationSupportKHR)(VkPhysicalDevice,uint32_t,xcb_connection_t*,xcb_visualid_t);
 
-#include "xkb_unicode.h"
-
 #define GLFW_X11_WINDOW_STATE           _GLFWwindowX11 x11;
 #define GLFW_X11_LIBRARY_WINDOW_STATE   _GLFWlibraryX11 x11;
 #define GLFW_X11_MONITOR_STATE          _GLFWmonitorX11 x11;
@@ -462,6 +460,7 @@ typedef VkBool32 (APIENTRY *PFN_vkGetPhysicalDeviceXcbPresentationSupportKHR)(Vk
 #define GLFW_GLX_CONTEXT_STATE          _GLFWcontextGLX glx;
 #define GLFW_GLX_LIBRARY_CONTEXT_STATE  _GLFWlibraryGLX glx;
 
+#define GLFW_INVALID_CODEPOINT 0xffffffffu
 
 // GLX-specific per-context data
 //
@@ -469,6 +468,7 @@ typedef struct _GLFWcontextGLX
 {
     GLXContext      handle;
     GLXWindow       window;
+    GLXFBConfig     fbconfig;
 } _GLFWcontextGLX;
 
 // GLX-specific global data
@@ -479,7 +479,6 @@ typedef struct _GLFWlibraryGLX
     int             eventBase;
     int             errorBase;
 
-    // dlopen handle for libGL.so.1
     void*           handle;
 
     // GLX 1.3 functions
@@ -504,18 +503,18 @@ typedef struct _GLFWlibraryGLX
     PFNGLXSWAPINTERVALEXTPROC           SwapIntervalEXT;
     PFNGLXSWAPINTERVALMESAPROC          SwapIntervalMESA;
     PFNGLXCREATECONTEXTATTRIBSARBPROC   CreateContextAttribsARB;
-    GLFWbool        SGI_swap_control;
-    GLFWbool        EXT_swap_control;
-    GLFWbool        MESA_swap_control;
-    GLFWbool        ARB_multisample;
-    GLFWbool        ARB_framebuffer_sRGB;
-    GLFWbool        EXT_framebuffer_sRGB;
-    GLFWbool        ARB_create_context;
-    GLFWbool        ARB_create_context_profile;
-    GLFWbool        ARB_create_context_robustness;
-    GLFWbool        EXT_create_context_es2_profile;
-    GLFWbool        ARB_create_context_no_error;
-    GLFWbool        ARB_context_flush_control;
+    bool            SGI_swap_control;
+    bool            EXT_swap_control;
+    bool            MESA_swap_control;
+    bool            ARB_multisample;
+    bool            ARB_framebuffer_sRGB;
+    bool            EXT_framebuffer_sRGB;
+    bool            ARB_create_context;
+    bool            ARB_create_context_profile;
+    bool            ARB_create_context_robustness;
+    bool            EXT_create_context_es2_profile;
+    bool            ARB_create_context_no_error;
+    bool            ARB_context_flush_control;
 } _GLFWlibraryGLX;
 
 // X11-specific per-window data
@@ -566,6 +565,8 @@ typedef struct _GLFWlibraryX11
     XContext        context;
     // XIM input method
     XIM             im;
+    // The previous X error handler, to be restored later
+    XErrorHandler   errorHandler;
     // Most recent error code received by X error handler
     int             errorCode;
     // Primary selection string (while the primary selection is owned)
@@ -582,6 +583,7 @@ typedef struct _GLFWlibraryX11
     double          restoreCursorPosX, restoreCursorPosY;
     // The window whose disabled cursor mode is active
     _GLFWwindow*    disabledCursorWindow;
+    int             emptyEventPipe[2];
 
     // Window manager atoms
     Atom            NET_SUPPORTED;
@@ -898,7 +900,7 @@ GLFWbool _glfwConnectX11(int platformID, _GLFWplatform* platform);
 int _glfwInitX11(void);
 void _glfwTerminateX11(void);
 
-int _glfwCreateWindowX11(_GLFWwindow* window, const _GLFWwndconfig* wndconfig, const _GLFWctxconfig* ctxconfig, const _GLFWfbconfig* fbconfig);
+GLFWbool _glfwCreateWindowX11(_GLFWwindow* window, const _GLFWwndconfig* wndconfig, const _GLFWctxconfig* ctxconfig, const _GLFWfbconfig* fbconfig);
 void _glfwDestroyWindowX11(_GLFWwindow* window);
 void _glfwSetWindowTitleX11(_GLFWwindow* window, const char* title);
 void _glfwSetWindowIconX11(_GLFWwindow* window, int count, const GLFWimage* images);
@@ -919,12 +921,12 @@ void _glfwHideWindowX11(_GLFWwindow* window);
 void _glfwRequestWindowAttentionX11(_GLFWwindow* window);
 void _glfwFocusWindowX11(_GLFWwindow* window);
 void _glfwSetWindowMonitorX11(_GLFWwindow* window, _GLFWmonitor* monitor, int xpos, int ypos, int width, int height, int refreshRate);
-int _glfwWindowFocusedX11(_GLFWwindow* window);
-int _glfwWindowIconifiedX11(_GLFWwindow* window);
-int _glfwWindowVisibleX11(_GLFWwindow* window);
-int _glfwWindowMaximizedX11(_GLFWwindow* window);
-int _glfwWindowHoveredX11(_GLFWwindow* window);
-int _glfwFramebufferTransparentX11(_GLFWwindow* window);
+GLFWbool _glfwWindowFocusedX11(_GLFWwindow* window);
+GLFWbool _glfwWindowIconifiedX11(_GLFWwindow* window);
+GLFWbool _glfwWindowVisibleX11(_GLFWwindow* window);
+GLFWbool _glfwWindowMaximizedX11(_GLFWwindow* window);
+GLFWbool _glfwWindowHoveredX11(_GLFWwindow* window);
+GLFWbool _glfwFramebufferTransparentX11(_GLFWwindow* window);
 void _glfwSetWindowResizableX11(_GLFWwindow* window, GLFWbool enabled);
 void _glfwSetWindowDecoratedX11(_GLFWwindow* window, GLFWbool enabled);
 void _glfwSetWindowFloatingX11(_GLFWwindow* window, GLFWbool enabled);
@@ -945,8 +947,8 @@ void _glfwSetCursorPosX11(_GLFWwindow* window, double xpos, double ypos);
 void _glfwSetCursorModeX11(_GLFWwindow* window, int mode);
 const char* _glfwGetScancodeNameX11(int scancode);
 int _glfwGetKeyScancodeX11(int key);
-int _glfwCreateCursorX11(_GLFWcursor* cursor, const GLFWimage* image, int xhot, int yhot);
-int _glfwCreateStandardCursorX11(_GLFWcursor* cursor, int shape);
+GLFWbool _glfwCreateCursorX11(_GLFWcursor* cursor, const GLFWimage* image, int xhot, int yhot);
+GLFWbool _glfwCreateStandardCursorX11(_GLFWcursor* cursor, int shape);
 void _glfwDestroyCursorX11(_GLFWcursor* cursor);
 void _glfwSetCursorX11(_GLFWwindow* window, _GLFWcursor* cursor);
 void _glfwSetClipboardStringX11(const char* string);
@@ -957,7 +959,7 @@ EGLNativeDisplayType _glfwGetEGLNativeDisplayX11(void);
 EGLNativeWindowType _glfwGetEGLNativeWindowX11(_GLFWwindow* window);
 
 void _glfwGetRequiredInstanceExtensionsX11(char** extensions);
-int _glfwGetPhysicalDevicePresentationSupportX11(VkInstance instance, VkPhysicalDevice device, uint32_t queuefamily);
+GLFWbool _glfwGetPhysicalDevicePresentationSupportX11(VkInstance instance, VkPhysicalDevice device, uint32_t queuefamily);
 VkResult _glfwCreateWindowSurfaceX11(VkInstance instance, _GLFWwindow* window, const VkAllocationCallbacks* allocator, VkSurfaceKHR* surface);
 
 void _glfwFreeMonitorX11(_GLFWmonitor* monitor);
@@ -965,7 +967,7 @@ void _glfwGetMonitorPosX11(_GLFWmonitor* monitor, int* xpos, int* ypos);
 void _glfwGetMonitorContentScaleX11(_GLFWmonitor* monitor, float* xscale, float* yscale);
 void _glfwGetMonitorWorkareaX11(_GLFWmonitor* monitor, int* xpos, int* ypos, int* width, int* height);
 GLFWvidmode* _glfwGetVideoModesX11(_GLFWmonitor* monitor, int* count);
-void _glfwGetVideoModeX11(_GLFWmonitor* monitor, GLFWvidmode* mode);
+GLFWbool _glfwGetVideoModeX11(_GLFWmonitor* monitor, GLFWvidmode* mode);
 GLFWbool _glfwGetGammaRampX11(_GLFWmonitor* monitor, GLFWgammaramp* ramp);
 void _glfwSetGammaRampX11(_GLFWmonitor* monitor, const GLFWgammaramp* ramp);
 
@@ -980,6 +982,8 @@ unsigned long _glfwGetWindowPropertyX11(Window window,
                                         Atom type,
                                         unsigned char** value);
 GLFWbool _glfwIsVisualTransparentX11(Visual* visual);
+
+uint32_t _glfwKeySym2UnicodeX11(unsigned int keysym);
 
 void _glfwGrabErrorHandlerX11(void);
 void _glfwReleaseErrorHandlerX11(void);

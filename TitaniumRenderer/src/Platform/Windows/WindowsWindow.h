@@ -1,9 +1,11 @@
 #pragma once
 
 #include <GLFW/glfw3.h>
+
 #include <iostream>
-#include "TitaniumRenderer/Renderer/GraphicsContext.h"
+
 #include "TitaniumRenderer/Core/Window.h"
+#include "TitaniumRenderer/Renderer/GraphicsContext.h"
 
 namespace TitaniumRenderer {
 

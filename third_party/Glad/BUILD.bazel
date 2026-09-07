@@ -22,6 +22,7 @@ cc_library(
         "@platforms//os:windows": [
             "-DEFAULTLIB:opengl32.lib",
         ],
+        "@platforms//os:macos": [],
     }),
     strip_include_prefix = "include",
 )

@@ -1,12 +1,12 @@
 #pragma once
 
 #include "TitaniumRenderer/Core/Base.h"
+#include "TitaniumRenderer/Core/LayerStack.h"
+#include "TitaniumRenderer/Core/Timestep.h"
+#include "TitaniumRenderer/Core/Window.h"
 #include "TitaniumRenderer/Events/ApplicationEvent.h"
 #include "TitaniumRenderer/Events/Event.h"
 #include "TitaniumRenderer/ImGui/ImGuiLayer.h"
-#include "TitaniumRenderer/Core/LayerStack.h"
-#include "TitaniumRenderer/Core/Window.h"
-#include "TitaniumRenderer/Core/Timestep.h"
 
 int main(int argc, char** argv);
 

@@ -21,6 +21,7 @@ cc_library(
     ],
     deps = [
         "@imguilib//:imgui",
+        "@imguilib//:imgui_color_text_edit",
         "@yaml-cpp//:yaml-cpp",
         "//TitaniumLogger/src/TitaniumLogger/Logger:titanium_logger",
     ],

@@ -1,0 +1,49 @@
+cc_library(
+    name = "titanium_renderer_platform_metal",
+    srcs = [
+      "MetalRendererAPI.cpp",
+      "MetalImGuiRenderer.cpp",
+      "MetalContext.cpp",
+    ],
+    defines = [
+        "GLFW_INCLUDE_NONE",
+    ],
+    deps = [
+        ":headers",
+        "//TitaniumRenderer/src/TitaniumRenderer/Core:headers",
+        "//TitaniumRenderer/src/TitaniumRenderer/Renderer:headers",
+        "@GLFW//:glfw",
+        "//TitaniumLogger/src/TitaniumLogger/Logger:titanium_logger",
+        "@spdloglib//:spdlog",
+        "@imguilib//:imgui",
+        "@metal//:metal",
+    ],
+    copts = [
+        "-ITitaniumRenderer/src",
+        "-ITitaniumLogger/src",
+    ],
+    # strip_include_prefix = "//TitaniumRenderer/src",
+    visibility = [
+        "//TitaniumRenderer/src:__subpackages__",
+    ],
+)
+
+cc_library(
+    name = "headers",
+    hdrs = [
+      "MetalRendererAPI.h",
+      "MetalContext.h",
+      "MetalImGuiRenderer.h",
+    ],
+    deps = [
+        # "//TitaniumRenderer/src/TitaniumRenderer/Core:headers",
+        # "//TitaniumRenderer/src/TitaniumRenderer/Renderer:headers",
+    ],
+    copts = [
+        "-ITitaniumRenderer/src"
+    ],
+    # strip_include_prefix = "//TitaniumRenderer/src",
+    visibility = [
+        "//TitaniumRenderer/src:__subpackages__",
+    ],
+)

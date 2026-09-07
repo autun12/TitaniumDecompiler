@@ -1,5 +1,5 @@
 //========================================================================
-// GLFW 3.4 OSMesa - www.glfw.org
+// GLFW 3.6 OSMesa - www.glfw.org
 //------------------------------------------------------------------------
 // Copyright (c) 2016 Google Inc.
 // Copyright (c) 2016-2017 Camilla Löwy <elmindreda@glfw.org>
@@ -24,15 +24,12 @@
 //    distribution.
 //
 //========================================================================
-// Please use C89 style variable declarations in this file because VS 2010
-//========================================================================
+
+#include "internal.h"
 
 #include <stdlib.h>
 #include <string.h>
 #include <assert.h>
-
-#include "internal.h"
-
 
 static void makeContextCurrentOSMesa(_GLFWwindow* window)
 {
@@ -124,7 +121,7 @@ GLFWbool _glfwInitOSMesa(void)
         "libOSMesa.8.dylib",
 #elif defined(__CYGWIN__)
         "libOSMesa-8.so",
-#elif defined(__OpenBSD__)
+#elif defined(__OpenBSD__) || defined(__NetBSD__)
         "libOSMesa.so",
 #else
         "libOSMesa.so.8",
@@ -183,14 +180,11 @@ GLFWbool _glfwInitOSMesa(void)
 
 void _glfwTerminateOSMesa(void)
 {
-    if (_glfw.osmesa.handle)
-    {
-        _glfwPlatformFreeModule(_glfw.osmesa.handle);
-        _glfw.osmesa.handle = NULL;
-    }
+    _glfwPlatformFreeModule(_glfw.osmesa.handle);
+    _glfw.osmesa.handle = NULL;
 }
 
-#define setAttrib(a, v) \
+#define SET_ATTRIB(a, v) \
 { \
     assert(((size_t) index + 1) < sizeof(attribs) / sizeof(attribs[0])); \
     attribs[index++] = a; \
@@ -221,24 +215,24 @@ GLFWbool _glfwCreateContextOSMesa(_GLFWwindow* window,
     {
         int index = 0, attribs[40];
 
-        setAttrib(OSMESA_FORMAT, OSMESA_RGBA);
-        setAttrib(OSMESA_DEPTH_BITS, fbconfig->depthBits);
-        setAttrib(OSMESA_STENCIL_BITS, fbconfig->stencilBits);
-        setAttrib(OSMESA_ACCUM_BITS, accumBits);
+        SET_ATTRIB(OSMESA_FORMAT, OSMESA_RGBA);
+        SET_ATTRIB(OSMESA_DEPTH_BITS, fbconfig->depthBits);
+        SET_ATTRIB(OSMESA_STENCIL_BITS, fbconfig->stencilBits);
+        SET_ATTRIB(OSMESA_ACCUM_BITS, accumBits);
 
         if (ctxconfig->profile == GLFW_OPENGL_CORE_PROFILE)
         {
-            setAttrib(OSMESA_PROFILE, OSMESA_CORE_PROFILE);
+            SET_ATTRIB(OSMESA_PROFILE, OSMESA_CORE_PROFILE);
         }
         else if (ctxconfig->profile == GLFW_OPENGL_COMPAT_PROFILE)
         {
-            setAttrib(OSMESA_PROFILE, OSMESA_COMPAT_PROFILE);
+            SET_ATTRIB(OSMESA_PROFILE, OSMESA_COMPAT_PROFILE);
         }
 
         if (ctxconfig->major != 1 || ctxconfig->minor != 0)
         {
-            setAttrib(OSMESA_CONTEXT_MAJOR_VERSION, ctxconfig->major);
-            setAttrib(OSMESA_CONTEXT_MINOR_VERSION, ctxconfig->minor);
+            SET_ATTRIB(OSMESA_CONTEXT_MAJOR_VERSION, ctxconfig->major);
+            SET_ATTRIB(OSMESA_CONTEXT_MINOR_VERSION, ctxconfig->minor);
         }
 
         if (ctxconfig->forward)
@@ -248,7 +242,7 @@ GLFWbool _glfwCreateContextOSMesa(_GLFWwindow* window,
             return GLFW_FALSE;
         }
 
-        setAttrib(0, 0);
+        SET_ATTRIB(0, 0);
 
         window->context.osmesa.handle =
             OSMesaCreateContextAttribs(attribs, share);
@@ -287,7 +281,7 @@ GLFWbool _glfwCreateContextOSMesa(_GLFWwindow* window,
     return GLFW_TRUE;
 }
 
-#undef setAttrib
+#undef SET_ATTRIB
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -299,10 +293,11 @@ GLFWAPI int glfwGetOSMesaColorBuffer(GLFWwindow* handle, int* width,
 {
     void* mesaBuffer;
     GLint mesaWidth, mesaHeight, mesaFormat;
-    _GLFWwindow* window = (_GLFWwindow*) handle;
-    assert(window != NULL);
 
     _GLFW_REQUIRE_INIT_OR_RETURN(GLFW_FALSE);
+
+    _GLFWwindow* window = (_GLFWwindow*) handle;
+    assert(window != NULL);
 
     if (window->context.source != GLFW_OSMESA_CONTEXT_API)
     {
@@ -338,10 +333,11 @@ GLFWAPI int glfwGetOSMesaDepthBuffer(GLFWwindow* handle,
 {
     void* mesaBuffer;
     GLint mesaWidth, mesaHeight, mesaBytes;
-    _GLFWwindow* window = (_GLFWwindow*) handle;
-    assert(window != NULL);
 
     _GLFW_REQUIRE_INIT_OR_RETURN(GLFW_FALSE);
+
+    _GLFWwindow* window = (_GLFWwindow*) handle;
+    assert(window != NULL);
 
     if (window->context.source != GLFW_OSMESA_CONTEXT_API)
     {
@@ -372,8 +368,10 @@ GLFWAPI int glfwGetOSMesaDepthBuffer(GLFWwindow* handle,
 
 GLFWAPI OSMesaContext glfwGetOSMesaContext(GLFWwindow* handle)
 {
-    _GLFWwindow* window = (_GLFWwindow*) handle;
     _GLFW_REQUIRE_INIT_OR_RETURN(NULL);
+
+    _GLFWwindow* window = (_GLFWwindow*) handle;
+    assert(window != NULL);
 
     if (window->context.source != GLFW_OSMESA_CONTEXT_API)
     {

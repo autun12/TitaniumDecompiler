@@ -14,25 +14,18 @@ objc_library(
         "src/posix_thread.h",
         "src/mappings.h",
         "src/null_platform.h",
-        "src/cocoa_time.h",
+        "src/macos_time.h",
         "src/null_joystick.h",
     ],
     srcs = [
         "src/cocoa_joystick.m",
         "src/nsgl_context.m",
         "src/cocoa_monitor.m",
+        "src/macos_time.c",
         "src/cocoa_window.m",
         "src/cocoa_init.m",
+        "src/posix_module.c",
         "src/posix_thread.c",
-        "src/cocoa_time.c",
-        "src/egl_context.c",
-        "src/osmesa_context.c",
-        "src/context.c",
-        "src/init.c",
-        "src/input.c",
-        "src/vulkan.c",
-        "src/window.c",
-        "src/monitor.c",
     ],
     defines = [
         "_GLFW_COCOA",
@@ -41,12 +34,20 @@ objc_library(
         "-fno-objc-arc",
         "-Wno-incompatible-function-pointer-types",
     ],
+    sdk_frameworks = [
+      "Cocoa",
+      "IOKit",
+      "CoreFoundation",
+      "QuartzCore",
+      "AppKit",
+    ],
     linkopts = [
         "-Wno-incompatible-function-pointer-types",
     ],
     visibility = [
         "//visibility:private",
     ],
+    alwayslink = True,
 )
 
 cc_library(
@@ -60,10 +61,10 @@ cc_library(
         "src/monitor.c",
         "src/vulkan.c",
         "src/window.c",
-		"src/null_init.c",
-		"src/null_joystick.c",
-		"src/null_monitor.c",
-		"src/null_window.c",
+        "src/null_init.c",
+        "src/null_joystick.c",
+        "src/null_monitor.c",
+        "src/null_window.c",
         "src/platform.c",
     ] + select({
         "@platforms//os:windows": [
@@ -77,7 +78,7 @@ cc_library(
             "src/wgl_context.c",
         ],
         "@platforms//os:macos": [
-            "src/cocoa_time.c",
+            "src/macos_time.c",
             "src/posix_thread.c",
         ],
         "@platforms//os:linux": [
@@ -108,7 +109,7 @@ cc_library(
             "src/platform.h",
         ],
         "@platforms//os:macos": [
-            "src/cocoa_time.h",
+            "src/macos_time.h",
             "src/cocoa_joystick.h",
             "src/cocoa_platform.h",
             "src/null_joystick.h",
@@ -134,9 +135,6 @@ cc_library(
         ],
         "@platforms//os:macos": [
             "_GLFW_COCOA",
-            "_GLFW_NSGL",
-            "_GLFW_NO_DLOAD_WINMM",
-            "_GLFW_USE_OPENGL",
         ],
         "@platforms//os:linux": [
             "_GLFW_HAS_XF86VM",
@@ -167,10 +165,11 @@ cc_library(
             "-DEFAULTLIB:Dwmapi.lib",
         ],
         "@platforms//os:macos": [
-            "-framework OpenGL",
             "-framework Cocoa",
             "-framework IOKit",
             "-framework CoreFoundation",
+            "-framework Metal",
+            "-framework QuartzCore",
         ],
         "@platforms//os:linux": [],
         "//conditions:default": [],

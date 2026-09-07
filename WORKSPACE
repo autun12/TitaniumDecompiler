@@ -21,7 +21,7 @@ local_repository(
 )
 
 local_repository(
-    name = "metal",
+    name = "Metal",
     path = "third_party/Metal/"
 )
 

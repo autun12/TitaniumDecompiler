@@ -1,21 +1,120 @@
-load("@rules_cc//cc:defs.bzl", "cc_library", "cc_binary", "objc_library")
+load("@rules_cc//cc:defs.bzl", "cc_binary", "cc_library", "objc_library")
 
 package(default_visibility = ["//visibility:public"])
+
+cc_library(
+    name = "imgui_core",
+    srcs = [
+        "imgui.cpp",
+        "imgui_demo.cpp",
+        "imgui_draw.cpp",
+        "imgui_tables.cpp",
+        "imgui_widgets.cpp",
+    ],
+    hdrs = glob([
+        "*.h",
+        "imconfig.h",
+        "imgui.h",
+        "imgui_internal.h",
+        "imstb_rectpack.h",
+        "imstb_textedit.h",
+        "imstb_truetype.h",
+    ]),
+    includes = ["."],
+    visibility = ["//visibility:private"],
+)
+
+objc_library(
+    name = "imgui_metal_backend",
+    srcs = [
+        "backends/imgui_impl_metal.mm",
+    ],
+    hdrs = [
+        "backends/imgui_impl_metal.h",
+    ],
+    copts = [
+        "-fobjc-arc",
+    ],
+    includes = ["backends"],
+    visibility = ["//visibility:private"],
+    deps = [
+        ":imgui_core",
+        "@Metal//:metal",
+    ],
+    alwayslink = True,
+)
+
+cc_library(
+    name = "imgui_glfw_backend",
+    srcs = [
+        "backends/imgui_impl_glfw.cpp",
+    ],
+    hdrs = [
+        "backends/imgui_impl_glfw.h",
+    ],
+    includes = ["backends"],
+    visibility = ["//visibility:private"],
+    deps = [
+        ":imgui_core",
+        "@GLFW//:glfw",
+    ],
+    alwayslink = True,
+)
+
+cc_library(
+    name = "imgui",
+    hdrs = select({
+        "@platforms//os:windows": [
+            "backends/imgui_impl_dx11.h",
+            "backends/imgui_impl_glfw.h",
+            "backends/imgui_impl_opengl3.h",
+            "backends/imgui_impl_win32.h",
+        ],
+        "@platforms//os:linux": [
+            "backends/imgui_impl_glfw.h",
+            "backends/imgui_impl_opengl3.h",
+        ],
+        "@platforms//os:macos": [
+            "backends/imgui_impl_glfw.h",
+            "backends/imgui_impl_metal.h",
+        ],
+    }) + glob(["*.h"]),
+    includes = [
+        ".",
+        "backends",
+    ],
+    visibility = ["//visibility:public"],
+    deps = [
+        ":imgui_core",
+        ":imgui_glfw_backend",
+    ] + select({
+        "@platforms//os:macos": [
+            ":imgui_metal_backend",
+        ],
+        "//conditions:default": [],
+    }),
+)
 
 cc_binary(
     name = "imgui-metal-demo",
     srcs = [
         "examples/example_glfw_metal/main.cpp",
     ],
+    linkopts = select({
+        "@platforms//os:macos": [
+            "-framework Cocoa",
+            "-framework IOKit",
+            "-framework CoreFoundation",
+            "-framework QuartzCore",
+            "-framework Metal",
+            "-framework Foundation",
+        ],
+        "//conditions:default": [],
+    }),
     deps = [
-        "@imguilib//:imgui",
+        ":imgui",
         "@GLFW//:glfw",
-        "@metal//:metal",
-    ],
-    linkopts = [
-        "-framework Cocoa",
-        "-framework IOKit",
-        "-framework CoreFoundation",
+        "@Metal//:metal",
     ],
 )
 
@@ -25,83 +124,17 @@ cc_binary(
         "examples/example_glfw_opengl3/main.cpp",
     ],
     deps = [
-        "@imguilib//:imgui",
+        ":imgui",
         "@GLAD//:glad",
         "@GLFW//:glfw",
-    ]
-)
-
-objc_library(
-    name = "imgui_metal",
-    srcs = glob([
-        "backends/imgui_impl_metal*",
-        "backends/imgui_impl_glfw*",
-        "*.mm",
-        "*.h",
-    ]),
-    hdrs = glob([
-        "backends/imgui_impl_metal.h",
-        "backends/imgui_impl_glfw.h",
-        "*.h",
-    ]),
-    visibility = [
-        "//visibility:private",
-    ],
-    deps = [
-        "@GLFW//:glfw",
-        "@metal//:metal",
     ],
 )
 
 cc_library(
-    name = "imgui",
-    srcs = select(
-        {
-            "@platforms//os:windows": glob([
-                "backends/imgui_impl_win32*",
-                "backends/imgui_impl_dx11*",
-                "backends/imgui_impl_opengl3*",
-                "backends/imgui_impl_glfw*",
-                "*.cpp",
-                "*.h",
-            ]),
-            "@platforms//os:linux": glob([
-                "backends/imgui_impl_opengl3*",
-                "backends/imgui_impl_glfw*",
-                "*.cpp",
-                "*.h",
-            ]),
-            "@platforms//os:macos": glob([
-            ]),
-        },
-    ),
-    hdrs = select(
-        {
-            "@platforms//os:windows": [
-                "backends/imgui_impl_win32.h",
-                "backends/imgui_impl_dx11.h",
-                "backends/imgui_impl_opengl3.h",
-                "backends/imgui_impl_glfw.h",
-            ] + glob(["*.h"]),
-            "@platforms//os:linux": [
-                "backends/imgui_impl_opengl3.h",
-                "backends/imgui_impl_glut.h",
-                "backends/imgui_impl_glfw.h",
-            ] + glob(["*.h"]),
-            "@platforms//os:macos": [
-            ],
-        },
-    ),
-    includes = [
-        "",
-        "backends",
-    ],
-    deps = select({
-        "@platforms//os:macos": [
-            ":imgui_metal",
-        ],
-        "//conditions:default": [
-            "@GLFW//:glfw",
-        ],
-    }),
+    name = "imgui_color_text_edit",
+    srcs = ["TextEditor.cpp"],
+    hdrs = ["TextEditor.h"],
+    includes = ["."],
+    deps = ["@imguilib//:imgui"],
+    alwayslink = True,
 )

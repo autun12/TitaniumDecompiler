@@ -1,5 +1,7 @@
 #pragma once
 
+#include <sstream>
+
 #include "TitaniumRenderer/Events/Event.h"
 
 namespace TitaniumRenderer {

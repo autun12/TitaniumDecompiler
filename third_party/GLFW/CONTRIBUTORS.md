@@ -6,29 +6,41 @@ excludes other invaluable contributions like language bindings and text and
 video tutorials.
 
  - Bobyshev Alexander
+ - Alzathar
  - Laurent Aphecetche
  - Matt Arsenault
+ - Takuro Ashie
  - ashishgamedev
+ - avagordon01
  - David Avedissian
+ - Luca Bacci
  - Keith Bauer
  - John Bartholomew
  - Coşku Baş
+ - Bayemite
  - Niklas Behrens
  - Andrew Belt
  - Nevyn Bengtsson
  - Niklas Bergström
  - Denis Bernard
+ - BiBi
  - Doug Binks
+ - bitb4ker
  - blanco
  - Waris Boonyasiriwat
  - Kyle Brenneman
  - Rok Breulj
+ - TheBrokenRail
  - Kai Burjack
  - Martin Capitanio
  - Nicolas Caramelli
  - David Carlier
  - Arturo Castro
+ - Jose Luis Cercós Pita
  - Chi-kwan Chan
+ - Victor Chernyakin
+ - TheChocolateOre
+ - Ali Chraghi
  - Joseph Chua
  - Ian Clarkson
  - Michał Cichoń
@@ -40,9 +52,15 @@ video tutorials.
  - Andrew Corrigan
  - Bailey Cosier
  - Noel Cower
+ - James Cowgill
  - CuriouserThing
+ - Bill Currie
  - Jason Daly
+ - danhambleton
+ - danijel1023
  - Jarrod Davis
+ - Aaron Day
+ - decce
  - Olivier Delannoy
  - Paul R. Deppe
  - Michael Dickens
@@ -55,36 +73,56 @@ video tutorials.
  - Robin Eklind
  - Jan Ekström
  - Siavash Eliasi
+ - er-azh
+ - Jan Hendrik Farr
  - Ahmad Fatoum
+ - Nikita Fediuchin
  - Felipe Ferreira
  - Michael Fogleman
+ - Folling
+ - forworldm
  - Jason Francis
  - Gerald Franz
  - Mário Freitas
+ - Friz64
  - GeO4d
  - Marcus Geelnard
+ - Gegy
  - ghuser404
  - Charles Giessen
  - Ryan C. Gordon
  - Stephen Gowen
  - Kovid Goyal
+ - Kevin Grandemange
  - Eloi Marín Gratacós
+ - Grzesiek11
  - Stefan Gustavson
  - Andrew Gutekanst
  - Stephen Gutekanst
  - Jonathan Hale
+ - halx99
+ - Daniel Hauser
  - hdf89shfdfs
+ - Moritz Heinemann
  - Sylvain Hellegouarch
+ - Björn Hempel
  - Matthew Henry
  - heromyth
  - Lucas Hinderberger
  - Paul Holden
+ - Hajime Hoshi
  - Warren Hu
  - Charles Huber
+ - Brent Huisman
+ - Florian Hülsmann
+ - illustris
  - InKryption
  - IntellectualKitty
  - Aaron Jacobs
+ - JannikGM
  - Erik S. V. Jansson
+ - jjYBdx4IL
+ - Peter Johnson
  - Toni Jovanoski
  - Arseny Kapoulkine
  - Cem Karan
@@ -93,12 +131,14 @@ video tutorials.
  - Josh Kilmer
  - Byunghoon Kim
  - Cameron King
+ - knokko
  - Peter Knut
  - Christoph Kubisch
  - Yuri Kunde Schlesner
  - Rokas Kupstys
  - Konstantin Käfer
  - Eric Larson
+ - Guillaume Lebrun
  - Francis Lecavalier
  - Jong Won Lee
  - Robin Leffmann
@@ -107,12 +147,16 @@ video tutorials.
  - Anders Lindqvist
  - Leon Linhart
  - Marco Lizza
+ - lo-v-ol
  - Eyal Lotem
  - Aaron Loucks
+ - Ned Loynd
  - Luflosi
  - lukect
  - Tristam MacDonald
+ - Jean-Luc Mackail
  - Hans Mackowiak
+ - Ramiro Magno
  - Дмитри Малышев
  - Zbigniew Mandziejewicz
  - Adam Marcus
@@ -123,23 +167,36 @@ video tutorials.
  - Bryce Mehring
  - Jonathan Mercier
  - Marcel Metz
+ - Lucas Michaudel
  - Liam Middlebrook
+ - mightgoyardstill
+ - Mihail
  - Ave Milia
+ - Icyllis Milica
  - Jonathan Miller
  - Kenneth Miller
  - Bruce Mitchener
  - Jack Moffitt
+ - Ravi Mohan
  - Jeff Molofee
  - Alexander Monakov
  - Pierre Morel
  - Jon Morton
  - Pierre Moulon
  - Martins Mozeiko
+ - Tomáš Mráz
  - Pascal Muetschard
+ - James Murphy
  - Julian Møller
+ - Julius Häger
+ - Nat!
+ - NateIsStalling
  - ndogxj
+ - F. Nedelec
  - n3rdopolis
  - Kristian Nielsen
+ - Joel Niemelä
+ - Victor Nova
  - Kamil Nowakowski
  - onox
  - Denis Ovod
@@ -149,47 +206,66 @@ video tutorials.
  - Peoro
  - Braden Pellett
  - Christopher Pelloux
+ - Michael Pennington
  - Arturo J. Pérez
  - Vladimir Perminov
+ - Olivier Perret
  - Anthony Pesch
  - Orson Peters
  - Emmanuel Gil Peyrot
  - Cyril Pichard
+ - Pilzschaf
  - Keith Pitt
  - Stanislav Podgorskiy
  - Konstantin Podsvirov
  - Nathan Poirier
+ - Pokechu22
  - Alexandre Pretyman
  - Pablo Prietz
  - przemekmirek
  - pthom
+ - Martin Pulec
  - Guillaume Racicot
+ - Juan Ramos
+ - Christian Rauch
  - Philip Rideout
  - Eddie Ringle
  - Max Risuhin
+ - road2react
+ - Joe Roback
  - Jorge Rodriguez
  - Jari Ronkainen
  - Luca Rood
  - Ed Ropple
  - Aleksey Rybalkin
  - Mikko Rytkönen
+ - saikyun
  - Riku Salminen
+ - Yoshinori Sano
  - Brandon Schaefer
  - Sebastian Schuberth
+ - Scr3amer
+ - Jan Schürkamp
  - Christian Sdunek
  - Matt Sealey
  - Steve Sexton
  - Arkady Shapkin
+ - Mingjie Shen
  - Ali Sherief
  - Yoshiki Shibukawa
  - Dmitri Shuralyov
+ - Joao da Silva
  - Daniel Sieger
+ - Daljit Singh
+ - Michael Skec
  - Daniel Skorupski
+ - Slemmie
  - Anthony Smith
  - Bradley Smith
  - Cliff Smolinsky
  - Patrick Snape
  - Erlend Sogge Heggen
+ - Olivier Sohn
  - Julian Squires
  - Johannes Stein
  - Pontus Stenetorp
@@ -199,9 +275,11 @@ video tutorials.
  - Paul Sultana
  - Nathan Sweet
  - TTK-Bandit
+ - Nuno Teixeira
  - Jared Tiala
  - Sergey Tikhomirov
  - Arthur Tombs
+ - TronicLabs
  - Ioannis Tsakpinis
  - Samuli Tuomola
  - Matthew Turner
@@ -211,12 +289,17 @@ video tutorials.
  - Jari Vetoniemi
  - Ricardo Vieira
  - Nicholas Vitovitch
+ - Vladimír Vondruš
  - Simon Voordouw
  - Corentin Wallez
  - Torsten Walluhn
  - Patrick Walton
+ - Ivor Wanders
+ - Jim Wang
  - Xo Wang
+ - Andre Weissflog
  - Jay Weisskopf
+ - Drew Weymouth
  - Frank Wille
  - Andy Williams
  - Joel Winarske
