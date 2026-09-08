@@ -45,6 +45,24 @@ objc_library(
 )
 
 cc_library(
+    name = "imgui_opengl3_backend",
+    srcs = [
+        "backends/imgui_impl_opengl3.cpp",
+    ],
+    hdrs = [
+        "backends/imgui_impl_opengl3.h",
+        "backends/imgui_impl_opengl3_loader.h",
+    ],
+    includes = ["backends"],
+    visibility = ["//visibility:private"],
+    deps = [
+        ":imgui_core",
+        "@GLFW//:glfw",
+    ],
+    alwayslink = True,
+)
+
+cc_library(
     name = "imgui_glfw_backend",
     srcs = [
         "backends/imgui_impl_glfw.cpp",
@@ -91,7 +109,9 @@ cc_library(
         "@platforms//os:macos": [
             ":imgui_metal_backend",
         ],
-        "//conditions:default": [],
+        "//conditions:default": [
+            ":imgui_opengl3_backend",
+        ],
     }),
 )
 
@@ -107,9 +127,8 @@ objc_library(
         "QuartzCore",
     ],
     deps = [
-        # Include your imgui library and glfw dependencies here
         ":imgui",
-        # "@glfw//:glfw",
+        "@GLFW//:glfw",
     ],
 )
 
@@ -119,29 +138,6 @@ cc_binary(
         ":imgui-metal-demo-lib",
     ],
 )
-
-# cc_binary(
-#     name = "imgui-metal-demo",
-#     srcs = [
-#         "examples/example_glfw_metal/main.mm",
-#     ],
-#     linkopts = select({
-#         "@platforms//os:macos": [
-#             "-framework Cocoa",
-#             "-framework IOKit",
-#             "-framework CoreFoundation",
-#             "-framework QuartzCore",
-#             "-framework Metal",
-#             "-framework Foundation",
-#         ],
-#         "//conditions:default": [],
-#     }),
-#     deps = [
-#         ":imgui",
-#         "@GLFW//:glfw",
-#         "@Metal//:metal",
-#     ],
-# )
 
 cc_binary(
     name = "imgui-glfw-demo",

@@ -24,7 +24,6 @@ cc_library(
         "@GLAD//:glad",
         "@GLFW//:glfw",
         "//TitaniumLogger/src/TitaniumLogger/Logger:titanium_logger",
-        # "//TitaniumLogger/src:TitaniumLogger",
         "@spdloglib//:spdlog",
     ],
 )

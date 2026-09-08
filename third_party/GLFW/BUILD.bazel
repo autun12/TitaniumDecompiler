@@ -87,6 +87,7 @@ cc_library(
             "src/posix_thread.c",
             "src/posix_time.c",
             "src/posix_module.c",
+            "src/posix_poll.c",
             "src/x11_init.c",
             "src/x11_monitor.c",
             "src/x11_window.c",
@@ -121,12 +122,11 @@ cc_library(
             "src/linux_joystick.h",
             "src/posix_thread.h",
             "src/posix_time.h",
+            "src/posix_poll.h",
             "src/x11_platform.h",
             "src/null_platform.h",
             "src/null_joystick.h",
             "src/platform.h",
-
-        "src/xkb_unicode.h",
         ]
     }),
     defines = select({
