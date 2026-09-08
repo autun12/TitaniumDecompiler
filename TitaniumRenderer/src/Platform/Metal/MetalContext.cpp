@@ -62,12 +62,17 @@ void MetalContext::Init() {
     m_RenderPassDescriptor = MTL::RenderPassDescriptor::renderPassDescriptor();
 }
 
-MTL::RenderCommandEncoder* MetalContext::GetCommandEncoder() {
-    if (!m_CommandEncoder) {
-        m_CurrentDrawable = m_MetalLayer->nextDrawable();
-        if (!m_CurrentDrawable) {
-            return nullptr;
+MTL::RenderPassDescriptor* MetalContext::GetCurrentRenderPassDescriptor() {
+    if (!m_CurrentDrawable) {
+        // Auto-update drawable size to match actual framebuffer pixels
+        if (m_MetalLayer && m_WindowHandle) {
+            int fbWidth = 0, fbHeight = 0;
+            glfwGetFramebufferSize(m_WindowHandle, &fbWidth, &fbHeight);
+            m_MetalLayer->setDrawableSize(CGSizeMake(fbWidth, fbHeight));
         }
+
+        m_CurrentDrawable = m_MetalLayer->nextDrawable();
+        if (!m_CurrentDrawable) return nullptr;
 
         auto* colorAttachment =
             m_RenderPassDescriptor->colorAttachments()->object(0);
@@ -76,10 +81,22 @@ MTL::RenderCommandEncoder* MetalContext::GetCommandEncoder() {
         colorAttachment->setClearColor(
             MTL::ClearColor::Make(0.1f, 0.1f, 0.1f, 1.0f));
         colorAttachment->setStoreAction(MTL::StoreActionStore);
+    } else {
+        auto* colorAttachment =
+            m_RenderPassDescriptor->colorAttachments()->object(0);
+        colorAttachment->setLoadAction(MTL::LoadActionLoad);
+    }
+
+    return m_RenderPassDescriptor;
+}
+
+MTL::RenderCommandEncoder* MetalContext::GetCommandEncoder() {
+    if (!m_CommandEncoder) {
+        MTL::RenderPassDescriptor* passDesc = GetCurrentRenderPassDescriptor();
+        if (!passDesc) return nullptr;
 
         m_CommandBuffer = m_CommandQueue->commandBuffer();
-        m_CommandEncoder =
-            m_CommandBuffer->renderCommandEncoder(m_RenderPassDescriptor);
+        m_CommandEncoder = m_CommandBuffer->renderCommandEncoder(passDesc);
     }
 
     return m_CommandEncoder;
@@ -88,16 +105,35 @@ MTL::RenderCommandEncoder* MetalContext::GetCommandEncoder() {
 void MetalContext::SwapBuffers() {
     if (m_CommandEncoder) {
         m_CommandEncoder->endEncoding();
+        m_CommandEncoder->release();
         m_CommandEncoder = nullptr;
     }
 
+    // 2. Present drawable and commit command buffer
     if (m_CommandBuffer && m_CurrentDrawable) {
         m_CommandBuffer->presentDrawable(m_CurrentDrawable);
         m_CommandBuffer->commit();
     }
 
-    m_CommandBuffer = nullptr;
-    m_CurrentDrawable = nullptr;
+    // 3. Clear pass descriptor texture reference to avoid lingering holds
+    if (m_RenderPassDescriptor) {
+        auto* colorAttachment =
+            m_RenderPassDescriptor->colorAttachments()->object(0);
+        if (colorAttachment) {
+            colorAttachment->setTexture(nullptr);
+        }
+    }
+
+    // 4. Release retained Metal/Quartz resources
+    if (m_CommandBuffer) {
+        m_CommandBuffer->release();
+        m_CommandBuffer = nullptr;
+    }
+
+    if (m_CurrentDrawable) {
+        m_CurrentDrawable->release();
+        m_CurrentDrawable = nullptr;
+    }
 }
 
 void MetalContext::SetVSync(bool enabled) {

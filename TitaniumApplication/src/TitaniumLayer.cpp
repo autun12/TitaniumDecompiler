@@ -29,8 +29,8 @@ void TitaniumLayer::OnAttach() {
     m_ConsolePanel = consoleViewer.get();
     auto funcListViewer = m_PanelManager->AddPanel<FunctionListingPanel>(true);
     m_FunctionListPanel = funcListViewer.get();
-    auto graphViewer = m_PanelManager->AddPanel<GraphViewPanel>(false);
-    m_GraphViewPanel = graphViewer.get();
+    // auto graphViewer = m_PanelManager->AddPanel<GraphViewPanel>(false);
+    // m_GraphViewPanel = graphViewer.get();
     auto disasmViewer = m_PanelManager->AddPanel<DisassemblyViewerPanel>(true);
     m_DisassemblyViewerPanel = disasmViewer.get();
     auto decompViewer = m_PanelManager->AddPanel<DecompilerViewerPanel>(false);

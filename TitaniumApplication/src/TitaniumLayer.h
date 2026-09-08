@@ -51,7 +51,7 @@ private:
     ConsolePanel* m_ConsolePanel;
     FunctionListingPanel* m_FunctionListPanel;
     DecompilerViewerPanel* m_DecompilerViewerPanel;
-    GraphViewPanel* m_GraphViewPanel;
+    // GraphViewPanel* m_GraphViewPanel;
 
     // Widgets
     SettingsWidget* m_SettingsWidget;

@@ -1,4 +1,9 @@
-[18:17:52] [info] TitaniumRenderer: Creating window Titanium Decompiler (1280, 720)
-[18:17:52] [info] TitaniumRenderer: Metal Info:
-[18:17:52] [info] TitaniumRenderer:   Device Name: Apple M2
-[18:17:52] [info] TitaniumRenderer:   Low Power: No
+[12:43:32] [info] TitaniumRenderer: Creating window Titanium Decompiler (1280, 720)
+[12:43:32] [info] TitaniumRenderer: Metal Info:
+[12:43:32] [info] TitaniumRenderer:   Device Name: Apple M2
+[12:43:32] [info] TitaniumRenderer:   Low Power: No
+[12:43:32] [info] TitaniumRenderer: Initializing Metal Renderer API
+[12:44:11] [info] TitaniumDecompiler: JVM Class file fully read
+[12:44:11] [info] APP: HexViewer successfully cached 634 bytes from: TestKt.class
+[12:44:24] [error] APP: Unsupported file format or failed to parse: /Users/austindrane/Desktop/TitaniumDecompiler/JavaTestFiles/TestJarFile/TestJarFile.jar
+[12:44:24] [warning] APP: Failed to load target file into project context: /Users/austindrane/Desktop/TitaniumDecompiler/JavaTestFiles/TestJarFile/TestJarFile.jar

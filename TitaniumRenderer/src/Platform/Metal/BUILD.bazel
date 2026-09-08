@@ -1,49 +1,53 @@
 cc_library(
     name = "titanium_renderer_platform_metal",
     srcs = [
-      "MetalRendererAPI.cpp",
-      "MetalImGuiRenderer.cpp",
-      "MetalContext.cpp",
-    ],
-    defines = [
-        "GLFW_INCLUDE_NONE",
-    ],
-    deps = [
-        ":headers",
-        "//TitaniumRenderer/src/TitaniumRenderer/Core:headers",
-        "//TitaniumRenderer/src/TitaniumRenderer/Renderer:headers",
-        "@GLFW//:glfw",
-        "//TitaniumLogger/src/TitaniumLogger/Logger:titanium_logger",
-        "@spdloglib//:spdlog",
-        "@imguilib//:imgui",
-        "@Metal//:metal",
+        "MetalContext.cpp",
+        "MetalImGuiRenderer.cpp",
+        "MetalRendererAPI.cpp",
     ],
     copts = [
         "-ITitaniumRenderer/src",
         "-ITitaniumLogger/src",
     ],
+    defines = [
+        "GLFW_INCLUDE_NONE",
+    ],
+    linkopts = [
+        "-framework Metal",
+        "-framework Foundation",
+    ],
     # strip_include_prefix = "//TitaniumRenderer/src",
     visibility = [
         "//TitaniumRenderer/src:__subpackages__",
+    ],
+    deps = [
+        ":headers",
+        "//TitaniumLogger/src/TitaniumLogger/Logger:titanium_logger",
+        "//TitaniumRenderer/src/TitaniumRenderer/Core:headers",
+        "//TitaniumRenderer/src/TitaniumRenderer/Renderer:headers",
+        "@GLFW//:glfw",
+        "@Metal//:metal",
+        "@imguilib//:imgui",
+        "@spdloglib//:spdlog",
     ],
 )
 
 cc_library(
     name = "headers",
     hdrs = [
-      "MetalRendererAPI.h",
-      "MetalContext.h",
-      "MetalImGuiRenderer.h",
-    ],
-    deps = [
-        # "//TitaniumRenderer/src/TitaniumRenderer/Core:headers",
-        # "//TitaniumRenderer/src/TitaniumRenderer/Renderer:headers",
+        "MetalContext.h",
+        "MetalImGuiRenderer.h",
+        "MetalRendererAPI.h",
     ],
     copts = [
-        "-ITitaniumRenderer/src"
+        "-ITitaniumRenderer/src",
     ],
     # strip_include_prefix = "//TitaniumRenderer/src",
     visibility = [
         "//TitaniumRenderer/src:__subpackages__",
+    ],
+    deps = [
+        # "//TitaniumRenderer/src/TitaniumRenderer/Core:headers",
+        # "//TitaniumRenderer/src/TitaniumRenderer/Renderer:headers",
     ],
 )

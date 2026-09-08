@@ -28,9 +28,7 @@ public:
     virtual void SwapBuffers() override;
 
     inline MTL::Device* GetDevice() const { return m_Device; }
-    inline MTL::RenderPassDescriptor* GetCurrentRenderPassDescriptor() const {
-        return m_RenderPassDescriptor;
-    }
+    MTL::RenderPassDescriptor* GetCurrentRenderPassDescriptor();
     MTL::RenderCommandEncoder* GetCommandEncoder();
     MTL::CommandBuffer* GetCommandBuffer() const { return m_CommandBuffer; }
 
