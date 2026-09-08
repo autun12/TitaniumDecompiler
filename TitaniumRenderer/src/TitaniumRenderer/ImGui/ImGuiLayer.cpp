@@ -6,9 +6,6 @@
 #include "TitaniumRenderer/Core/Application.h"
 #include "TitaniumRenderer/UI/ThemeManager.h"
 
-// TEMPORARY
-#include <GLFW/glfw3.h>
-
 namespace TitaniumRenderer {
 
 ImGuiLayer::ImGuiLayer() : Layer("ImGuiLayer") {}
