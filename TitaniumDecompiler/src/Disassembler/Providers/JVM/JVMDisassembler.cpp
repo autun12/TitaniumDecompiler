@@ -392,6 +392,17 @@ bool JVMDisassembler::DecodeInstruction(uint64_t address,
             return true;
         }
 
+        // Store equivalents (istore_0 to istore_3: 0x3b to 0x3e)
+        case 0x3b:
+        case 0x3c:
+        case 0x3d:
+        case 0x3e: {
+            outInsn.mnemonic = "istore";
+            uint32_t varIndex = opcode - 0x3b;
+            outInsn.operands.push_back({OperandType::Register, varIndex});
+            return true;
+        }
+
         // Compressed astore_0 to astore_3 (0x4b to 0x4e) - 1 byte
         case 0x4b:
         case 0x4c:
@@ -404,16 +415,6 @@ bool JVMDisassembler::DecodeInstruction(uint64_t address,
             return true;
         }
 
-        // Store equivalents (istore_0 to istore_3: 0x3b to 0x3e)
-        case 0x3b:
-        case 0x3c:
-        case 0x3d:
-        case 0x3e: {
-            outInsn.mnemonic = "istore";
-            uint32_t varIndex = opcode - 0x3b;
-            outInsn.operands.push_back({OperandType::Register, varIndex});
-            return true;
-        }
         case 0x84: {
             if (bytes.size() < 3) return false;
 

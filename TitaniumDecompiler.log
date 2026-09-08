@@ -1,5 +1,7 @@
-[13:59:54] [info] TitaniumRenderer: Creating window Titanium Decompiler (1280, 720)
-[13:59:54] [info] TitaniumRenderer: OpenGL Info:
-[13:59:54] [info] TitaniumRenderer:   Vendor: Intel
-[13:59:54] [info] TitaniumRenderer:   Renderer: Mesa Intel(R) Graphics (MTL)
-[13:59:54] [info] TitaniumRenderer:   Version: 4.6 (Core Profile) Mesa 26.1.6-arch1.1
+[15:04:31] [info] TitaniumRenderer: Creating window Titanium Decompiler (1280, 720)
+[15:04:31] [info] TitaniumRenderer: Metal Info:
+[15:04:31] [info] TitaniumRenderer:   Device Name: Apple M2
+[15:04:31] [info] TitaniumRenderer:   Low Power: No
+[15:04:31] [info] TitaniumRenderer: Initializing Metal Renderer API
+[15:04:46] [info] TitaniumDecompiler: JVM Class file fully read
+[15:04:46] [info] APP: HexViewer successfully cached 634 bytes from: TestKt.class

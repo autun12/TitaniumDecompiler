@@ -20,6 +20,13 @@ bool JVMFormatParser::Load(const std::filesystem::path& path) {
     }
 }
 
+bool JVMFormatParser::CanParse(std::span<const uint8_t> bytes) const {
+    if (bytes.size() < 4) return false;
+
+    return bytes[0] == 0xCA && bytes[1] == 0xFE && bytes[2] == 0xBA &&
+           bytes[3] == 0xBE;
+}
+
 std::vector<Section> JVMFormatParser::GetSections() const {
     std::vector<Section> sections;
     if (!m_IsLoaded) return sections;

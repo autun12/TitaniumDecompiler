@@ -1,6 +1,7 @@
 #pragma once
 
 #include <filesystem>
+#include <span>
 
 #include "ClassFileParser.h"
 #include "Core/IFormatParser.h"
@@ -11,6 +12,7 @@ public:
     JVMFormatParser() = default;
 
     bool Load(const std::filesystem::path& path) override;
+    bool CanParse(const std::span<const uint8_t> bytes) const override;
 
     std::string_view GetFormatName() const override { return "JVM ClassFile"; }
     std::vector<Section> GetSections() const override;
