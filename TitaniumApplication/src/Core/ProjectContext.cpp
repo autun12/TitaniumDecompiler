@@ -2,7 +2,7 @@
 
 #include "Core/DisassemblerFactory.h"
 #include "Core/DisassemblerFormatterFactory.h"
-#include "Disassembler/IDisassembler.h"
+#include "Core/Disassembly/IDisassembler.h"
 #include "TitaniumLogger/Logger/Log.h"
 
 namespace TitaniumRenderer {

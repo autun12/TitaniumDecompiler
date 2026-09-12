@@ -1,7 +1,7 @@
-[15:04:31] [info] TitaniumRenderer: Creating window Titanium Decompiler (1280, 720)
-[15:04:31] [info] TitaniumRenderer: Metal Info:
-[15:04:31] [info] TitaniumRenderer:   Device Name: Apple M2
-[15:04:31] [info] TitaniumRenderer:   Low Power: No
-[15:04:31] [info] TitaniumRenderer: Initializing Metal Renderer API
-[15:04:46] [info] TitaniumDecompiler: JVM Class file fully read
-[15:04:46] [info] APP: HexViewer successfully cached 634 bytes from: TestKt.class
+[16:30:53] [info] TitaniumRenderer: Creating window Titanium Decompiler (1280, 720)
+[16:30:53] [info] TitaniumRenderer: Metal Info:
+[16:30:53] [info] TitaniumRenderer:   Device Name: Apple M2
+[16:30:53] [info] TitaniumRenderer:   Low Power: No
+[16:30:53] [info] TitaniumRenderer: Initializing Metal Renderer API
+[16:32:50] [info] TitaniumDecompiler: JVM Class file fully read
+[16:32:50] [info] APP: HexViewer successfully cached 609 bytes from: Test7.class

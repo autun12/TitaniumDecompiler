@@ -4,7 +4,7 @@
 #include <memory>
 
 #include "Core/IFormatParser.h"
-#include "Disassembler/IDisassembler.h"
+#include "Disassembly/IDisassembler.h"
 
 namespace TitaniumDecompiler {
 class DisassemblerFactory {

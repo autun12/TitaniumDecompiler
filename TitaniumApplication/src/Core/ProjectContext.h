@@ -5,9 +5,9 @@
 #include <memory>
 #include <string>
 
+#include "Core/Disassembly/IDisassembler.h"
 #include "Core/IFormatParser.h"
-#include "Disassembler/IDisassembler.h"
-#include "Disassembler/IDisassemblerFormatter.h"
+#include "Formatting/Disassembly/IDisassemblerFormatter.h"
 
 namespace TitaniumRenderer {
 

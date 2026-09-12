@@ -1,7 +1,7 @@
 #pragma once
 
-#include "../../IDisassemblerFormatter.h"
 #include "FileFormats/JVM/ConstantPool.h"
+#include "IDisassemblerFormatter.h"
 
 namespace TitaniumDecompiler {
 class JVMFormatter : public IDisassemblyFormatter {

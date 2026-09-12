@@ -1,0 +1,14 @@
+load("@rules_cc//cc:defs.bzl", "cc_library", "objc_library")
+
+cc_library(
+    name = "lifted_ir",
+    hdrs = [
+        "ILifter.h",
+        "LiftedIR.h",
+    ],
+    visibility = ["//visibility:public"],
+    deps = [
+        "//TitaniumDecompiler/src/Core/CFG:cfg",
+        "//TitaniumDecompiler/src/Core/Disassembly:disassembly",
+    ],
+)

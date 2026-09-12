@@ -3,22 +3,21 @@ load("@rules_cc//cc:defs.bzl", "cc_library", "objc_library")
 cc_library(
     name = "core",
     srcs = glob(["*.cpp"]),
-    visibility = [
-        "//visibility:public",
-    ],
-    includes = ["//TitaniumDecompiler/src"],
     # strip_include_prefix = "//TitaniumDecompiler/src",
     copts = [
         "-ITitaniumDecompiler/src",
         "-ITitaniumLogger/src",
     ],
+    includes = ["//TitaniumDecompiler/src"],
+    visibility = [
+        "//visibility:public",
+    ],
     deps = [
         ":headers",
+        "//TitaniumDecompiler/src/Architectures/JVM:jvm",
+        "//TitaniumDecompiler/src/Core/Disassembly:disassembly",
         "//TitaniumDecompiler/src/FileFormats/JVM:jvm_format",
-        "//TitaniumDecompiler/src/Disassembler:disassembler_core",
-        "//TitaniumDecompiler/src/Disassembler:jvm_disassembler_provider",
-        "//TitaniumDecompiler/src/Disassembler:jvm_disassembler_formatter",
-
+        "//TitaniumDecompiler/src/Formatting/Disassembly:jvm_disassembler_formatter",
         "//TitaniumDecompiler/src/Utils:utils",
         "//TitaniumLogger/src/TitaniumLogger/Logger:titanium_logger",
     ],
@@ -27,16 +26,16 @@ cc_library(
 cc_library(
     name = "headers",
     hdrs = glob([
-      "*.h"
+        "*.h",
     ]),
+    copts = [
+        "-ITitaniumDecompiler/src",
+    ],
     visibility = [
         "//:__pkg__",
         "//TitaniumDecompiler/src:__subpackages__",
     ],
     deps = [
-      "//TitaniumDecompiler/src/Disassembler:disassembler_core",
-    ],
-    copts = [
-        "-ITitaniumDecompiler/src",
+        "//TitaniumDecompiler/src/Core/Disassembly:disassembly",
     ],
 )

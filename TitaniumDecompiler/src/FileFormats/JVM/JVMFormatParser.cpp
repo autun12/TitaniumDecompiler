@@ -31,7 +31,7 @@ std::vector<Section> JVMFormatParser::GetSections() const {
     std::vector<Section> sections;
     if (!m_IsLoaded) return sections;
 
-    uint64_t currentAddress = 0x1000;
+    uint64_t currentAddress = 0x0;
 
     Section cpSection;
     cpSection.Name = ".constants";
@@ -47,7 +47,7 @@ std::vector<Section> JVMFormatParser::GetSections() const {
                 m_ClassFile.m_ConstantPool.GetConstantUTF8(method.m_NameIndex);
             Section codeSection;
             codeSection.Name = std::format(".code.{}", methodName);
-            codeSection.VirtualAddress = currentAddress;
+            codeSection.VirtualAddress = 0;
             codeSection.Bytes = codeAttr->code;
             codeSection.IsExecutable = true;
             sections.push_back(codeSection);

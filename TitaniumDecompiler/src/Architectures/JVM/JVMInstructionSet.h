@@ -5,6 +5,8 @@
 #include <array>
 #include <string_view>
 
+#include "Core/Disassembly/IDisassembler.h"
+
 namespace TitaniumDecompiler {
 enum class JVMOperandEncoding : uint8_t {
     None,
@@ -18,18 +20,24 @@ enum class JVMOperandEncoding : uint8_t {
     BranchS32,
     TableSwitch,
     LookupSwitch,
-    Wide
+    Wide,
+    IInc,
 };
 
 struct JVMOpcodeInfo {
     std::string_view Mnemonic;
+
     uint8_t Length;
+
     JVMOperandEncoding OperandEncoding;
+    ControlFlowType ControlFlow = ControlFlowType::None;
 };
 
 class JVMInstructionSet {
 public:
-    static const JVMOpcodeInfo& Get(uint8_t opcode);
+    static const JVMOpcodeInfo& Get(uint8_t opcode) {
+        return m_Opcodes[opcode];
+    };
 
 private:
     static const std::array<JVMOpcodeInfo, 256> m_Opcodes;

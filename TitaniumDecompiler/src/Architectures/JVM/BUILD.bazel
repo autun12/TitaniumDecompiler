@@ -1,0 +1,17 @@
+load("@rules_cc//cc:defs.bzl", "cc_library", "objc_library")
+
+cc_library(
+    name = "jvm",
+    srcs = glob(["*.cpp"]),
+    hdrs = glob(["*.h"]),
+    copts = [
+        "-ITitaniumDecompiler/src",
+        "-ITitaniumLogger/src",
+    ],
+    visibility = ["//visibility:public"],
+    deps = [
+        "//TitaniumDecompiler/src/Core/Disassembly:disassembly",
+        "//TitaniumDecompiler/src/FileFormats/JVM:jvm_format",
+        "//TitaniumDecompiler/src/Utils:utils",
+    ],
+)

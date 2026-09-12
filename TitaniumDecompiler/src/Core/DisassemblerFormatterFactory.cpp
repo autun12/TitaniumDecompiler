@@ -2,8 +2,8 @@
 
 #include <memory>
 
-#include "Disassembler/Formatters/JVM/JVMFormatter.h"
 #include "FileFormats/JVM/JVMFormatParser.h"
+#include "Formatting/Disassembly/JVMFormatter.h"
 
 namespace TitaniumDecompiler {
 

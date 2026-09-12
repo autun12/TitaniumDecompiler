@@ -1,0 +1,17 @@
+load("@rules_cc//cc:defs.bzl", "cc_library", "objc_library")
+
+# cc_library(
+#     name = "jvm_disassembler_formatter",
+#     srcs = glob(["JVM/*.cpp"]),
+#     hdrs = glob(["JVM/*.h"]),
+#     copts = [
+#         "-ITitaniumDecompiler/src",
+#         "-ITitaniumLogger/src",
+#     ],
+#     visibility = ["//visibility:public"],
+#     deps = [
+#         ":disassembler_core",
+#         "//TitaniumDecompiler/src/FileFormats/JVM:jvm_format",
+#         "//TitaniumDecompiler/src/Utils:utils",
+#     ],
+# )

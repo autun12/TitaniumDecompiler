@@ -1,0 +1,29 @@
+load("@rules_cc//cc:defs.bzl", "cc_library", "objc_library")
+
+cc_library(
+    name = "disassembly_formatter",
+    hdrs = [
+        "IDisassemblerFormatter.h",
+    ],
+    visibility = ["//visibility:public"],
+    deps = [
+        "//TitaniumDecompiler/src/Core/Disassembly:disassembly",
+    ],
+)
+
+cc_library(
+    name = "jvm_disassembler_formatter",
+    srcs = glob(["JVMFormatter.cpp"]),
+    hdrs = glob(["JVMFormatter.h"]),
+    copts = [
+        "-ITitaniumDecompiler/src",
+        "-ITitaniumLogger/src",
+    ],
+    visibility = ["//visibility:public"],
+    deps = [
+        ":disassembly_formatter",
+        "//TitaniumDecompiler/src/Core/Disassembly:disassembly",
+        "//TitaniumDecompiler/src/FileFormats/JVM:jvm_format",
+        "//TitaniumDecompiler/src/Utils:utils",
+    ],
+)

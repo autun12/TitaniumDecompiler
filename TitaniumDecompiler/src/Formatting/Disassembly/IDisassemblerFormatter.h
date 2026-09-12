@@ -2,9 +2,8 @@
 #include <string>
 #include <vector>
 
-#include "IDisassembler.h"
+#include "Core/Disassembly/DecodedInsn.h"
 namespace TitaniumDecompiler {
-
 class IDisassemblyFormatter {
 public:
     virtual ~IDisassemblyFormatter() = default;

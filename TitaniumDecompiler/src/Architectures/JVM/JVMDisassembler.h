@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../IDisassembler.h"
+#include "Core/Disassembly/IDisassembler.h"
 #include "FileFormats/JVM/ConstantPool.h"
 #include "JVMInstructionSet.h"
 

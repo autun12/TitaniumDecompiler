@@ -6,6 +6,9 @@
 #include <vector>
 
 namespace TitaniumDecompiler {
+using InstructionIndex = uint32_t;
+using BlockId = uint32_t;
+
 struct Symbol {
     std::string Name;
     std::string ParentScope;
@@ -32,6 +35,16 @@ struct MetadataTable {
     std::string TableName;
     std::vector<std::string> ColumnHeaders;
     std::vector<MetadataRow> Rows;
+};
+
+struct BasicBlock {
+    BlockId id;
+    uint64_t startAddr;
+    uint64_t endAddr;
+
+    std::vector<InstructionIndex> instructions;
+    std::vector<BlockId> successors;
+    std::vector<BlockId> predecessors;
 };
 
 }  // namespace TitaniumDecompiler

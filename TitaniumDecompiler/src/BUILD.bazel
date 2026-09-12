@@ -1,13 +1,7 @@
 cc_library(
     name = "TitaniumDecompiler",
     hdrs = [
-        "TitaniumDecompiler.h"
-    ],
-    deps = [
-        "//TitaniumDecompiler/src/TitaniumDecompiler/Decompiler:decompiler",
-        "//TitaniumDecompiler/src/Disassembler:jvm_disassembler_provider",
-        "//TitaniumDecompiler/src/FileFormats/JVM:jvm_format",
-        "//TitaniumDecompiler/src/Core:core",
+        "TitaniumDecompiler.h",
     ],
     copts = [
         "-ITitaniumDecompiler/src",
@@ -15,5 +9,11 @@ cc_library(
     visibility = [
         "//TitaniumApplication/src:__subpackages__",
         "//TitaniumTests/TitaniumDecompilerTests:__subpackages__",
+    ],
+    deps = [
+        "//TitaniumDecompiler/src/Architectures/JVM:jvm",
+        "//TitaniumDecompiler/src/Core:core",
+        "//TitaniumDecompiler/src/FileFormats/JVM:jvm_format",
+        "//TitaniumDecompiler/src/TitaniumDecompiler/Decompiler:decompiler",
     ],
 )

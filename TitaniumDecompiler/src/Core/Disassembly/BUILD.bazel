@@ -1,0 +1,21 @@
+load("@rules_cc//cc:defs.bzl", "cc_library", "objc_library")
+
+cc_library(
+    name = "disassembly",
+    hdrs = [
+        "DecodedInsn.h",
+        "IDisassembler.h",
+    ],
+    # strip_include_prefix = "//TitaniumDecompiler/src",
+    copts = [
+        "-ITitaniumDecompiler/src",
+        "-ITitaniumLogger/src",
+    ],
+    includes = ["//TitaniumDecompiler/src"],
+    visibility = [
+        "//visibility:public",
+    ],
+    deps = [
+        "//TitaniumLogger/src/TitaniumLogger/Logger:titanium_logger",
+    ],
+)

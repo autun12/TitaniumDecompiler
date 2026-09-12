@@ -6,25 +6,9 @@
 #include <string_view>
 #include <vector>
 
+#include "DecodedInsn.h"
+
 namespace TitaniumDecompiler {
-enum class OperandType { Register, Immediate, Memory, BranchTarget, Indirect };
-
-struct DecodedOperand {
-    OperandType type = OperandType::Immediate;
-    uint64_t rawValue;
-};
-
-struct DecodedInsn {
-    uint64_t address = 0;
-    uint32_t length = 0;
-    std::string mnemonic;
-    std::vector<DecodedOperand> operands;
-
-    bool isBranch = false;
-    bool isCall = false;
-    bool isReturn = false;
-};
-
 class IDisassembler {
 public:
     virtual ~IDisassembler() = default;
