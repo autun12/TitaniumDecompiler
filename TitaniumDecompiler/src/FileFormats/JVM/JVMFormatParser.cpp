@@ -12,6 +12,8 @@ bool JVMFormatParser::Load(const std::filesystem::path& path) {
     try {
         m_ClassFile = m_Parser.OpenClassFile(path);
         m_IsLoaded = (m_ClassFile.m_Magic == 0xCAFEBABE);
+
+        BuildMethodViews();
         TD_DECOMP_INFO("JVM Class file fully read");
         return m_IsLoaded;
     } catch (const std::exception&) {
@@ -40,20 +42,33 @@ std::vector<Section> JVMFormatParser::GetSections() const {
     cpSection.IsExecutable = false;
     sections.push_back(cpSection);
     currentAddress += cpSection.Bytes.size() + 0x10;
-    for (const auto& method : m_ClassFile.m_Methods) {
-        if (const auto* codeAttr = method.m_Attr.GetAttributePayload<Code>(
-                "Code", m_ClassFile.m_ConstantPool)) {
-            std::string methodName =
-                m_ClassFile.m_ConstantPool.GetConstantUTF8(method.m_NameIndex);
-            Section codeSection;
-            codeSection.Name = std::format(".code.{}", methodName);
-            codeSection.VirtualAddress = 0;
-            codeSection.Bytes = codeAttr->code;
-            codeSection.IsExecutable = true;
-            sections.push_back(codeSection);
-            currentAddress += codeSection.Bytes.size() + 0x10;
-        }
+
+    for (const auto& method : m_Methods) {
+        if (method.code.empty()) continue;
+
+        Section section;
+        section.Name = std::format(".code.{}", method.name);
+
+        section.VirtualAddress = 0;
+        section.Bytes = method.code;
+        section.IsExecutable = true;
+
+        sections.push_back(std::move(section));
     }
+    // for (const auto& method : m_ClassFile.m_Methods) {
+    //     if (const auto* codeAttr = method.m_Attr.GetAttributePayload<Code>(
+    //             "Code", m_ClassFile.m_ConstantPool)) {
+    //         std::string methodName =
+    //             m_ClassFile.m_ConstantPool.GetConstantUTF8(method.m_NameIndex);
+    //         Section codeSection;
+    //         codeSection.Name = std::format(".code.{}", methodName);
+    //         codeSection.VirtualAddress = 0;
+    //         codeSection.Bytes = codeAttr->code;
+    //         codeSection.IsExecutable = true;
+    //         sections.push_back(codeSection);
+    //         currentAddress += codeSection.Bytes.size() + 0x10;
+    //     }
+    // }
 
     return sections;
 }
@@ -74,5 +89,30 @@ std::vector<Symbol> JVMFormatParser::GetSymbols() const {
     }
 
     return symbols;
+}
+
+void JVMFormatParser::BuildMethodViews() {
+    m_Methods.clear();
+
+    for (const auto& method : m_ClassFile.m_Methods) {
+        JVMMethodView view{};
+
+        view.accessFlags = method.m_AccessFlags;
+
+        view.name =
+            m_ClassFile.m_ConstantPool.GetConstantUTF8(method.m_NameIndex);
+
+        view.descriptor =
+            m_ClassFile.m_ConstantPool.GetConstantUTF8(method.m_DescIndex);
+
+        if (const auto* code = method.m_Attr.GetAttributePayload<Code>(
+                "Code", m_ClassFile.m_ConstantPool)) {
+            view.code = code->code;
+            view.maxStack = code->maxStack;
+            view.maxLocals = code->maxLocals;
+        }
+
+        m_Methods.push_back(view);
+    }
 }
 }  // namespace TitaniumDecompiler

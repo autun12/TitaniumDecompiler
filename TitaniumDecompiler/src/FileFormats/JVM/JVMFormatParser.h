@@ -2,11 +2,22 @@
 
 #include <filesystem>
 #include <span>
+#include <string>
 
 #include "ClassFileParser.h"
 #include "Core/IFormatParser.h"
 
 namespace TitaniumDecompiler {
+
+struct JVMMethodView {
+    std::string name;
+    std::string descriptor;
+    uint16_t accessFlags = 0;
+    std::vector<uint8_t> code;
+    uint16_t maxStack = 0;
+    uint16_t maxLocals = 0;
+};
+
 class JVMFormatParser : public IFormatParser {
 public:
     JVMFormatParser() = default;
@@ -21,8 +32,12 @@ public:
     const ClassFile& GetClassFile() const { return m_ClassFile; }
 
 private:
+    void BuildMethodViews();
+
+private:
     ClassFile m_ClassFile;
     ClassFileParser m_Parser;
     bool m_IsLoaded = false;
+    std::vector<JVMMethodView> m_Methods;
 };
 }  // namespace TitaniumDecompiler

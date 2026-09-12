@@ -2,13 +2,13 @@
 
 #include <stdint.h>
 
+#include <limits>
 #include <string>
 #include <vector>
 
-namespace TitaniumDecompiler {
-using InstructionIndex = uint32_t;
-using BlockId = uint32_t;
+#include "Core/Disassembly/DecodedInsn.h"
 
+namespace TitaniumDecompiler {
 struct Symbol {
     std::string Name;
     std::string ParentScope;
@@ -37,14 +37,28 @@ struct MetadataTable {
     std::vector<MetadataRow> Rows;
 };
 
-struct BasicBlock {
+using InstructionId = uint32_t;
+using BlockId = uint32_t;
+
+constexpr InstructionId InvalidInstructionId =
+    std::numeric_limits<InstructionId>::max();
+constexpr BlockId InvalidBlockId = std::numeric_limits<BlockId>::max();
+
+struct IBasicBlock {
     BlockId id;
     uint64_t startAddr;
     uint64_t endAddr;
 
-    std::vector<InstructionIndex> instructions;
+    std::vector<InstructionId> instructions;
     std::vector<BlockId> successors;
     std::vector<BlockId> predecessors;
 };
 
+struct DecodedFunction {
+    std::string name;
+    std::string signature;
+
+    std::vector<DecodedInsn> instructions;
+    // CFG cfg;
+};
 }  // namespace TitaniumDecompiler

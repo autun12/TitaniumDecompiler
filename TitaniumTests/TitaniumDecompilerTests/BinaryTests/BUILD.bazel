@@ -16,43 +16,46 @@ cc_test(
         "@googletest//:gtest_main",
     ],
 )
+
 cc_test(
     name = "disassembler_test",
     size = "small",
     srcs = ["DisassemblerTest.cpp"],
+    copts = ["-ITitaniumDecompiler/src"],
+    data = [
+        "//JavaTestFiles:Test.class",
+        "//JavaTestFiles:TestJarFile/TestJarFile.jar",
+        "//JavaTestFiles:jar_test_files",
+    ],
     deps = [
         "//TitaniumDecompiler/src:TitaniumDecompiler",
-        "//TitaniumDecompiler/src/TitaniumDecompiler/Disassembler:disassembler_test",
-        "//TitaniumDecompiler/src/Disassembler:disassembler_core",
+        "//TitaniumDecompiler/src/Core/Disassembly:disassembly",
         "//TitaniumDecompiler/src/FileFormats/JVM:platform_jvm_test",
+        "//TitaniumDecompiler/src/TitaniumDecompiler/Disassembler:disassembler_test",
         "@googletest//:gtest",
         "@googletest//:gtest_main",
     ],
-    data = [
-        "//JavaTestFiles:jar_test_files",
-        "//JavaTestFiles:TestJarFile/TestJarFile.jar",
-        "//JavaTestFiles:Test.class",
-    ],
-    copts = ["-ITitaniumDecompiler/src",],
 )
+
 cc_test(
     name = "jvm_disassembler_test",
     size = "small",
     srcs = ["JVMDisassemblerTest.cpp"],
+    copts = ["-ITitaniumDecompiler/src"],
+    data = [
+        "//JavaTestFiles:Test.class",
+        "//JavaTestFiles:TestJarFile/TestJarFile.jar",
+        "//JavaTestFiles:jar_test_files",
+    ],
     deps = [
         "//TitaniumDecompiler/src:TitaniumDecompiler",
-        "//TitaniumDecompiler/src/TitaniumDecompiler/Disassembler:disassembler_test",
         "//TitaniumDecompiler/src/FileFormats/JVM:platform_jvm_test",
+        "//TitaniumDecompiler/src/TitaniumDecompiler/Disassembler:disassembler_test",
         "@googletest//:gtest",
         "@googletest//:gtest_main",
     ],
-    data = [
-        "//JavaTestFiles:jar_test_files",
-        "//JavaTestFiles:TestJarFile/TestJarFile.jar",
-        "//JavaTestFiles:Test.class",
-    ],
-    copts = ["-ITitaniumDecompiler/src",],
 )
+
 cc_test(
     name = "jar_file_parser_test",
     size = "small",
@@ -61,8 +64,8 @@ cc_test(
         "-ITitaniumDecompiler/src",
     ],
     data = [
-        "//JavaTestFiles:jar_test_files",
         "//JavaTestFiles:TestJarFile/TestJarFile.jar",
+        "//JavaTestFiles:jar_test_files",
     ],
     deps = [
         "//TitaniumDecompiler/src:TitaniumDecompiler",
@@ -70,6 +73,7 @@ cc_test(
         "@googletest//:gtest_main",
     ],
 )
+
 cc_test(
     name = "function_test",
     size = "small",
@@ -78,8 +82,8 @@ cc_test(
         "-ITitaniumDecompiler/src",
     ],
     data = [
-        "//JavaTestFiles:jar_test_files",
         "//JavaTestFiles:TestJarFile/TestJarFile.jar",
+        "//JavaTestFiles:jar_test_files",
     ],
     deps = [
         "//TitaniumDecompiler/src:TitaniumDecompiler",
@@ -87,6 +91,7 @@ cc_test(
         "@googletest//:gtest_main",
     ],
 )
+
 cc_test(
     name = "exception_range_test",
     size = "small",
@@ -95,8 +100,8 @@ cc_test(
         "-ITitaniumDecompiler/src",
     ],
     data = [
-        "//JavaTestFiles:jar_test_files",
         "//JavaTestFiles:TestJarFile/TestJarFile.jar",
+        "//JavaTestFiles:jar_test_files",
     ],
     deps = [
         "//TitaniumDecompiler/src:TitaniumDecompiler",
@@ -104,6 +109,7 @@ cc_test(
         "@googletest//:gtest_main",
     ],
 )
+
 cc_test(
     name = "common_ops_test",
     size = "small",
@@ -112,8 +118,8 @@ cc_test(
         "-ITitaniumDecompiler/src",
     ],
     data = [
-        "//JavaTestFiles:jar_test_files",
         "//JavaTestFiles:TestJarFile/TestJarFile.jar",
+        "//JavaTestFiles:jar_test_files",
     ],
     deps = [
         "//TitaniumDecompiler/src:TitaniumDecompiler",
@@ -121,93 +127,98 @@ cc_test(
         "@googletest//:gtest_main",
     ],
 )
+
 cc_test(
     name = "basic_block_test",
     size = "small",
     srcs = ["BasicBlockTest.cpp"],
+    copts = ["-ITitaniumDecompiler/src"],
+    data = [
+        "//JavaTestFiles:Test.class",
+        "//JavaTestFiles:TestJarFile/TestJarFile.jar",
+        "//JavaTestFiles:jar_test_files",
+    ],
     deps = [
         "//TitaniumDecompiler/src:TitaniumDecompiler",
-        "//TitaniumDecompiler/src/TitaniumDecompiler/Disassembler:disassembler_test",
         "//TitaniumDecompiler/src/FileFormats/JVM:platform_jvm_test",
+        "//TitaniumDecompiler/src/TitaniumDecompiler/Disassembler:disassembler_test",
         "@googletest//:gtest",
         "@googletest//:gtest_main",
     ],
-    data = [
-        "//JavaTestFiles:jar_test_files",
-        "//JavaTestFiles:TestJarFile/TestJarFile.jar",
-        "//JavaTestFiles:Test.class",
-    ],
-    copts = ["-ITitaniumDecompiler/src",],
 )
+
 cc_test(
     name = "access_flags_test",
     size = "small",
     srcs = ["AccessFlagsTest.cpp"],
+    copts = ["-ITitaniumDecompiler/src"],
+    data = [
+        "//JavaTestFiles:Test.class",
+        "//JavaTestFiles:TestJarFile/TestJarFile.jar",
+        "//JavaTestFiles:jar_test_files",
+    ],
     deps = [
         "//TitaniumDecompiler/src:TitaniumDecompiler",
-        "//TitaniumDecompiler/src/TitaniumDecompiler/Disassembler:disassembler_test",
         "//TitaniumDecompiler/src/FileFormats/JVM:platform_jvm_test",
+        "//TitaniumDecompiler/src/TitaniumDecompiler/Disassembler:disassembler_test",
         "@googletest//:gtest",
         "@googletest//:gtest_main",
     ],
-    data = [
-        "//JavaTestFiles:jar_test_files",
-        "//JavaTestFiles:TestJarFile/TestJarFile.jar",
-        "//JavaTestFiles:Test.class",
-    ],
-    copts = ["-ITitaniumDecompiler/src",],
 )
+
 cc_test(
     name = "attribute_inner_structure_test",
     size = "small",
     srcs = ["AttributeInnerStructuresTest.cpp"],
+    copts = ["-ITitaniumDecompiler/src"],
+    data = [
+        "//JavaTestFiles:Test.class",
+        "//JavaTestFiles:TestJarFile/TestJarFile.jar",
+        "//JavaTestFiles:jar_test_files",
+    ],
     deps = [
         "//TitaniumDecompiler/src:TitaniumDecompiler",
-        "//TitaniumDecompiler/src/TitaniumDecompiler/Disassembler:disassembler_test",
         "//TitaniumDecompiler/src/FileFormats/JVM:platform_jvm_test",
+        "//TitaniumDecompiler/src/TitaniumDecompiler/Disassembler:disassembler_test",
         "@googletest//:gtest",
         "@googletest//:gtest_main",
     ],
-    data = [
-        "//JavaTestFiles:jar_test_files",
-        "//JavaTestFiles:TestJarFile/TestJarFile.jar",
-        "//JavaTestFiles:Test.class",
-    ],
-    copts = ["-ITitaniumDecompiler/src",],
 )
+
 cc_test(
     name = "attributes_test",
     size = "small",
     srcs = ["AttributesTest.cpp"],
+    copts = ["-ITitaniumDecompiler/src"],
+    data = [
+        "//JavaTestFiles:Test.class",
+        "//JavaTestFiles:TestJarFile/TestJarFile.jar",
+        "//JavaTestFiles:jar_test_files",
+    ],
     deps = [
         "//TitaniumDecompiler/src:TitaniumDecompiler",
-        "//TitaniumDecompiler/src/TitaniumDecompiler/Disassembler:disassembler_test",
         "//TitaniumDecompiler/src/FileFormats/JVM:platform_jvm_test",
+        "//TitaniumDecompiler/src/TitaniumDecompiler/Disassembler:disassembler_test",
         "@googletest//:gtest",
         "@googletest//:gtest_main",
     ],
-    data = [
-        "//JavaTestFiles:jar_test_files",
-        "//JavaTestFiles:TestJarFile/TestJarFile.jar",
-        "//JavaTestFiles:Test.class",
-    ],
-    copts = ["-ITitaniumDecompiler/src",],
 )
+
 cc_test(
     name = "attribute_structures_test",
     size = "small",
     srcs = ["AttributeStructuresTest.cpp"],
+    copts = ["-ITitaniumDecompiler/src"],
+    data = [
+        "//JavaTestFiles:Test.class",
+        "//JavaTestFiles:TestJarFile/TestJarFile.jar",
+        "//JavaTestFiles:jar_test_files",
+    ],
     deps = [
         "//TitaniumDecompiler/src:TitaniumDecompiler",
-        "//TitaniumDecompiler/src/TitaniumDecompiler/Disassembler:disassembler_test",
         "//TitaniumDecompiler/src/FileFormats/JVM:platform_jvm_test",
+        "//TitaniumDecompiler/src/TitaniumDecompiler/Disassembler:disassembler_test",
         "@googletest//:gtest",
         "@googletest//:gtest_main",
     ],
-    data = [
-        "//JavaTestFiles:jar_test_files",
-        "//JavaTestFiles:TestJarFile/TestJarFile.jar",
-        "//JavaTestFiles:Test.class",
-    ],
-    copts = ["-ITitaniumDecompiler/src",],
 )
